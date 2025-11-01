@@ -60,10 +60,20 @@ public class SellerService {
                 if (existsEmail(staffDto.getEmail(), staffDto.getId())) {
                     throw new RuntimeException("Email đã được dùng");
                 }
+                if (staffDto.getPassword().length() < 6 || staffDto.getPassword().length() > 50) {
+                    throw new RuntimeException("Mật khẩu phải có độ dài từ 6 đến 50 ký tự");
+                }
+            } else {
+                if (staffDto.getPassword().length() > 0) {
+                    if (staffDto.getPassword().length() < 6 || staffDto.getPassword().length() > 50) {
+                        throw new RuntimeException("Mật khẩu phải có độ dài từ 6 đến 50 ký tự");
+                    }
+                }
             }
             if (!communeWardRepository.existsByCode(staffDto.getCommuneWard())) {
                 throw new RuntimeException("Phường/Xã không tồn tại");
             }
+
             Seller seller;
             try {
                 if (staffDto.getId() == 0) {
@@ -80,6 +90,9 @@ public class SellerService {
                 } else {
                     seller = getSellerById(staffDto.getId());
                     seller.setEmail(staffDto.getEmail());
+                    if (staffDto.getPassword().length() > 0) {
+                        seller.setPassword(passwordEncoder.encode(staffDto.getPassword()));
+                    }
                     seller.setFullname(staffDto.getFullname());
                     seller.setBirthDate(staffDto.getBirthDate());
                     seller.setCid(staffDto.getCid());
