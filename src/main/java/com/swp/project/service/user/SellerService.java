@@ -136,11 +136,12 @@ public class SellerService {
                 (managerRepository.findByEmail(email) != null && managerRepository.findByEmail(email).getId() != id);
     }
 
-    public Page<Seller> getSellers(int page, int size, String searchQuery, String searchCid, String sortCriteria, int k, String sortCriteriaInPage) {
+    public Page<Seller> getSellers(int page, int size, String queryEmail, String queryName, String queryAddress, String queryCid, String sortCriteria, int k, String sortCriteriaInPage) {
         Pageable pageable = PageRequest.of(page - 1, size);
 
-        List<Seller> filteredSellers = sellerRepository.findByFullnameContainsAndCidContains(searchQuery, searchCid)
+        List<Seller> filteredSellers = sellerRepository.findByEmailContainsAndFullnameContainsAndCidContains(queryEmail, queryName, queryCid)
         .stream()
+        .filter(s -> s.getAddress().toLowerCase().contains(queryAddress.toLowerCase()))
         .sorted((o1, o2) -> {
             int comparison = 0;
             switch (sortCriteria) {
@@ -169,18 +170,10 @@ public class SellerService {
         })
         .toList();
 
-        if (searchQuery != null && !searchQuery.isEmpty() && searchCid != null && !searchCid.isEmpty()) {
+        if (queryName != null && !queryName.isEmpty() && queryCid != null && !queryCid.isEmpty()) {
             filteredSellers = filteredSellers.stream()
-                    .filter(seller -> seller.getFullname().toLowerCase().contains(searchQuery.toLowerCase())
-                            && seller.getCid().toLowerCase().contains(searchCid.toLowerCase()))
-                    .toList();
-        } else if (searchQuery != null && !searchQuery.isEmpty()) {
-            filteredSellers = filteredSellers.stream()
-                    .filter(seller -> seller.getFullname().toLowerCase().contains(searchQuery.toLowerCase()))
-                    .toList();
-        } else if (searchCid != null && !searchCid.isEmpty()) {
-            filteredSellers = filteredSellers.stream()
-                    .filter(seller -> seller.getCid().toLowerCase().contains(searchCid.toLowerCase()))
+                    .filter(seller -> seller.getFullname().toLowerCase().contains(queryName.toLowerCase())
+                            && seller.getCid().toLowerCase().contains(queryCid.toLowerCase()))
                     .toList();
         }
 

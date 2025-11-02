@@ -255,8 +255,11 @@ public class SellerController {
     }
 
     @GetMapping("/product-unit")
-    public String getProductUnitList(Model model) {
-        List<ProductUnit> productUnits = productUnitService.getAllProductUnit();
+    public String getProductUnitList(Model model,
+                                     @RequestParam(defaultValue = "0") int page,
+                                     @RequestParam(defaultValue = "5") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ProductUnit> productUnits = productUnitService.getAllProductUnit(pageable);
         model.addAttribute("productUnits", productUnits);
         return "pages/seller/product/product-unit";
     }
