@@ -289,6 +289,11 @@ public class OrderService {
                 .filter(orderStatusService::isCancelledStatus)
                 .count();
     }
+    public long getTotalShippingOrders(){
+        return orderRepository.findAll().stream()
+                .filter(orderStatusService::isShippingStatus)
+                .count();
+    }
 
     public long getUnitSold(){
         long total =0;

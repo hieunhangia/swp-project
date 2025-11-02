@@ -162,5 +162,8 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     ORDER BY d desc
     """, nativeQuery = true)
     List<Object[]> getRevenueLast12Months();
+
+
+    List<Order> findTop5ByOrderByOrderAtDesc();
 }
 

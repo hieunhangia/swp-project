@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.swp.project.entity.order.Order;
+import com.swp.project.repository.order.OrderRepository;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -43,6 +45,7 @@ public class SellerService {
     private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     private final ProductRepository productRepository;
     private final CommuneWardRepository communeWardRepository;
+    private final OrderRepository orderRepository;
 
     public Seller getByEmail(String email) { return sellerRepository.findByEmail(email);
     }
@@ -248,4 +251,7 @@ public class SellerService {
         return new PageImpl<>(dtoList, pageable, rawData.getTotalElements());
     }
 
+    public List<Order> get5NearOrder(){
+        return orderRepository.findTop5ByOrderByOrderAtDesc();
+    }
 }

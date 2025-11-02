@@ -319,7 +319,7 @@
         <!-- Growth Chart Card -->
         <div class="chart-container">
             <h5 class="section-title">
-                <i class="bi bi-graph-up"></i> Biểu đồ tăng trưởng (%)
+                <i class="bi bi-graph-up"></i> Biểu đồ doanh thu
             </h5>
             <canvas id="growthChart"></canvas>
         </div>
@@ -333,6 +333,10 @@
     const weeklyChange  = /*[[${weeklyPercentageChange}]]*/ 0.0;
     const monthlyChange = /*[[${monthlyPercentageChange}]]*/ 0.0;
 
+    const revenueToday = /*[[${revenueToday}]]*/ 0;
+    const revenueThisWeek = /*[[${revenueThisWeek}]]*/ 0;
+    const revenueThisMonth = /*[[${revenueThisMonth}]]*/ 0;
+
     const gctx = document.getElementById('growthChart').getContext('2d');
 
     const clean = v => Number.isFinite(v) ? v : 0;
@@ -342,8 +346,8 @@
         data: {
             labels: ['Hôm nay', 'Tuần này', 'Tháng này'],
             datasets: [{
-                label: 'Tăng trưởng (%)',
-                data: [clean(dailyChange), clean(weeklyChange), clean(monthlyChange)],
+                label: 'Doanh thu (VND)',
+                data: [clean(revenueToday), clean(revenueThisWeek), clean(revenueThisMonth)],
                 backgroundColor: [
                     'rgba(245, 87, 108, 0.8)',
                     'rgba(79, 172, 254, 0.8)',
@@ -384,7 +388,7 @@
                     },
                     callbacks: {
                         label: function(context) {
-                            return context.dataset.label + ': ' + context.parsed.y.toFixed(2) + '%';
+                            return context.dataset.label + ': ' + context.parsed.y.toFixed(2) + 'VND';
                         }
                     }
                 }
@@ -394,7 +398,7 @@
                     beginAtZero: true,
                     ticks: {
                         callback: function(value) {
-                            return value + '%';
+                            return value + 'VND';
                         },
                         font: {
                             size: 12
