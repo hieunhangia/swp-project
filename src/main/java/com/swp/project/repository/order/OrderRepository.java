@@ -39,14 +39,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     List<Order> findByShipper_Email(String shipperEmail);
 
-    @Query("""
-        SELECT COALESCE(SUM(oi.quantity), 0)
-        FROM Order o JOIN o.orderItem oi
-        WHERE o.orderStatus.name = 'Đã Giao Hàng'
-        AND oi.product.id = :productId
-        """)
-    int getSoldQuantity(@Param("productId") Long productId);
-
     @Query("SELECT SUM(oi.quantity) FROM OrderItem oi WHERE oi.order.orderStatus.name='Đã Giao Hàng'")
     Long getTotalUnitSold();
 
