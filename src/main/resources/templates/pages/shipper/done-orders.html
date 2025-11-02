@@ -85,26 +85,39 @@
   <!-- Search and Sort -->
   <div class="card shadow-sm search-card mb-4">
     <div class="card-body p-3 p-sm-4 row">
-      <div class="col-6">
+      <div class="col-9">
         <h5 class="fw-bold mb-3">
           <i class="bi bi-search text-primary me-2"></i>
           Tìm kiếm đơn hàng
         </h5>
         <form th:action="@{/shipper/done-orders}" method="get">
-          <div class="input-group">
-            <span class="input-group-text">
-              <i class="bi bi-envelope"></i>
-            </span>
-            <input type="text" class="form-control" placeholder="Nhập email khách hàng..."
-                   name="searchQuery" th:value="${searchQuery}">
-            <button class="btn btn-primary" type="submit">
-              <i class="bi bi-search me-1"></i>
-              Tìm kiếm
-            </button>
+          <div class="row g-2 align-items-end">
+            <div class="col-md-5">
+              <label class="form-label small mb-1"><i class="bi bi-envelope"></i> Email khách hàng</label>
+              <input type="text" class="form-control" placeholder="Nhập email khách hàng..."
+                     name="searchQuery" th:value="${searchQuery}">
+            </div>
+
+            <div class="col-md-3">
+              <label class="form-label small mb-1"><i class="bi bi-calendar-event"></i> Ngày hoàn thành từ</label>
+              <input type="date" class="form-control" name="completionDateFromQuery" th:value="${completionDateFromQuery}">
+            </div>
+
+            <div class="col-md-3">
+              <label class="form-label small mb-1"><i class="bi bi-calendar-event"></i> Ngày hoàn thành đến</label>
+              <input type="date" class="form-control" name="completionDateToQuery" th:value="${completionDateToQuery}">
+            </div>
+
+            <div class="col-md-1 d-grid">
+              <button class="btn btn-primary" type="submit">
+                <i class="bi bi-search me-1"></i>
+                Tìm
+              </button>
+            </div>
           </div>
         </form>
       </div>
-      <div class="col-6">
+      <div class="col-3">
         <h5 class="fw-bold mb-3">
           <i class="bi bi-funnel text-primary me-2"></i>
           Sắp xếp đơn hàng
@@ -144,7 +157,7 @@
               <th>
                 <form th:action="@{/shipper/done-orders}" method="get" class="d-inline">
                   <!-- <input type="hidden" name="searchQuery" th:value="${searchQuery}"> -->
-                  <input type="hidden" name="pageDone" th:value="${currentPageDone}">
+                  <!-- <input type="hidden" name="pageDone" th:value="${currentPageDone}"> -->
                   <button type="submit" name="sortCriteriaInPage" value="id"
                           th:class="'btn btn-sm ' + (${sortCriteriaInPage.equals('id')} ? 'btn-primary' : 'btn-outline-primary')">
                     <i class="bi bi-hash me-1"></i>
@@ -156,7 +169,7 @@
               <th>
                 <form th:action="@{/shipper/done-orders}" method="get" class="d-inline">
                   <!-- <input type="hidden" name="searchQuery" th:value="${searchQuery}"> -->
-                  <input type="hidden" name="pageDone" th:value="${currentPageDone}">
+                  <!-- <input type="hidden" name="pageDone" th:value="${currentPageDone}"> -->
                   <button type="submit" name="sortCriteriaInPage" value="email"
                           th:class="'btn btn-sm ' + (${sortCriteriaInPage.equals('email')} ? 'btn-primary' : 'btn-outline-primary')">
                     <i class="bi bi-envelope me-1"></i>

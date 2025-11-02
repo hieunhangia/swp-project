@@ -1,11 +1,17 @@
 package com.swp.project.controller;
 
 import java.security.Principal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +38,20 @@ public class ShipperController {
     private final OrderService orderService;
     private final ShippingStatusService shippingStatusService;
     private final OrderStatusService orderStatusService;
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        // Allow empty date values ("") to be converted to null instead of causing a bind error
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateFormat.setLenient(false);
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
+    }
+
+    private String formatDateForInput(Date date) {
+        if (date == null) return null;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return dateFormat.format(date);
+    }
 
     @GetMapping("")
     public String shipperMain(Model model, Principal principal) {
@@ -115,6 +135,8 @@ public class ShipperController {
                                 @RequestParam(defaultValue = "10") int size,
                                 @RequestParam(required = false) String sortCriteria,
                                 @RequestParam(required = false) String searchQuery,
+                                @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date completionDateFromQuery,
+                                @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date completionDateToQuery,
                                 @RequestParam(required = false) String sortCriteriaInPage,
                                 HttpSession session) {
 
@@ -140,6 +162,12 @@ public class ShipperController {
             pageDone = 1;
             session.setAttribute("searchQuery", searchQuery);
         }
+        if (completionDateFromQuery != null) {
+            session.setAttribute("completionDateFromQuery", completionDateFromQuery);
+        }
+        if (completionDateToQuery != null) {
+            session.setAttribute("completionDateToQuery", completionDateToQuery);
+        }
         if (pageDone < 1) {
             pageDone = 1;
         }
@@ -148,6 +176,8 @@ public class ShipperController {
                                                             pageDone,
                                                             size,
                                                             (String) session.getAttribute("searchQuery"),
+                                                            (Date) session.getAttribute("completionDateFromQuery"),
+                                                            (Date) session.getAttribute("completionDateToQuery"),
                                                             (String) session.getAttribute("sortCriteria"),
                                                             (int) session.getAttribute("k"),
                                                             (String) session.getAttribute("sortCriteriaInPage"));
@@ -159,6 +189,8 @@ public class ShipperController {
         }
 
         model.addAttribute("searchQuery", session.getAttribute("searchQuery"));
+        model.addAttribute("completionDateFromQuery", formatDateForInput((Date) session.getAttribute("completionDateFromQuery")));
+        model.addAttribute("completionDateToQuery", formatDateForInput((Date) session.getAttribute("completionDateToQuery")));
         model.addAttribute("sortCriteria", session.getAttribute("sortCriteria"));
         model.addAttribute("k", (int) session.getAttribute("k"));
         model.addAttribute("sortCriteriaInPage", session.getAttribute("sortCriteriaInPage"));
