@@ -8,6 +8,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -535,7 +536,7 @@ public class OrderService {
         return new PageImpl<>(pagedOrders, pageable, allOrders.size());
     }
 
-    public Page<Order> getDoneOrders(Principal principal, int page, int size, String searchQuery, String sortCriteria, int k, String sortCriteriaInPage) {
+    public Page<Order> getDoneOrders(Principal principal, int page, int size, String searchQuery, Date completionDateFromQuery, Date completionDateToQuery, String sortCriteria, int k, String sortCriteriaInPage) {
         if (principal == null) {
             throw new RuntimeException("Người giao hàng không xác định");
         }
@@ -558,6 +559,22 @@ public class OrderService {
         if (searchQuery != null && !searchQuery.trim().isEmpty()) {
             allOrders = allOrders.stream()
                 .filter(order -> order.getCustomer().getEmail().toLowerCase().contains(searchQuery.toLowerCase()))
+                .toList();
+        }
+
+        if (completionDateFromQuery != null) {
+            LocalDateTime fromDateTime = LocalDateTime.ofInstant(completionDateFromQuery.toInstant(), java.time.ZoneId.systemDefault());
+            allOrders = allOrders.stream()
+                .filter(order -> order.getCurrentShipping().getOccurredAt().isAfter(fromDateTime) ||
+                                 order.getCurrentShipping().getOccurredAt().isEqual(fromDateTime))
+                .toList();
+        }
+
+        if (completionDateToQuery != null) {
+            LocalDateTime toDateTime = LocalDateTime.ofInstant(completionDateToQuery.toInstant(), java.time.ZoneId.systemDefault());
+            allOrders = allOrders.stream()
+                .filter(order -> order.getCurrentShipping().getOccurredAt().isBefore(toDateTime) ||
+                                 order.getCurrentShipping().getOccurredAt().isEqual(toDateTime))
                 .toList();
         }
 
