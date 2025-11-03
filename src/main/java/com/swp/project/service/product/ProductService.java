@@ -332,6 +332,7 @@ public class ProductService {
                 .sub_images(new ArrayList<>())
                 .quantity(productDto.getQuantity())
                 .main_image_url(ImageService.convertToBase64WithPrefix(productDto.getImage()))
+                .heldQuantity(productDto.getHeldQuantity())
                 .build();
         List<SubImage> pendingSubImages = new ArrayList<>();
 

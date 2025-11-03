@@ -45,4 +45,6 @@ public class CreateProductDto {
     private List<Category> categories;
     private List<Long> categoryIds;
 
+    private double heldQuantity;
+
 }

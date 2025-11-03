@@ -31,6 +31,7 @@ public class UpdateProductDto{
         this.subDisplay2 = product.getSub_images().get(1).getSub_image_url();
         this.subDisplay3 = product.getSub_images().get(2).getSub_image_url();
         this.quantity = product.getQuantity();
+        this.heldQuantity = product.getHeldQuantity();
     }
 
     private Long id;
@@ -62,4 +63,5 @@ public class UpdateProductDto{
     private String subDisplay3;
     private String mainImage; 
     private List<Category> finalCategories;
+    private double heldQuantity;
 }
