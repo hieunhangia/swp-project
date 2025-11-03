@@ -137,6 +137,11 @@
             <span th:text="${warning}"></span>
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
+        <div th:if="${msg}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            <span th:text="${msg}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
     </div>
 
     <!-- Order Info Card -->
@@ -193,9 +198,38 @@
         <div class="card-body p-3 p-sm-4">
             <h5 class="fw-bold mb-4">
                 <i class="bi bi-truck text-primary me-2"></i>
-                Trạng thái vận chuyển
+                Thông tin vận chuyển
             </h5>
 
+            <!-- Shipper Information -->
+            <h6 class="fw-semibold" style="margin-bottom: 0">
+                <i class="bi bi-person-badge text-primary me-2"></i>
+                Người vận chuyển
+            </h6>
+            <div class="mb-4 p-3 rounded">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="info-label mb-1">
+                            <i class="bi bi-person-circle me-1"></i>
+                            Tên
+                        </div>
+                        <div class="info-value" th:text="${order.shipper.fullname}">Nguyễn Văn B</div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="info-label mb-1">
+                            <i class="bi bi-envelope me-1"></i>
+                            Email
+                        </div>
+                        <div class="info-value" th:text="${order.shipper.email}">shipper@email.com</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Shipping Timeline -->
+            <h6 class="fw-semibold mb-3">
+                <i class="bi bi-clock-history text-primary me-2"></i>
+                Lịch sử trạng thái vận chuyển
+            </h6>
             <div class="timeline">
                 <div class="timeline-item" th:each="shipping : ${order.shipping}">
                     <div class="timeline-text" th:text="${shipping.shippingStatus.description}">Đơn hàng đã được xác nhận</div>
