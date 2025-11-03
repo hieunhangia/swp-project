@@ -103,13 +103,11 @@
             <span class="input-group-text">
               <i class="bi bi-envelope"></i>
             </span>
-              <label>
-                  <input type="text" class="form-control" placeholder="Nhập email khách hàng..."
+            <input type="text" class="form-control" placeholder="Nhập email khách hàng..."
                         name="searchQuery" th:value="${searchQuery}">
-              </label>
-              <button class="btn btn-primary" type="submit">
-              <i class="bi bi-search me-1"></i>
-              Tìm kiếm
+            <button class="btn btn-primary" type="submit">
+            <i class="bi bi-search me-1"></i>
+            Tìm kiếm
             </button>
           </div>
         </form>
@@ -153,7 +151,7 @@
         <table class="table order-table mb-0">
           <thead>
             <tr>
-              <th scope="col-3">
+              <th>
                 <form th:action="@{/shipper/delivering-orders}" method="get" class="d-inline">
                   <!-- <input type="hidden" name="searchQuery" th:value="${searchQuery}"> -->
                   <button type="submit" name="sortCriteriaInPage" value="id"
@@ -164,7 +162,7 @@
                   </button>
                 </form>
               </th>
-              <th scope="col-5">
+              <th>
                 <form th:action="@{/shipper/delivering-orders}" method="get" class="d-inline">
                   <!-- <input type="hidden" name="searchQuery" th:value="${searchQuery}"> -->
                   <button type="submit" name="sortCriteriaInPage" value="email"
@@ -175,7 +173,7 @@
                   </button>
                 </form>
               </th>
-              <th scope="col-2">
+              <th>
                 <form th:action="@{/shipper/delivering-orders}" method="get" class="d-inline">
                   <!-- <input type="hidden" name="searchQuery" th:value="${searchQuery}"> -->
                   <button type="submit" name="sortCriteriaInPage" value="status"
@@ -186,7 +184,7 @@
                   </button>
                 </form>
               </th>
-              <th scope="col-2" class="text-end">
+              <th class="text-end">
                 <i class="bi bi-gear me-1"></i>
                 Hành động
               </th>

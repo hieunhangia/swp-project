@@ -170,14 +170,16 @@ public class SellerController {
     }
     @GetMapping("/statistic-report")
     public String getSellerReport(Model model) {
+        List<Order> orders = sellerService.get5NearOrder();
         model.addAttribute("totalOrder",orderService.getTotalOrders());
         model.addAttribute("deliverOrder",orderService.getTotalDeliveredOrders());
         model.addAttribute("processingOrder",orderService.getTotalProcessingOrders());
         model.addAttribute("pendingOrder",orderService.getTotalPendingOrders());
-        model.addAttribute("unitSold", orderService.getUnitSold());
+        model.addAttribute("shippingOrder",orderService.getTotalShippingOrders());
         model.addAttribute("totalCanceledOrder", orderService.getTotalCancelledOrders());
         model.addAttribute("nearlySoldOutProducts", orderService.getNearlySoldOutProduct());
         model.addAttribute("top5ProductRevenue",sellerService.getTop5ProductRevenue());
+        model.addAttribute("recentOrders",orders);
         return "pages/seller/index";
     }
 
