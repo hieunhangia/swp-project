@@ -214,15 +214,21 @@ public class OrderService {
     }
 
     @Transactional
-    public void doWhenOrderConfirmed(Order order) {
+    public void doWhenCodOrderConfirmed(Order order) {
         setOrderStatus(order.getId(), orderStatusService.getProcessingStatus());
-        reductProductQuantityForOrder(order);
+
+        order.getOrderItem().forEach(item ->
+                productService.reduceProductQuantity(item.getProduct().getId(), item.getQuantity()));
     }
 
     @Transactional
-    public void reductProductQuantityForOrder(Order order) {
-        order.getOrderItem().forEach(item ->
-                productService.reduceProductQuantity(item.getProduct().getId(), item.getQuantity()));
+    public void doWhenQrOrderConfirmed(Order order) {
+        setOrderStatus(order.getId(), orderStatusService.getProcessingStatus());
+
+        order.getOrderItem().forEach(item -> {
+            productService.releaseProductQuantity(item.getProduct().getId(), item.getQuantity());
+            productService.reduceProductQuantity(item.getProduct().getId(), item.getQuantity());
+        });
     }
 
     public void createBillForOrder(Order order) {
