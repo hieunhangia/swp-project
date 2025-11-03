@@ -31,113 +31,237 @@
                     </h5>
                 </div>
 
-            <h4 class="section-title"><i class="bi bi-box-seam"></i> Sản phẩm sau khi chấp thuận thay đổi</h4>
+            <h4 class="section-title">
+                <i class="bi bi-arrow-left-right"></i> 
+                <span th:if="${oldProduct != null}">So sánh thay đổi sản phẩm</span>
+                <span th:if="${oldProduct == null}">Sản phẩm mới (Chưa có dữ liệu cũ)</span>
+            </h4>
             <div class="table-responsive">
                 <table>
                     <thead>
                         <tr>
-                            <th>Tên sản phẩm</th>
-                            <th>Mô tả</th>
-                            <th>Giá</th>
-                            <th>Danh mục</th>
-                            <th>Đơn vị</th>
-                            <th>Số lượng</th>
-                            <th>Trạng thái</th>
-                            <th>Ảnh chính</th>
-                            <th>Ảnh phụ 1</th>
-                            <th>Ảnh phụ 2</th>
-                            <th>Ảnh phụ 3</th>
+                            <th>Trường dữ liệu</th>
+                            <th>Giá trị</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:object="${newProduct}">
-                            <td th:text="*{name}"></td>
-                            <td th:text="*{description}"></td>
-                            <td th:text="*{price}"></td>
+                        <!-- Name -->
+                        <tr th:class="${oldProduct != null && oldProduct.name != newProduct.name} ? 'cell-changed' : 'cell-unchanged'">
+                            <td><strong>Tên sản phẩm</strong></td>
                             <td>
-                                <ul>
-                                    <li th:each="category : *{categories}" th:text="${category.name}">Danh mục mới</li>
-                                </ul>
+                                <div th:if="${oldProduct != null && oldProduct.name != newProduct.name}">
+                                    <span class="diff-label label-old">Cũ:</span>
+                                    <span class="value-old" th:text="${oldProduct.name}">Old Name</span>
+                                    <span class="change-arrow">↓</span>
+                                    <span class="diff-label label-new">Mới:</span>
+                                    <span class="value-new" th:text="${newProduct.name}">New Name</span>
+                                </div>
+                                <div th:if="${oldProduct == null || oldProduct.name == newProduct.name}">
+                                    <span class="value-unchanged" th:text="${newProduct.name}">Name</span>
+                                </div>
                             </td>
-                            <td th:text="*{unit.name}"></td>
-                            <td th:text="*{quantity}"></td>
-                            <td th:text="*{enabled ? 'Bật' : 'Tắt'}"></td>
+                        </tr>
+
+                        <!-- Description -->
+                        <tr th:class="${oldProduct != null && oldProduct.description != newProduct.description} ? 'cell-changed' : 'cell-unchanged'">
+                            <td><strong>Mô tả</strong></td>
+                            <td>
+                                <div th:if="${oldProduct != null && oldProduct.description != newProduct.description}">
+                                    <span class="diff-label label-old">Cũ:</span>
+                                    <span class="value-old" th:text="${oldProduct.description}">Old Description</span>
+                                    <span class="change-arrow">↓</span>
+                                    <span class="diff-label label-new">Mới:</span>
+                                    <span class="value-new" th:text="${newProduct.description}">New Description</span>
+                                </div>
+                                <div th:if="${oldProduct == null || oldProduct.description == newProduct.description}">
+                                    <span class="value-unchanged" th:text="${newProduct.description}">Description</span>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <!-- Price -->
+                        <tr th:class="${oldProduct != null && oldProduct.price != newProduct.price} ? 'cell-changed' : 'cell-unchanged'">
+                            <td><strong>Giá</strong></td>
+                            <td>
+                                <div th:if="${oldProduct != null && oldProduct.price != newProduct.price}">
+                                    <span class="diff-label label-old">Cũ:</span>
+                                    <span class="value-old" th:text="${oldProduct.price}">Old Price</span>
+                                    <span class="change-arrow">↓</span>
+                                    <span class="diff-label label-new">Mới:</span>
+                                    <span class="value-new" th:text="${newProduct.price}">New Price</span>
+                                </div>
+                                <div th:if="${oldProduct == null || oldProduct.price == newProduct.price}">
+                                    <span class="value-unchanged" th:text="${newProduct.price}">Price</span>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <!-- Unit -->
+                        <tr th:class="${oldProduct != null && oldProduct.unit.name != newProduct.unit.name} ? 'cell-changed' : 'cell-unchanged'">
+                            <td><strong>Đơn vị</strong></td>
+                            <td>
+                                <div th:if="${oldProduct != null && oldProduct.unit.name != newProduct.unit.name}">
+                                    <span class="diff-label label-old">Cũ:</span>
+                                    <span class="value-old" th:text="${oldProduct.unit.name}">Old Unit</span>
+                                    <span class="change-arrow">↓</span>
+                                    <span class="diff-label label-new">Mới:</span>
+                                    <span class="value-new" th:text="${newProduct.unit.name}">New Unit</span>
+                                </div>
+                                <div th:if="${oldProduct == null || oldProduct.unit.name == newProduct.unit.name}">
+                                    <span class="value-unchanged" th:text="${newProduct.unit.name}">Unit</span>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <!-- Quantity -->
+                        <tr th:class="${oldProduct != null && oldProduct.quantity != newProduct.quantity} ? 'cell-changed' : 'cell-unchanged'">
+                            <td><strong>Số lượng</strong></td>
+                            <td>
+                                <div th:if="${oldProduct != null && oldProduct.quantity != newProduct.quantity}">
+                                    <span class="diff-label label-old">Cũ:</span>
+                                    <span class="value-old" th:text="${oldProduct.quantity}">Old Quantity</span>
+                                    <span class="change-arrow">↓</span>
+                                    <span class="diff-label label-new">Mới:</span>
+                                    <span class="value-new" th:text="${newProduct.quantity}">New Quantity</span>
+                                </div>
+                                <div th:if="${oldProduct == null || oldProduct.quantity == newProduct.quantity}">
+                                    <span class="value-unchanged" th:text="${newProduct.quantity}">Quantity</span>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <!-- Status -->
+                        <tr th:class="${oldProduct != null && oldProduct.enabled != newProduct.enabled} ? 'cell-changed' : 'cell-unchanged'">
+                            <td><strong>Trạng thái</strong></td>
+                            <td>
+                                <div th:if="${oldProduct != null && oldProduct.enabled != newProduct.enabled}">
+                                    <span class="diff-label label-old">Cũ:</span>
+                                    <span class="value-old" th:text="${oldProduct.enabled ? 'Bật' : 'Tắt'}">Old Status</span>
+                                    <span class="change-arrow">↓</span>
+                                    <span class="diff-label label-new">Mới:</span>
+                                    <span class="value-new" th:text="${newProduct.enabled ? 'Bật' : 'Tắt'}">New Status</span>
+                                </div>
+                                <div th:if="${oldProduct == null || oldProduct.enabled == newProduct.enabled}">
+                                    <span class="value-unchanged" th:text="${newProduct.enabled ? 'Bật' : 'Tắt'}">Status</span>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <!-- Categories -->
+                        <tr>
+                            <td><strong>Danh mục</strong></td>
+                            <td>
+                                <div th:if="${oldProduct != null}">
+                                    <div style="margin-bottom: 8px;">
+                                        <span class="diff-label label-old">Cũ:</span>
+                                        <ul style="margin: 4px 0;">
+                                            <li th:each="category : ${oldProduct.categories}" 
+                                                th:text="${category.name}" 
+                                                style="color: #c33;">Danh mục cũ</li>
+                                        </ul>
+                                    </div>
+                                    <span class="change-arrow">↓</span>
+                                    <div style="margin-top: 8px;">
+                                        <span class="diff-label label-new">Mới:</span>
+                                        <ul style="margin: 4px 0;">
+                                            <li th:each="category : ${newProduct.categories}" 
+                                                th:text="${category.name}" 
+                                                style="color: #2a6; font-weight: 500;">Danh mục mới</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div th:if="${oldProduct == null}">
+                                    <ul>
+                                        <li th:each="category : ${newProduct.categories}" th:text="${category.name}">Danh mục</li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <!-- Main Image -->
+                        <tr th:class="${oldProduct != null && oldProduct.main_image_url != newProduct.main_image_url} ? 'cell-changed' : 'cell-unchanged'">
+                            <td><strong>Ảnh chính</strong></td>
                             <td class="image-cell">
-                                <img th:if="*{main_image_url != null and main_image_url != ''}" 
-                                     th:src="*{main_image_url}"
-                                     height="50" width="50" 
-                                     style="object-fit: cover; border-radius: 4px;" />
-                                <span th:if="*{main_image_url == null or main_image_url == ''}"
-                                      class="no-image-text">Empty</span>
+                                <div th:if="${oldProduct != null && oldProduct.main_image_url != newProduct.main_image_url}" class="image-comparison">
+                                    <div>
+                                        <div class="image-label label-old">Cũ:</div>
+                                        <img th:if="${oldProduct.main_image_url != null && oldProduct.main_image_url != ''}" 
+                                             th:src="${oldProduct.main_image_url}"
+                                             height="60" width="60" 
+                                             class="image-old"
+                                             style="object-fit: cover; border-radius: 4px;" />
+                                        <span th:if="${oldProduct.main_image_url == null || oldProduct.main_image_url == ''}" 
+                                              class="no-image-text">Empty</span>
+                                    </div>
+                                    <span class="change-arrow">↓</span>
+                                    <div>
+                                        <div class="image-label label-new">Mới:</div>
+                                        <img th:if="${newProduct.main_image_url != null && newProduct.main_image_url != ''}" 
+                                             th:src="${newProduct.main_image_url}"
+                                             height="60" width="60" 
+                                             class="image-new"
+                                             style="object-fit: cover; border-radius: 4px;" />
+                                        <span th:if="${newProduct.main_image_url == null || newProduct.main_image_url == ''}" 
+                                              class="no-image-text">Empty</span>
+                                    </div>
+                                </div>
+                                <div th:if="${oldProduct == null || oldProduct.main_image_url == newProduct.main_image_url}">
+                                    <img th:if="${newProduct.main_image_url != null && newProduct.main_image_url != ''}" 
+                                         th:src="${newProduct.main_image_url}"
+                                         height="60" width="60" 
+                                         style="object-fit: cover; border-radius: 4px;" />
+                                    <span th:if="${newProduct.main_image_url == null || newProduct.main_image_url == ''}" 
+                                          class="no-image-text">Empty</span>
+                                </div>
                             </td>
-                            <td th:each="i : ${#numbers.sequence(0, 2)}" class="image-cell">
-                                <img th:if="${newProduct.sub_images != null and newProduct.sub_images.size() > i and newProduct.sub_images[i].sub_image_url != null and newProduct.sub_images[i].sub_image_url != ''}" 
-                                     th:src="${newProduct.sub_images[i].sub_image_url}"
-                                     height="50" width="50" 
-                                     style="object-fit: cover; border-radius: 4px;" />
-                                <span th:if="${newProduct.sub_images == null or newProduct.sub_images.size() <= i or newProduct.sub_images[i].sub_image_url == null or newProduct.sub_images[i].sub_image_url == ''}" 
-                                      class="no-image-text">Empty</span>
+                        </tr>
+
+                        <!-- Sub Images -->
+                        <tr th:each="i : ${#numbers.sequence(0, 2)}">
+                            <td><strong>Ảnh phụ <span th:text="${i + 1}">1</span></strong></td>
+                            <td class="image-cell">
+                                <!-- Get old and new sub image URLs -->
+                                <div th:with="
+                                    oldUrl=${oldProduct != null && oldProduct.sub_images != null && oldProduct.sub_images.size() > i ? oldProduct.sub_images[i].sub_image_url : ''},
+                                    newUrl=${newProduct.sub_images != null && newProduct.sub_images.size() > i ? newProduct.sub_images[i].sub_image_url : ''}">
+                                    
+                                    <div th:if="${oldProduct != null && oldUrl != newUrl}" class="image-comparison">
+                                        <div>
+                                            <div class="image-label label-old">Cũ:</div>
+                                            <img th:if="${oldUrl != null && oldUrl != ''}" 
+                                                 th:src="${oldUrl}"
+                                                 height="60" width="60" 
+                                                 class="image-old"
+                                                 style="object-fit: cover; border-radius: 4px;" />
+                                            <span th:if="${oldUrl == null || oldUrl == ''}" 
+                                                  class="no-image-text">Empty</span>
+                                        </div>
+                                        <span class="change-arrow">↓</span>
+                                        <div>
+                                            <div class="image-label label-new">Mới:</div>
+                                            <img th:if="${newUrl != null && newUrl != ''}" 
+                                                 th:src="${newUrl}"
+                                                 height="60" width="60" 
+                                                 class="image-new"
+                                                 style="object-fit: cover; border-radius: 4px;" />
+                                            <span th:if="${newUrl == null || newUrl == ''}" 
+                                                  class="no-image-text">Empty</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div th:if="${oldProduct == null || oldUrl == newUrl}">
+                                        <img th:if="${newUrl != null && newUrl != ''}" 
+                                             th:src="${newUrl}"
+                                             height="60" width="60" 
+                                             style="object-fit: cover; border-radius: 4px;" />
+                                        <span th:if="${newUrl == null || newUrl == ''}" 
+                                              class="no-image-text">Empty</span>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-            </div>
-        </div>
-
-            <div th:if="${oldProduct != null}">
-                <h4 class="section-title"><i class="bi bi-box"></i> Sản phẩm trước khi chấp thuận thay đổi</h4>
-                <div class="table-responsive">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Tên sản phẩm</th>
-                                <th>Mô tả</th>
-                                <th>Giá</th>
-                                <th>Danh mục</th>
-                                <th>Đơn vị</th>
-                                <th>Số lượng</th>
-                                <th>Trạng thái</th>
-                                <th>Ảnh chính</th>
-                                <th>Ảnh phụ 1</th>
-                                <th>Ảnh phụ 2</th>
-                                <th>Ảnh phụ 3</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:object="${oldProduct}">
-                                <td th:text="*{name}"></td>
-                                <td th:text="*{description}"></td>
-                                <td th:text="*{price}"></td>
-                                <td>
-                                    <ul>
-                                        <li th:each="category : *{categories}" th:text="${category.name}">Danh mục cũ</li>
-                                    </ul>
-                                </td>
-                                <td th:text="*{unit.name}"></td>
-                                <td th:text="*{quantity}"></td>
-                                <td th:text="*{enabled ? 'Bật' : 'Tắt'}"></td>
-                                <td class="image-cell">
-                                    <img th:if="*{main_image_url != null and main_image_url != ''}" 
-                                         th:src="*{main_image_url}"
-                                         height="50" width="50" 
-                                         style="object-fit: cover; border-radius: 4px;" />
-                                    <span th:if="*{main_image_url == null or main_image_url == ''}" 
-                                          class="no-image-text">Empty</span>
-                                </td>
-                                <td th:each="i : ${#numbers.sequence(0, 2)}" class="image-cell">
-                                    <img th:if="${oldProduct.sub_images != null and oldProduct.sub_images.size() > i and oldProduct.sub_images[i].sub_image_url != null and oldProduct.sub_images[i].sub_image_url != ''}" 
-                                         th:src="${oldProduct.sub_images[i].sub_image_url}"
-                                         height="50" width="50" 
-                                         style="object-fit: cover; border-radius: 4px;" />
-                                    <span th:if="${oldProduct.sub_images == null or oldProduct.sub_images.size() <= i or oldProduct.sub_images[i].sub_image_url == null or oldProduct.sub_images[i].sub_image_url == ''}" 
-                                          class="no-image-text">Empty</span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table> 
-                </div>
-
-                
             </div>
         </div>
 
