@@ -111,7 +111,7 @@ public class SellerController {
             redirectAttributes.addFlashAttribute("msg",
                     "Từ chối đơn hàng thành công");
         }
-        return "redirect:/seller/all-orders";
+        return "redirect:/seller/order-detail/"+orderId;
     }
 
     @PostMapping("/update-processing-order-status")
@@ -121,7 +121,7 @@ public class SellerController {
         redirectAttributes.addFlashAttribute("msg",
                 "Cập nhật trạng thái đơn hàng thành Đang giao hàng thành công.\n" +
                         "Hệ thống đã tự động phân công Shipper cho đơn hàng.");
-        return "redirect:/seller/all-orders";
+        return "redirect:/seller/order-detail/"+orderId;
     }
 
     @GetMapping("/all-products")
