@@ -142,8 +142,7 @@ public class CustomerController {
                                    Principal principal) {
         List<ShoppingCartItem> cartItems = customerService.getCart(principal.getName());
         for(ShoppingCartItem item: cartItems) {
-        double availableQuantity = productService.getAvailableQuantity(item.getProduct().getId());
-        if (availableQuantity <= 0) {
+        if (item.getProduct().getQuantity() <= 0) {
             customerService.removeItem(principal.getName(), item.getProduct().getId());
         }
     }
@@ -277,11 +276,10 @@ public class CustomerController {
             }
 
 
-        double availableQuantity = productService.getAvailableQuantity(productId);
-        if (quantity > availableQuantity) {
-            quantity = availableQuantity;
+        if (quantity > product.getQuantity()) {
+            quantity = product.getQuantity();
             redirectAttributes.addFlashAttribute("error",
-                    "Số lượng bạn chọn đã vượt quá tồn kho. Hệ thống đã điều chỉnh về " + availableQuantity);
+                    "Số lượng bạn chọn đã vượt quá tồn kho. Hệ thống đã điều chỉnh về " + product.getQuantity());
         }
         customerService.updateCartQuantity(principal.getName(), productId, quantity);
         return "redirect:/customer/shopping-cart";
@@ -466,8 +464,11 @@ public class CustomerController {
     @GetMapping(value = "/order-cancel")
     public String cancelPayment(@RequestParam Long orderCode,
                                 @RequestParam boolean cancel) {
-        if (cancel) {
+        Order order = orderService.getOrderByOrderId(orderCode);
+        if (cancel && order != null && orderStatusService.isPendingPaymentStatus(order)) {
             orderService.setOrderStatus(orderCode, orderStatusService.getCancelledStatus());
+            order.getOrderItem().forEach(item ->
+                    productService.releaseProductQuantity(item.getProduct().getId(), item.getQuantity()));
             return "pages/customer/order/cancel";
         }
         return "redirect:/";

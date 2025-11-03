@@ -155,8 +155,6 @@ public class SellerController {
     @GetMapping("/product/product-detail/{productId}")
     public String getProductDetail(@PathVariable("productId") Long id, Model model) {
         Product product = productService.getProductById(id);
-        double availableQuantity = productService.getAvailableQuantity(id);
-        model.addAttribute("availableQuantity", availableQuantity);
         model.addAttribute("product", product);
         return "pages/seller/product/product-detail";
     }
