@@ -230,10 +230,15 @@ public class SellerService {
         return result;
     }
 
-    public Page<ProductRevenueDto> getProductRevenue(int page, int size) {
+    public Page<ProductRevenueDto> getProductRevenue(String keyWord,int page, int size) {
         Pageable pageable = PageRequest.of(page,size);
-        Page<Object[]> rawData = productRepository.getProductSalesAndRevenue(pageable);
-
+        boolean hasKeyName = keyWord != null && !keyWord.trim().isEmpty();
+        Page<Object[]> rawData;
+        if(hasKeyName){
+             rawData = productRepository.searchProductSalesAndRevenue(keyWord,pageable);
+        }else {
+             rawData = productRepository.getProductSalesAndRevenue(pageable);
+        }
         List<ProductRevenueDto> dtoList = new ArrayList<>();
 
         for (Object[] row : rawData.getContent()) {

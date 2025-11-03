@@ -139,7 +139,7 @@ public class SellerController {
         } else if ("priceDesc".equalsIgnoreCase(sortBy)) {
             sort = Sort.by("price").descending();
         }else {
-            sort = Sort.by("id").descending(); // mặc định
+            sort = Sort.by("id").ascending(); // mặc định
         }
         Pageable pageable = PageRequest.of(page, size, sort);
         Page<Product> products = productService.searchProductForSeller(name, enabled,minPrice,maxPrice, pageable);
@@ -185,11 +185,13 @@ public class SellerController {
 
     @GetMapping("/product-report")
     public String getProductRevenueReport(
+            @RequestParam(required = false) String searchName,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             Model model) {
-        Page<ProductRevenueDto> productRevenues = sellerService.getProductRevenue(page,size);
+        Page<ProductRevenueDto> productRevenues = sellerService.getProductRevenue(searchName,page,size);
         model.addAttribute("products", productRevenues);
+        model.addAttribute("searchName", searchName);
         return "pages/seller/statistic-report/product-report";
     }
 
