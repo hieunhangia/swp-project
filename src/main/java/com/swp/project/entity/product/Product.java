@@ -30,7 +30,7 @@ public class Product implements Serializable{
         this.enabled = dto.getEnabled();
         this.quantity = dto.getQuantity();
         this.categories = dto.getFinalCategories();
-        
+        this.heldQuantity = dto.getHeldQuantity();
     }    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
