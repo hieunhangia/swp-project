@@ -197,6 +197,7 @@ public class ShipperController {
         model.addAttribute("k", (int) session.getAttribute("k"));
         model.addAttribute("sortCriteriaInPage", session.getAttribute("sortCriteriaInPage"));
         model.addAttribute("orderNumber", orderService.countDoneOrders(principal));
+        model.addAttribute("orderService", orderService);
         return "pages/shipper/done-orders";
     }
 
@@ -208,6 +209,10 @@ public class ShipperController {
         try {
             // ShippingStatus shippingStatus = orderService.getOrderByOrderId(orderId).getCurrentShippingStatus();
             switch (nextStatus) {
+                case "awaitingPickup":
+                    orderService.markOrderShippingStatusAsAwaitingPickup(orderId, principal);
+                    redirectAttributes.addFlashAttribute("msg", "Đơn hàng " + orderId + " đã được đánh dấu là đang chờ lấy hàng.");
+                    break;
                 case "pickedUp":
                     orderService.markOrderShippingStatusAsPickedUp(orderId, principal);
                     redirectAttributes.addFlashAttribute("msg", "Đơn hàng " + orderId + " đã được đánh dấu là đã lấy hàng.");
