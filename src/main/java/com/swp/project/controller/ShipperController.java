@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.swp.project.entity.order.Order;
 import com.swp.project.service.order.OrderService;
 import com.swp.project.service.order.OrderStatusService;
+import com.swp.project.service.order.PaymentMethodService;
 import com.swp.project.service.order.shipping.ShippingStatusService;
 import com.swp.project.service.user.ShipperService;
 
@@ -38,6 +39,7 @@ public class ShipperController {
     private final OrderService orderService;
     private final ShippingStatusService shippingStatusService;
     private final OrderStatusService orderStatusService;
+    private final PaymentMethodService paymentMethodService;
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -238,7 +240,10 @@ public class ShipperController {
                 throw new Exception("Đơn hàng không tồn tại.");
             }
 
-            Long totalAmount = orderService.calculateTotalAmount(order);
+            Long totalAmount = 0L;
+            if (paymentMethodService.isCodMethod(order.getPaymentMethod())) {
+                totalAmount = orderService.calculateTotalAmount(order); // Chỉ tính tổng nếu phương thức thanh toán là COD
+            }
             model.addAttribute("orderStatusService", shipperService.getOrderStatusService());
             model.addAttribute("shippingStatusService", shippingStatusService);
             model.addAttribute("order", order);
