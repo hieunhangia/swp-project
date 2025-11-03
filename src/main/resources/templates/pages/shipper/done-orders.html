@@ -131,6 +131,7 @@
               <option value="id" th:selected="${sortCriteria.equals('id')}">Mã đơn hàng</option>
               <option value="email" th:selected="${sortCriteria.equals('email')}">Email khách hàng</option>
               <option value="status" th:selected="${sortCriteria.equals('status')}">Trạng thái</option>
+              <option value="deliveredAt" th:selected="${sortCriteria.equals('deliveredAt')}">Ngày giao hàng</option>
             </select>
           </div>
         </form>
@@ -178,6 +179,16 @@
                   </button>
                 </form>
               </th>
+              <th>
+                <form th:action="@{/shipper/done-orders}" method="get" class="d-inline">
+                  <button type="submit" name="sortCriteriaInPage" value="deliveredAt"
+                          th:class="'btn btn-sm ' + (${sortCriteriaInPage.equals('deliveredAt')} ? 'btn-primary' : 'btn-outline-primary')">
+                    <i class="bi bi-calendar-check me-1"></i>
+                    Ngày giao hàng
+                    <span th:if="${sortCriteriaInPage.equals('deliveredAt')}" th:text="${k == 1 ? '▲' : '▼'}"></span>
+                  </button>
+                </form>
+              </th>
               <th class="text-end">
                 <i class="bi bi-gear me-1"></i>
                 Hành động
@@ -198,6 +209,9 @@
               <td>
                 <i class="bi bi-person me-1 text-muted"></i>
                 <span th:text="${order.customer.email}">customer@email.com</span>
+              </td>
+              <td>
+                <span th:text="${orderService.getShippedAt(order)}">N/A</span>
               </td>
               <td class="text-end">
                 <a class="btn btn-sm btn-outline-primary" th:href="@{/shipper/orders/{id}(id=${order.id})}">

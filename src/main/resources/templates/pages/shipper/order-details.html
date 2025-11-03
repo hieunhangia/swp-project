@@ -268,6 +268,18 @@
 
         <!-- Button to mark as picked up -->
         <form th:action="@{/shipper/mark/{id}(id=*{id})}" method="post"
+              th:if="${shippingStatusService.isPickedUpStatus(order.currentShippingStatus) ||
+              shippingStatusService.isShippingStatus(order.currentShippingStatus)}"
+              class="d-inline">
+          <input type="hidden" name="nextStatus" th:value="awaitingPickup"/>
+          <button type="submit" class="btn btn-success px-4">
+            <i class="bi bi-box-seam me-2"></i>
+            Đang lấy hàng
+          </button>
+        </form>
+
+        <!-- Button to mark as picked up -->
+        <form th:action="@{/shipper/mark/{id}(id=*{id})}" method="post"
               th:if="${shippingStatusService.isAwaitingPickupStatus(order.currentShippingStatus) ||
                       shippingStatusService.isShippingStatus(order.currentShippingStatus)}"
               class="d-inline">
@@ -296,7 +308,7 @@
           <input type="hidden" name="nextStatus" th:value="delivered"/>
           <button type="submit" class="btn btn-success px-4">
             <i class="bi bi-check-circle me-2"></i>
-            Hoàn thành
+            Giao hàng thành công
           </button>
         </form>
       </div>

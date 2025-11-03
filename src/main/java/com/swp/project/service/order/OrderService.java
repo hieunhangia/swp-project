@@ -377,7 +377,6 @@ public class OrderService {
         return Math.round(percentageChange * 100.0)/100.0;
     }
 
-
     public void markOrderStatusAsShipping(Order order) {
         order.setOrderStatus(orderStatusService.getShippingStatus());
         order.addShippingStatus(Shipping.builder()
@@ -385,6 +384,24 @@ public class OrderService {
                 .build());
         shipperService.autoAssignShipperToOrder(order);
         orderRepository.save(order);
+    }
+
+    public void markOrderShippingStatusAsAwaitingPickup(Long orderId, Principal principal) {
+        if (principal == null) {
+            throw new RuntimeException("Người giao hàng không xác định");
+        }
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Đơn hàng không tồn tại"));
+
+        try {
+            // Update shipping status to awaiting pickup
+            order.addShippingStatus(Shipping.builder()
+                    .shippingStatus(shippingStatusService.getAwaitingPickupStatus())
+                    .build());
+            orderRepository.save(order);
+        } catch (Exception e) {
+            throw new RuntimeException("Lỗi khi chuyển trạng thái: " + e.getMessage());
+        }
     }
 
     public void markOrderShippingStatusAsPickedUp(Long orderId, Principal principal) {
@@ -556,6 +573,7 @@ public class OrderService {
                 case "id" -> o1.getId().compareTo(o2.getId());
                 case "email" -> o1.getCustomer().getEmail().compareTo(o2.getCustomer().getEmail());
                 case "status" -> o1.getCurrentShippingStatus().getId().compareTo(o2.getCurrentShippingStatus().getId());
+                case "deliveredAt" -> o1.getCurrentShipping().getOccurredAt().compareTo(o2.getCurrentShipping().getOccurredAt());
                 default -> 0;
             };
         })
@@ -594,6 +612,7 @@ public class OrderService {
                 case "id" -> k * o1.getId().compareTo(o2.getId());
                 case "email" -> k * o1.getCustomer().getEmail().compareTo(o2.getCustomer().getEmail());
                 case "status" -> k * o1.getCurrentShippingStatus().getId().compareTo(o2.getCurrentShippingStatus().getId());
+                case "deliveredAt" -> k * o1.getCurrentShipping().getOccurredAt().compareTo(o2.getCurrentShipping().getOccurredAt());
                 default -> 0;
             };
         })
@@ -812,4 +831,5 @@ public class OrderService {
             .filter(orderStatusService::isDeliveredStatus)
             .count();
     }
+
 }
