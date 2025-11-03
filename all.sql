@@ -29,9 +29,6 @@ TRUNCATE TABLE
 RESTART IDENTITY
 CASCADE;
 
-
---address.sql
-
 insert into province_city (code, name)
 values ('01', 'Thành phố Hà Nội');
 insert into commune_ward (code, name, province_city_code)
@@ -3588,7 +3585,6 @@ values
 ('32236', 'Xã Tân Ân', '96'),
 ('32244', 'Xã Phan Ngọc Hiển', '96'),
 ('32248', 'Xã Đất Mũi', '96');
---account.sql
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
 INSERT INTO users (enabled, email, password)
@@ -3673,8 +3669,6 @@ values
 ((select id from users where email = 'customer7@shop.com'), '0123456783', 'Customer 7', 'Đường Tàu', '16279'),
 ((select id from users where email = 'customer8@shop.com'), '0123456782', 'Customer 8', 'Đường Tàu', '16279'),
 ((select id from users where email = 'customer9@shop.com'), '0123456781', 'Customer 9', 'Đường Tàu', '16279');
---product.sql
-
 CREATE EXTENSION IF NOT EXISTS unaccent;
 
 INSERT INTO product_unit(name, is_allow_decimal,is_active) VALUES ('Kg',true,true),(N'Quả',false,true),(N'Hộp',false,true),(N'Giỏ',false,true);
@@ -3682,43 +3676,43 @@ INSERT INTO product_unit(name, is_allow_decimal,is_active) VALUES ('Kg',true,tru
 -----------------------------------------
 
 
-INSERT INTO product (name, description, price, unit_id, main_image_url, enabled, quantity) VALUES
-('Táo đỏ', 'Táo đỏ nhập khẩu, quả to đều, mọng nước, vị ngọt thanh, giàu vitamin C và chất xơ. Thích hợp ăn trực tiếp, làm salad hoặc nước ép.', 50000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/1/1.jpg', true, 58),
-('Táo vàng', 'Táo vàng Mỹ, giòn, ngọt, mọng nước, giàu chất chống oxy hóa và vitamin. Phù hợp ăn trực tiếp, làm bánh hoặc salad.', 60000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/2/1.jpg', true, 42),
-('Cam sành', 'Cam sành Việt Nam, ngọt đậm đà, ít chua, giàu vitamin C và folate. Phù hợp vắt nước hoặc ăn trực tiếp.', 35000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/3/1.jpg', true, 65),
-('Cam vàng', 'Cam vàng tươi ngon, mọng nước, ngọt tự nhiên và giàu vitamin C giúp tăng cường sức đề kháng. Phù hợp ăn trực tiếp hoặc làm nước ép.', 40000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/4/1.jpg', true, 39),
-('Quýt', 'Quýt ngọt lịm, mọng nước, giàu vitamin C và chất xơ, giúp tăng cường hệ miễn dịch và tiêu hóa. Thích hợp ăn trực tiếp hoặc làm nước ép.', 45000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/5/1.jpg', true, 51),
-('Chuối tiêu', 'Chuối tiêu chín vàng, mềm, ngọt tự nhiên, giàu kali và năng lượng. Thích hợp ăn trực tiếp, làm sinh tố hoặc bánh trái cây.', 25000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/6/1.jpg', true, 68),
-('Chuối sứ', 'Chuối sứ chín tự nhiên, mềm, ngọt dịu, giàu kali và năng lượng. Thích hợp ăn trực tiếp, làm sinh tố hoặc bánh trái cây.', 30000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/7/1.jpg', true, 45),
-('Dâu tây', 'Dâu tây Đà Lạt siêu ngọt, tươi ngon, mọng nước, giàu vitamin C và chất chống oxy hóa. Lý tưởng cho ăn trực tiếp, salad hoặc làm mứt.', 70000, (SELECT id FROM product_unit WHERE name = 'Hộp'), '/images/products/8/1.jpg', true, 37),
-('Dưa hấu', 'Dưa hấu mọng nước, ngọt thanh, giàu lycopene và vitamin C. Phù hợp ăn trực tiếp, làm nước ép hoặc tráng miệng giải khát.', 25000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/9/1.jpg', true, 55),
-('Dưa lưới', 'Dưa lưới vàng ngọt, thơm đặc trưng, mọng nước, giàu beta-carotene. Ăn trực tiếp làm tráng miệng hoặc sinh tố.', 45000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/10/1.jpg', true, 61),
-('Nho xanh', 'Nho xanh không hạt, giòn ngọt, mọng nước, giàu resveratrol và vitamin K. Thích hợp ăn trực tiếp, làm rượu vang hoặc salad.', 85000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/11/1.jpg', true, 48),
-('Nho đỏ', 'Nho đỏ không hạt, mọng nước, ngọt thanh, giàu chất chống oxy hóa và vitamin. Thích hợp ăn trực tiếp, làm salad hoặc rượu vang tại nhà.', 90000, (SELECT id FROM product_unit WHERE name = 'Hộp'), '/images/products/12/1.jpg', true, 53),
-('Nho tím', 'Nho tím không hạt, mọng, ngọt, giàu chất chống oxy hóa và vitamin. Thích hợp ăn trực tiếp, làm salad hoặc rượu vang tại nhà.', 80000, (SELECT id FROM product_unit WHERE name = 'Hộp'), '/images/products/13/1.jpg', true, 40),
-('Xoài cát', 'Xoài cát Hòa Lộc, vàng ươm, thơm ngọt, thịt mềm, giàu vitamin A và C. Phù hợp ăn trực tiếp hoặc làm sinh tố, kem trái cây.', 60000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/14/1.jpg', true, 69),
-('Xoài tượng', 'Xoài tượng da xanh, quả to, thịt dày, ngọt thanh, giàu vitamin A và C. Thích hợp ăn trực tiếp hoặc làm sinh tố, kem trái cây.', 55000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/15/1.jpg', true, 36),
-('Xoài keo', 'Xoài keo chín vàng, ngọt mát, thịt mềm, giàu vitamin A và C. Phù hợp ăn trực tiếp hoặc làm sinh tố, kem trái cây.', 50000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/16/1.jpg', true, 50),
-('Dừa xiêm', 'Dừa xiêm xanh, nước ngọt mát, cùi dừa non béo ngậy, giàu chất điện giải và vitamin. Thích hợp uống trực tiếp hoặc làm sinh tố, chè.', 40000, (SELECT id FROM product_unit WHERE name = 'Quả'), '/images/products/17/1.jpg', true, 63),
-('Dưa chuột', 'Dưa chuột tươi ngon, giòn mát, mọng nước, giàu vitamin K và chất xơ. Thích hợp ăn sống, làm salad hoặc nước detox thanh mát.', 12000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/18/1.jpg', true, 44),
-('Quýt hồng', 'Quýt hồng ngọt lịm, mọng nước, giàu vitamin C và chất xơ. Phù hợp ăn trực tiếp hoặc làm nước ép giải khát.', 40000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/19/1.jpg', true, 57),
-('Bưởi da xanh', 'Bưởi da xanh đặc sản miền Tây, múi mọng, ngọt thanh, giàu vitamin C và chất chống oxy hóa. Ăn trực tiếp hoặc làm nước ép đều thơm ngon.', 60000, (SELECT id FROM product_unit WHERE name = 'Quả'), '/images/products/20/1.jpg', true, 41),
-('Chôm chôm', 'Chôm chôm vỏ mỏng, ngọt nước, mọng, giàu vitamin C và chất chống oxy hóa. Phù hợp ăn trực tiếp hoặc làm món tráng miệng.', 50000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/21/1.jpg', true, 66),
-('Thanh long đỏ', 'Thanh long đỏ mọng nước, ngọt nhẹ, giàu vitamin C và chất chống oxy hóa. Ăn trực tiếp hoặc làm sinh tố giải khát.', 40000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/22/1.jpg', true, 38),
-('Mít', 'Mít chín vàng, ngọt thơm, giàu vitamin C, chất xơ và năng lượng. Ăn trực tiếp hoặc làm sinh tố, bánh trái cây.', 50000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/23/1.jpg', true, 52),
-('Kiwi', 'Kiwi nhập khẩu, chua ngọt vừa phải, giàu vitamin C, K và chất xơ, tốt cho tiêu hóa và miễn dịch. Ăn trực tiếp hoặc làm nước ép.', 90000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/24/1.jpg', true, 60),
-('Dưa vàng', 'Dưa vàng thơm ngọt, mọng nước, giàu vitamin A và C, tốt cho da và mắt. Ăn trực tiếp hoặc làm sinh tố, salad.', 50000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/25/1.jpg', true, 47),
-('Mơ', 'Mơ chín mọng, vị ngọt nhẹ và hơi chua, giàu vitamin A, C, chất chống oxy hóa. Ăn trực tiếp hoặc làm mứt, nước ép.', 60000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/26/1.jpg', true, 54),
-('Ổi', 'Ổi tươi ngon, giòn, mọng nước, giàu vitamin C và chất xơ, hỗ trợ tiêu hóa. Ăn trực tiếp hoặc làm nước ép, salad.', 30000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/27/1.jpg', true, 43),
-('Măng cụt', 'Măng cụt chín mọng, vị ngọt thanh, giàu chất chống oxy hóa, vitamin và khoáng chất. Ăn trực tiếp hoặc làm món tráng miệng.', 100000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/28/1.jpg', true, 67),
-('Hồng giòn', 'Hồng giòn chín mọng, vị ngọt dịu, giàu chất xơ và vitamin, tốt cho hệ tiêu hóa. Ăn trực tiếp hoặc làm salad.', 70000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/29/1.jpg', true, 39),
-('Đu đủ', 'Đu đủ chín vàng, ngọt mát, giàu vitamin A, C và enzyme papain hỗ trợ tiêu hóa. Ăn trực tiếp hoặc làm sinh tố.', 30000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/30/1.jpg', true, 59),
-('Cherry', 'Cherry đỏ tươi ngon, ngọt thanh, giàu chất chống oxy hóa và melatonin tự nhiên. Tốt cho giấc ngủ và chống viêm. Ăn trực tiếp hoặc làm mứt.', 150000, (SELECT id FROM product_unit WHERE name = 'Hộp'), '/images/products/31/1.jpg', true, 49),
-('Táo xanh', 'Táo xanh Granny Smith, vị chua ngọt đặc trưng, giàu pectin và chất xơ. Thích hợp ăn trực tiếp, làm bánh hoặc salad.', 55000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/32/1.jpg', true, 62),
-('Bưởi hồng', 'Bưởi hồng ruột đỏ, ngọt thanh, ít đắng, giàu lycopene và vitamin C. Ăn trực tiếp hoặc làm salad trái cây.', 65000, (SELECT id FROM product_unit WHERE name = 'Quả'), '/images/products/33/1.jpg', true, 46),
-('Vải thiều', 'Vải thiều Lục Ngạn, thịt trắng ngọt lịm, thơm đặc trưng, giàu vitamin C. Ăn trực tiếp hoặc làm nước ép, mứt.', 80000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/34/1.jpg', true, 56),
-('Nhãn', 'Nhãn tươi ngọt thanh, thịt trắng trong, giàu vitamin C và glucose tự nhiên. Ăn trực tiếp hoặc nấu chè, làm mứt.', 60000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/35/1.jpg', true, 64),
-('Mãng cầu', 'Mãng cầu chín mềm, vị ngọt đặc biệt, giàu vitamin C và chất xơ. Ăn trực tiếp hoặc làm kem, sinh tố.', 70000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/36/1.jpg', true, 38);
+INSERT INTO product (name, description, price, unit_id, main_image_url, enabled, quantity, held_quantity) VALUES
+('Táo đỏ', 'Táo đỏ nhập khẩu, quả to đều, mọng nước, vị ngọt thanh, giàu vitamin C và chất xơ. Thích hợp ăn trực tiếp, làm salad hoặc nước ép.', 50000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/1/1.jpg', true, 58, 0),
+('Táo vàng', 'Táo vàng Mỹ, giòn, ngọt, mọng nước, giàu chất chống oxy hóa và vitamin. Phù hợp ăn trực tiếp, làm bánh hoặc salad.', 60000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/2/1.jpg', true, 42, 0),
+('Cam sành', 'Cam sành Việt Nam, ngọt đậm đà, ít chua, giàu vitamin C và folate. Phù hợp vắt nước hoặc ăn trực tiếp.', 35000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/3/1.jpg', true, 65, 0),
+('Cam vàng', 'Cam vàng tươi ngon, mọng nước, ngọt tự nhiên và giàu vitamin C giúp tăng cường sức đề kháng. Phù hợp ăn trực tiếp hoặc làm nước ép.', 40000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/4/1.jpg', true, 39, 0),
+('Quýt', 'Quýt ngọt lịm, mọng nước, giàu vitamin C và chất xơ, giúp tăng cường hệ miễn dịch và tiêu hóa. Thích hợp ăn trực tiếp hoặc làm nước ép.', 45000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/5/1.jpg', true, 51, 0),
+('Chuối tiêu', 'Chuối tiêu chín vàng, mềm, ngọt tự nhiên, giàu kali và năng lượng. Thích hợp ăn trực tiếp, làm sinh tố hoặc bánh trái cây.', 25000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/6/1.jpg', true, 68, 0),
+('Chuối sứ', 'Chuối sứ chín tự nhiên, mềm, ngọt dịu, giàu kali và năng lượng. Thích hợp ăn trực tiếp, làm sinh tố hoặc bánh trái cây.', 30000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/7/1.jpg', true, 45, 0),
+('Dâu tây', 'Dâu tây Đà Lạt siêu ngọt, tươi ngon, mọng nước, giàu vitamin C và chất chống oxy hóa. Lý tưởng cho ăn trực tiếp, salad hoặc làm mứt.', 70000, (SELECT id FROM product_unit WHERE name = 'Hộp'), '/images/products/8/1.jpg', true, 37, 0),
+('Dưa hấu', 'Dưa hấu mọng nước, ngọt thanh, giàu lycopene và vitamin C. Phù hợp ăn trực tiếp, làm nước ép hoặc tráng miệng giải khát.', 25000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/9/1.jpg', true, 55, 0),
+('Dưa lưới', 'Dưa lưới vàng ngọt, thơm đặc trưng, mọng nước, giàu beta-carotene. Ăn trực tiếp làm tráng miệng hoặc sinh tố.', 45000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/10/1.jpg', true, 61, 0),
+('Nho xanh', 'Nho xanh không hạt, giòn ngọt, mọng nước, giàu resveratrol và vitamin K. Thích hợp ăn trực tiếp, làm rượu vang hoặc salad.', 85000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/11/1.jpg', true, 48, 0),
+('Nho đỏ', 'Nho đỏ không hạt, mọng nước, ngọt thanh, giàu chất chống oxy hóa và vitamin. Thích hợp ăn trực tiếp, làm salad hoặc rượu vang tại nhà.', 90000, (SELECT id FROM product_unit WHERE name = 'Hộp'), '/images/products/12/1.jpg', true, 53, 0),
+('Nho tím', 'Nho tím không hạt, mọng, ngọt, giàu chất chống oxy hóa và vitamin. Thích hợp ăn trực tiếp, làm salad hoặc rượu vang tại nhà.', 80000, (SELECT id FROM product_unit WHERE name = 'Hộp'), '/images/products/13/1.jpg', true, 40, 0),
+('Xoài cát', 'Xoài cát Hòa Lộc, vàng ươm, thơm ngọt, thịt mềm, giàu vitamin A và C. Phù hợp ăn trực tiếp hoặc làm sinh tố, kem trái cây.', 60000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/14/1.jpg', true, 69, 0),
+('Xoài tượng', 'Xoài tượng da xanh, quả to, thịt dày, ngọt thanh, giàu vitamin A và C. Thích hợp ăn trực tiếp hoặc làm sinh tố, kem trái cây.', 55000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/15/1.jpg', true, 36, 0),
+('Xoài keo', 'Xoài keo chín vàng, ngọt mát, thịt mềm, giàu vitamin A và C. Phù hợp ăn trực tiếp hoặc làm sinh tố, kem trái cây.', 50000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/16/1.jpg', true, 50, 0),
+('Dừa xiêm', 'Dừa xiêm xanh, nước ngọt mát, cùi dừa non béo ngậy, giàu chất điện giải và vitamin. Thích hợp uống trực tiếp hoặc làm sinh tố, chè.', 40000, (SELECT id FROM product_unit WHERE name = 'Quả'), '/images/products/17/1.jpg', true, 63, 0),
+('Dưa chuột', 'Dưa chuột tươi ngon, giòn mát, mọng nước, giàu vitamin K và chất xơ. Thích hợp ăn sống, làm salad hoặc nước detox thanh mát.', 12000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/18/1.jpg', true, 44, 0),
+('Quýt hồng', 'Quýt hồng ngọt lịm, mọng nước, giàu vitamin C và chất xơ. Phù hợp ăn trực tiếp hoặc làm nước ép giải khát.', 40000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/19/1.jpg', true, 57, 0),
+('Bưởi da xanh', 'Bưởi da xanh đặc sản miền Tây, múi mọng, ngọt thanh, giàu vitamin C và chất chống oxy hóa. Ăn trực tiếp hoặc làm nước ép đều thơm ngon.', 60000, (SELECT id FROM product_unit WHERE name = 'Quả'), '/images/products/20/1.jpg', true, 41, 0),
+('Chôm chôm', 'Chôm chôm vỏ mỏng, ngọt nước, mọng, giàu vitamin C và chất chống oxy hóa. Phù hợp ăn trực tiếp hoặc làm món tráng miệng.', 50000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/21/1.jpg', true, 66, 0),
+('Thanh long đỏ', 'Thanh long đỏ mọng nước, ngọt nhẹ, giàu vitamin C và chất chống oxy hóa. Ăn trực tiếp hoặc làm sinh tố giải khát.', 40000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/22/1.jpg', true, 38, 0),
+('Mít', 'Mít chín vàng, ngọt thơm, giàu vitamin C, chất xơ và năng lượng. Ăn trực tiếp hoặc làm sinh tố, bánh trái cây.', 50000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/23/1.jpg', true, 52, 0),
+('Kiwi', 'Kiwi nhập khẩu, chua ngọt vừa phải, giàu vitamin C, K và chất xơ, tốt cho tiêu hóa và miễn dịch. Ăn trực tiếp hoặc làm nước ép.', 90000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/24/1.jpg', true, 60, 0),
+('Dưa vàng', 'Dưa vàng thơm ngọt, mọng nước, giàu vitamin A và C, tốt cho da và mắt. Ăn trực tiếp hoặc làm sinh tố, salad.', 50000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/25/1.jpg', true, 47, 0),
+('Mơ', 'Mơ chín mọng, vị ngọt nhẹ và hơi chua, giàu vitamin A, C, chất chống oxy hóa. Ăn trực tiếp hoặc làm mứt, nước ép.', 60000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/26/1.jpg', true, 54, 0),
+('Ổi', 'Ổi tươi ngon, giòn, mọng nước, giàu vitamin C và chất xơ, hỗ trợ tiêu hóa. Ăn trực tiếp hoặc làm nước ép, salad.', 30000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/27/1.jpg', true, 43, 0),
+('Măng cụt', 'Măng cụt chín mọng, vị ngọt thanh, giàu chất chống oxy hóa, vitamin và khoáng chất. Ăn trực tiếp hoặc làm món tráng miệng.', 100000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/28/1.jpg', true, 67, 0),
+('Hồng giòn', 'Hồng giòn chín mọng, vị ngọt dịu, giàu chất xơ và vitamin, tốt cho hệ tiêu hóa. Ăn trực tiếp hoặc làm salad.', 70000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/29/1.jpg', true, 39, 0),
+('Đu đủ', 'Đu đủ chín vàng, ngọt mát, giàu vitamin A, C và enzyme papain hỗ trợ tiêu hóa. Ăn trực tiếp hoặc làm sinh tố.', 30000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/30/1.jpg', true, 59, 0),
+('Cherry', 'Cherry đỏ tươi ngon, ngọt thanh, giàu chất chống oxy hóa và melatonin tự nhiên. Tốt cho giấc ngủ và chống viêm. Ăn trực tiếp hoặc làm mứt.', 150000, (SELECT id FROM product_unit WHERE name = 'Hộp'), '/images/products/31/1.jpg', true, 49, 0),
+('Táo xanh', 'Táo xanh Granny Smith, vị chua ngọt đặc trưng, giàu pectin và chất xơ. Thích hợp ăn trực tiếp, làm bánh hoặc salad.', 55000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/32/1.jpg', true, 62, 0),
+('Bưởi hồng', 'Bưởi hồng ruột đỏ, ngọt thanh, ít đắng, giàu lycopene và vitamin C. Ăn trực tiếp hoặc làm salad trái cây.', 65000, (SELECT id FROM product_unit WHERE name = 'Quả'), '/images/products/33/1.jpg', true, 46, 0),
+('Vải thiều', 'Vải thiều Lục Ngạn, thịt trắng ngọt lịm, thơm đặc trưng, giàu vitamin C. Ăn trực tiếp hoặc làm nước ép, mứt.', 80000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/34/1.jpg', true, 56, 0),
+('Nhãn', 'Nhãn tươi ngọt thanh, thịt trắng trong, giàu vitamin C và glucose tự nhiên. Ăn trực tiếp hoặc nấu chè, làm mứt.', 60000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/35/1.jpg', true, 64, 0),
+('Mãng cầu', 'Mãng cầu chín mềm, vị ngọt đặc biệt, giàu vitamin C và chất xơ. Ăn trực tiếp hoặc làm kem, sinh tố.', 70000, (SELECT id FROM product_unit WHERE name = 'Kg'), '/images/products/36/1.jpg', true, 38, 0);
 
 
 -----------------------------------------
@@ -4033,7 +4027,6 @@ INSERT INTO product_categories(products_id, categories_id) VALUES
 -- Mãng cầu
 ((SELECT id FROM product WHERE name = 'Mãng cầu'), (SELECT id FROM category WHERE name = 'Trái Cây Nhiệt Đới')),
 ((SELECT id FROM product WHERE name = 'Mãng cầu'), (SELECT id FROM category WHERE name = 'Trái Cây Đặc Sản'));
---order.sql
 INSERT INTO shopping_cart_item(quantity, customer_id, product_id)
 	VALUES (4, (select id from users WHERE email = 'customer1@shop.com'), (select id from product WHERE name = 'Măng cụt'));
 
@@ -4102,7 +4095,7 @@ values (852002, 'Lê Thị Lan', '2024-11-05 08:45:30', 'QR', '2025-11-01 12:00:
 
 -- Trạng thái: Chờ Thanh Toán (Bắt buộc là QR)
 insert into orders (id, full_name, order_at, payment_method_id, payment_expired_at, phone_number, specific_address, commune_ward_code, customer_id, order_status_id, shipper_id, payment_link)
-values (852003, 'Phạm Văn Dũng', '2025-01-29 11:10:05', 'QR', '2025-10-29 11:10:05', '0358123456', 'Số 78, Đường Trần Hưng Đạo', '16279', (select id from users WHERE email = 'customer3@shop.com'), (select id from order_status WHERE name = 'Chờ Thanh Toán'), NULL, '#');
+values (852003, 'Phạm Văn Dũng', '2025-01-29 11:10:05', 'QR', '2025-11-29 11:10:05', '0358123456', 'Số 78, Đường Trần Hưng Đạo', '16279', (select id from users WHERE email = 'customer3@shop.com'), (select id from order_status WHERE name = 'Chờ Thanh Toán'), NULL, '#');
 
 -- Trạng thái: Chờ Xác Nhận (Bắt buộc là COD)
 insert into orders (id, full_name, order_at, payment_method_id, payment_expired_at, phone_number, specific_address, commune_ward_code, customer_id, order_status_id, shipper_id, payment_link)
@@ -4114,7 +4107,7 @@ values (852005, 'Vũ Hữu Bình', '2025-05-20 09:00:12', 'COD', '2025-10-08 18:
 
 -- Trạng thái: Chờ Thanh Toán (Bắt buộc là QR)
 insert into orders (id, full_name, order_at, payment_method_id, payment_expired_at, phone_number, specific_address, commune_ward_code, customer_id, order_status_id, shipper_id, payment_link)
-values (852007, 'Bùi Văn Cường', '2025-02-14 13:14:15', 'QR', '2025-10-14 13:14:15', '0933456789', '111 Phan Bội Châu, Xóm 9', '16279', (select id from users WHERE email = 'customer7@shop.com'), (select id from order_status WHERE name = 'Chờ Thanh Toán'), NULL, '#');
+values (852007, 'Bùi Văn Cường', '2025-02-14 13:14:15', 'QR', '2025-12-14 13:14:15', '0933456789', '111 Phan Bội Châu, Xóm 9', '16279', (select id from users WHERE email = 'customer7@shop.com'), (select id from order_status WHERE name = 'Chờ Thanh Toán'), NULL, '#');
 
 -- Trạng thái: Đã Hủy (Ngẫu nhiên)
 insert into orders (id, full_name, order_at, payment_method_id, payment_expired_at, phone_number, specific_address, commune_ward_code, customer_id, order_status_id, shipper_id, payment_link)
@@ -4142,7 +4135,7 @@ values (852013, 'Hoàng Thị Giang', '2024-11-11 14:40:18', 'QR', '2025-10-11 1
 
 -- Trạng thái: Chờ Thanh Toán (Bắt buộc là QR)
 insert into orders (id, full_name, order_at, payment_method_id, payment_expired_at, phone_number, specific_address, commune_ward_code, customer_id, order_status_id, shipper_id, payment_link)
-values (852015, 'Đặng Anh Tuấn', '2024-07-25 22:35:00', 'QR', '2025-10-05 22:35:00', '0938765123', '77 Đường Độc Lập, Thôn Trung', '16279', (select id from users WHERE email = 'customer6@shop.com'), (select id from order_status WHERE name = 'Chờ Thanh Toán'), NULL, '#');
+values (852015, 'Đặng Anh Tuấn', '2024-07-25 22:35:00', 'QR', '2025-12-05 22:35:00', '0938765123', '77 Đường Độc Lập, Thôn Trung', '16279', (select id from users WHERE email = 'customer6@shop.com'), (select id from order_status WHERE name = 'Chờ Thanh Toán'), NULL, '#');
 
 -- Trạng thái: Đã Hủy (Ngẫu nhiên)
 insert into orders (id, full_name, order_at, payment_method_id, payment_expired_at, phone_number, specific_address, commune_ward_code, customer_id, order_status_id, shipper_id, payment_link)
@@ -4158,7 +4151,7 @@ values (852018, 'Nguyễn Thị Oanh', '2025-02-28 17:00:59', 'QR', NULL, '09871
 
 -- Trạng thái: Chờ Thanh Toán (Bắt buộc là QR)
 insert into orders (id, full_name, order_at, payment_method_id, payment_expired_at, phone_number, specific_address, commune_ward_code, customer_id, order_status_id, shipper_id, payment_link)
-values (852019, 'Trần Hữu Nam', '2024-09-02 08:08:08', 'QR', '2025-10-04 08:08:08', '0869876543', '65 Lê Lợi, Thôn 3', '16279', (select id from users WHERE email = 'customer1@shop.com'), (select id from order_status WHERE name = 'Chờ Thanh Toán'), NULL, '#');
+values (852019, 'Trần Hữu Nam', '2024-09-02 08:08:08', 'QR', '2025-12-04 08:08:08', '0869876543', '65 Lê Lợi, Thôn 3', '16279', (select id from users WHERE email = 'customer1@shop.com'), (select id from order_status WHERE name = 'Chờ Thanh Toán'), NULL, '#');
 
 -- Trạng thái: Chờ Xác Nhận (Bắt buộc là COD)
 insert into orders (id, full_name, order_at, payment_method_id, payment_expired_at, phone_number, specific_address, commune_ward_code, customer_id, order_status_id, shipper_id, payment_link)
@@ -4171,7 +4164,7 @@ values (852021, 'Phạm Thanh Sơn', '2024-10-10 13:25:35', 'COD', NULL, '090876
 
 -- Trạng thái: Chờ Thanh Toán (Bắt buộc là QR)
 insert into orders (id, full_name, order_at, payment_method_id, payment_expired_at, phone_number, specific_address, commune_ward_code, customer_id, order_status_id, shipper_id, payment_link)
-values (852023, 'Vũ Văn Khoa', '2024-08-08 06:30:10', 'QR', '2025-10-08 06:30:10', '0333444555', '56 Phan Bội Châu', '16279', (select id from users WHERE email = 'customer5@shop.com'), (select id from order_status WHERE name = 'Chờ Thanh Toán'), NULL, '#');
+values (852023, 'Vũ Văn Khoa', '2024-08-08 06:30:10', 'QR', '2025-12-08 06:30:10', '0333444555', '56 Phan Bội Châu', '16279', (select id from users WHERE email = 'customer5@shop.com'), (select id from order_status WHERE name = 'Chờ Thanh Toán'), NULL, '#');
 
 -- Trạng thái: Đã Hủy (Ngẫu nhiên)
 insert into orders (id, full_name, order_at, payment_method_id, payment_expired_at, phone_number, specific_address, commune_ward_code, customer_id, order_status_id, shipper_id, payment_link)
@@ -4200,7 +4193,7 @@ values (852029, 'Trần Anh Việt', '2024-10-02 12:34:56', 'QR', NULL, '0932109
 
 -- Trạng thái: Chờ Thanh Toán (Bắt buộc là QR)
 insert into orders (id, full_name, order_at, payment_method_id, payment_expired_at, phone_number, specific_address, commune_ward_code, customer_id, order_status_id, shipper_id, payment_link)
-values (852031, 'Phạm Hữu Cường', '2024-11-27 18:30:00', 'QR', '2025-10-27 18:30:00', '0901234567', 'Số 8, Ngõ 9, Phan Bội Châu', '16279', (select id from users WHERE email = 'customer4@shop.com'), (select id from order_status WHERE name = 'Chờ Thanh Toán'), NULL, '#');
+values (852031, 'Phạm Hữu Cường', '2024-11-27 18:30:00', 'QR', '2025-11-27 18:30:00', '0901234567', 'Số 8, Ngõ 9, Phan Bội Châu', '16279', (select id from users WHERE email = 'customer4@shop.com'), (select id from order_status WHERE name = 'Chờ Thanh Toán'), NULL, '#');
 
 -- Trạng thái: Đã Hủy (Ngẫu nhiên)
 insert into orders (id, full_name, order_at, payment_method_id, payment_expired_at, phone_number, specific_address, commune_ward_code, customer_id, order_status_id, shipper_id, payment_link)
@@ -4216,7 +4209,7 @@ values (852034, 'Võ Minh Trang', '2025-01-20 17:45:00', 'QR', NULL, '0912987654
 
 -- Trạng thái: Chờ Thanh Toán (Bắt buộc là QR)
 insert into orders (id, full_name, order_at, payment_method_id, payment_expired_at, phone_number, specific_address, commune_ward_code, customer_id, order_status_id, shipper_id, payment_link)
-values (852035, 'Đặng Văn Bình', '2024-07-30 09:30:45', 'QR', '2025-10-10 09:30:45', '0355667788', '72 Trần Hưng Đạo', '16279', (select id from users WHERE email = 'customer8@shop.com'), (select id from order_status WHERE name = 'Chờ Thanh Toán'), NULL, '#');
+values (852035, 'Đặng Văn Bình', '2024-07-30 09:30:45', 'QR', '2025-12-10 09:30:45', '0355667788', '72 Trần Hưng Đạo', '16279', (select id from users WHERE email = 'customer8@shop.com'), (select id from order_status WHERE name = 'Chờ Thanh Toán'), NULL, '#');
 
 -- Trạng thái: Chờ Xác Nhận (Bắt buộc là COD)
 insert into orders (id, full_name, order_at, payment_method_id, payment_expired_at, phone_number, specific_address, commune_ward_code, customer_id, order_status_id, shipper_id, payment_link)
@@ -4505,7 +4498,6 @@ INSERT INTO order_item (quantity, order_id, product_id) VALUES (4, (SELECT id FR
 -- Order items cho đơn hàng của: Bùi Thị Lan
 INSERT INTO order_item (quantity, order_id, product_id) VALUES (5, (SELECT id FROM orders WHERE full_name = 'Bùi Thị Lan'), 10);
 INSERT INTO order_item (quantity, order_id, product_id) VALUES (3, (SELECT id FROM orders WHERE full_name = 'Bùi Thị Lan'), 29);
---sellerrequest.sql
 INSERT INTO seller_request_status (id, name)
 VALUES 
     (1, 'Đang Chờ Duyệt'),
@@ -4515,7 +4507,6 @@ INSERT INTO seller_request_type (id, name)
 VALUES 
     (1, 'Thêm mới'),
     (2, 'Cập nhật');
---setting.sql
 insert into setting("key", "value") values 
 ('shop_name', 'Fruit Shop'),
 ('shop_address', 'Hoàng Giang, xã Nông Cống, tỉnh Thanh Hóa'),
