@@ -69,6 +69,10 @@ public class Product implements Serializable{
     @Column(nullable = false)
     private double quantity;
 
+    @Builder.Default
+    @Column(nullable = false)
+    private double heldQuantity = 0;
+
     // Formula tính sold quantity trong DB - đang giao hàng,đã giao hàng và đang chuẩn bị hàng
     @Formula("(SELECT COALESCE(SUM(oi.quantity), 0) " +
             "FROM order_item oi " +
@@ -76,13 +80,5 @@ public class Product implements Serializable{
             "INNER JOIN order_status os ON o.order_status_id = os.id " +
             "WHERE oi.product_id = id AND os.name IN ('Đã Giao Hàng','Đang Giao Hàng','Đang Chuẩn Bị Hàng'))")
     private Integer soldQuantity;
-
-    // Formula tính available quantity trong DB - số lượng còn lại sau khi trừ đi số lượng đang chờ thanh toán
-    @Formula("(quantity - COALESCE((SELECT SUM(oi.quantity) " +
-            "FROM order_item oi " +
-            "INNER JOIN orders o ON o.id = oi.order_id " +
-            "INNER JOIN order_status os ON o.order_status_id = os.id " +
-            "WHERE oi.product_id = id AND os.name = 'Chờ Thanh Toán'), 0))")
-    private Double availableQuantity;
 
 }

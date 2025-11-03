@@ -237,9 +237,9 @@ public class GuestController {
         double quantityInCart = customerService.getProductQuantityInCart(principal, id);
 
         if (isAllowDecimal) {
-            model.addAttribute("maxQuantity", productService.getAvailableQuantity(id) - quantityInCart);
+            model.addAttribute("maxQuantity", product.getQuantity() - quantityInCart);
         } else {
-            model.addAttribute("maxQuantity", (int) Math.floor(productService.getAvailableQuantity(id) - quantityInCart));
+            model.addAttribute("maxQuantity", (int) Math.floor(product.getQuantity() - quantityInCart));
         }
 
         List<Product> relatedProducts = productService.getRelatedProducts(id, 6);

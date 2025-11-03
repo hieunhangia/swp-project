@@ -132,7 +132,7 @@ public class OrderService {
                                 DeliveryInfoDto deliveryInfoDto) {
 
         if(shoppingCartItems.stream().anyMatch(i ->
-                i.getQuantity() > productService.getAvailableQuantity(i.getProduct().getId()))) {
+                i.getQuantity() > i.getProduct().getQuantity())) {
             throw new RuntimeException("Số lượng sản phẩm trong đơn hàng vượt quá số lượng khả dụng");
         }
 
@@ -164,7 +164,7 @@ public class OrderService {
                                 DeliveryInfoDto deliveryInfoDto) {
 
         if(shoppingCartItems.stream().anyMatch(i ->
-                i.getQuantity() > productService.getAvailableQuantity(i.getProduct().getId()))) {
+                i.getQuantity() > i.getProduct().getQuantity())) {
             throw new RuntimeException("Số lượng sản phẩm trong đơn hàng vượt quá số lượng khả dụng");
         }
 
@@ -181,12 +181,16 @@ public class OrderService {
                 .specificAddress(deliveryInfoDto.getSpecificAddress())
                 .customer(customerRepository.getByEmail(customerEmail))
                 .build());
-        List<OrderItem> orderItems = shoppingCartItems.stream().map(cartItem ->
-                        OrderItem.builder()
-                                .order(order)
-                                .product(cartItem.getProduct())
-                                .quantity(cartItem.getQuantity())
-                                .build()).collect(Collectors.toList());
+
+        List<OrderItem> orderItems = new ArrayList<>();
+        shoppingCartItems.forEach(item -> {
+                    productService.holdProductQuantity(item.getProduct().getId(), item.getQuantity());
+                    orderItems.add(OrderItem.builder()
+                            .order(order)
+                            .product(item.getProduct())
+                            .quantity(item.getQuantity())
+                            .build());
+                });
         order.setOrderItem(orderItems);
         return orderRepository.save(order);
     }
@@ -196,13 +200,17 @@ public class OrderService {
     public void cancelExpiredQrOrders() {
         List<Order> expiredOrders = orderRepository.findByOrderStatusAndPaymentExpiredAtBefore(
                 orderStatusService.getPendingPaymentStatus(), LocalDateTime.now());
-        expiredOrders.forEach(order -> setOrderStatus(order.getId(), orderStatusService.getCancelledStatus()));
+        expiredOrders.forEach(order -> {
+            order.getOrderItem().forEach(item ->
+                    productService.releaseProductQuantity(item.getProduct().getId(), item.getQuantity()));
+            setOrderStatus(order.getId(), orderStatusService.getCancelledStatus());
+        });
         orderRepository.saveAll(expiredOrders);
     }
 
     public boolean isOrderItemQuantityMoreThanAvailable(Long orderId) {
         return getOrderById(orderId).getOrderItem().stream().anyMatch(i ->
-                i.getQuantity() > productService.getAvailableQuantity(i.getProduct().getId()));
+                i.getQuantity() > i.getProduct().getQuantity());
     }
 
     @Transactional

@@ -30,7 +30,7 @@ public class UpdateProductDto{
         this.subDisplay1 = product.getSub_images().get(0).getSub_image_url();
         this.subDisplay2 = product.getSub_images().get(1).getSub_image_url();
         this.subDisplay3 = product.getSub_images().get(2).getSub_image_url();
-        this.quantity = product.getAvailableQuantity();
+        this.quantity = product.getQuantity();
     }
 
     private Long id;

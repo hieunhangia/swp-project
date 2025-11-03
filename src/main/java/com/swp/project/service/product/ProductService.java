@@ -126,19 +126,26 @@ public class ProductService {
     }
 
     @Transactional
+    public void holdProductQuantity(Long productId, double quantity) {
+        Product product = getProductById(productId);
+        product.setQuantity(product.getQuantity() - quantity);
+        product.setHeldQuantity(product.getHeldQuantity() + quantity);
+        productRepository.save(product);
+    }
+
+    @Transactional
+    public void releaseProductQuantity(Long productId, double quantity) {
+        Product product = getProductById(productId);
+        product.setQuantity(product.getQuantity() + quantity);
+        product.setHeldQuantity(product.getHeldQuantity() - quantity);
+        productRepository.save(product);
+    }
+
+    @Transactional
     public void reduceProductQuantity(Long productId, double quantity) {
         Product product = getProductById(productId);
         product.setQuantity(product.getQuantity() - quantity);
         productRepository.save(product);
-    }
-
-    public double getAvailableQuantity(Long productId) {
-        double pendingPaymentQuantity = orderItemRepository
-                .getByProduct_IdAndOrder_OrderStatus(productId, orderStatusService.getPendingPaymentStatus()).stream()
-                .mapToDouble(OrderItem::getQuantity)
-                .sum();
-
-        return getProductById(productId).getQuantity() - pendingPaymentQuantity;
     }
 
     public ShoppingCartItem getShoppingCartItemByCustomerEmailAndProductId(String email, Long productId) {

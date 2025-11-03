@@ -294,8 +294,6 @@ public class CustomerService {
         if (product == null) {
             throw new RuntimeException("Sản phẩm không tồn tại");
         }
-
-        double availableQuantity = productService.getAvailableQuantity(productId);
         ProductUnit unit = product.getUnit();
         if (unit == null) {
             throw new RuntimeException("Đơn vị sản phẩm không xác định");
@@ -312,13 +310,13 @@ public class CustomerService {
         }
 
         if (existingItem != null) {
-            if (existingItem.getQuantity() + quantity > availableQuantity) {
-                throw new RuntimeException("Số lượng sản phẩm có thể thêm không vượt quá " + (availableQuantity - existingItem.getQuantity()));
+            if (existingItem.getQuantity() + quantity > product.getQuantity()) {
+                throw new RuntimeException("Số lượng sản phẩm có thể thêm không vượt quá " + (product.getQuantity() - existingItem.getQuantity()));
             }
             updateCartQuantity(principal.getName(), productId, quantity + existingItem.getQuantity());
         } else {
-            if (quantity > availableQuantity) {
-                throw new RuntimeException("Số lượng sản phẩm có thể thêm không vượt quá " + availableQuantity);
+            if (quantity > product.getQuantity()) {
+                throw new RuntimeException("Số lượng sản phẩm có thể thêm không vượt quá " + product.getQuantity());
             }
             ShoppingCartItem newItem = new ShoppingCartItem();
             newItem.setCustomer(customer);
