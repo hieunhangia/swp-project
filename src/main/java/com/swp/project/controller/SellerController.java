@@ -103,7 +103,7 @@ public class SellerController {
                 redirectAttributes.addFlashAttribute("error",
                         "Lỗi: Một số sản phẩm trong đơn hàng vừa chấp nhận có số lượng lớn hơn số lượng hiện có trong kho. Tác vụ bị hủy.");
             } else {
-                orderService.doWhenOrderConfirmed(orderService.getOrderById(orderId));
+                orderService.doWhenCodOrderConfirmed(orderService.getOrderById(orderId));
                 redirectAttributes.addFlashAttribute("msg", "Chấp nhận đơn hàng thành công");
             }
         } else if (action.equals("reject")) {
@@ -243,8 +243,7 @@ public class SellerController {
             @Valid @ModelAttribute CreateProductDto productDto,
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes,
-            Principal principal,
-            Model model) {
+            Principal principal) {
         try {
             productService.validateCreateProductDto(productDto, bindingResult);
             Product product = productService.createProductForAddRequest(productDto);
