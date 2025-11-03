@@ -70,7 +70,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
          OR (oi.order.orderStatus.name IN ('Đang Chuẩn Bị Hàng', 'Đang Giao Hàng', 'Đã Giao Hàng')
              AND oi.order.paymentMethod.id = 'QR')
           )
-      AND oi.order.orderAt >= FUNCTION('DATE_TRUNC', 'week', CURRENT_TIMESTAMP)
+      AND oi.order.orderAt >= FUNCTION('DATE_TRUNC', 'week', CURRENT_DATE)
 """)
     Long getRevenueThisWeek();
 
@@ -125,16 +125,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     Page<Order> findByCustomerAndOrderStatus_NameAndOrderAtBefore(Customer customer, String orderStatusName, LocalDateTime toDate, Pageable pageable);
 
-    @Query("""
-        SELECT FUNCTION('TO_CHAR', o.orderAt, 'YYYY-MM-DD'),
-               SUM(oi.quantity * p.price)
-        FROM Order o
-        JOIN o.orderItem oi
-        JOIN oi.product p
-        GROUP BY FUNCTION('TO_CHAR', o.orderAt, 'YYYY-MM-DD')
-        ORDER BY FUNCTION('TO_CHAR', o.orderAt, 'YYYY-MM-DD')
-    """)
-    List<Object[]> getRevenueLastDays();
+
 
     @Query(value = """
         SELECT

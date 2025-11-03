@@ -12,6 +12,11 @@
             --border-color: #dee2e6;
             --text-dark: #212529;
             --text-muted: #6c757d;
+            --primary-color: #0d6efd;
+            --success-color: #198754;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --info-color: #0dcaf0;
         }
 
         * {
@@ -22,7 +27,7 @@
 
         html, body {
             height: 100%;
-            background: var(--white);
+            background: var(--light-gray);
             color: var(--text-dark);
             font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
             font-size: 14px;
@@ -37,11 +42,10 @@
             flex: 1;
             margin-left: 260px;
             padding: 30px;
-            background: var(--white);
         }
 
         .header {
-            background: var(--light-gray);
+            background: var(--white);
             padding: 20px 24px;
             border-radius: 8px;
             margin-bottom: 24px;
@@ -66,12 +70,11 @@
         }
 
         .stats-overview {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--white);
             border-radius: 8px;
             padding: 2rem;
             margin-bottom: 24px;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-            color: white;
+            border: 1px solid var(--border-color);
         }
 
         .stats-overview h3 {
@@ -81,20 +84,21 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            color: var(--text-dark);
         }
 
         .stats-number {
             font-size: 2.5rem;
             font-weight: 700;
             margin-bottom: 0.5rem;
+            color: var(--primary-color);
         }
 
         .stats-label {
             font-size: 1rem;
-            opacity: 0.9;
+            color: var(--text-muted);
         }
 
-        /* Order Statistics Section */
         .dashboard-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -107,7 +111,6 @@
             border: 1px solid var(--border-color);
             border-radius: 8px;
             padding: 1.5rem;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
 
         .section-title {
@@ -127,36 +130,21 @@
         }
 
         .stat-item {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--light-gray);
             padding: 1.25rem;
             border-radius: 8px;
-            color: white;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            border: 1px solid var(--border-color);
+            transition: all 0.2s ease;
         }
 
-        .stat-item:nth-child(2) {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            box-shadow: 0 4px 15px rgba(245, 87, 108, 0.3);
-        }
-
-        .stat-item:nth-child(3) {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);
-        }
-
-        .stat-item:nth-child(4) {
-            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-            box-shadow: 0 4px 15px rgba(67, 233, 123, 0.3);
-        }
-
-        .stat-item:nth-child(5) {
-            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-            box-shadow: 0 4px 15px rgba(250, 112, 154, 0.3);
+        .stat-item:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 2px 8px rgba(13, 110, 253, 0.1);
         }
 
         .stat-item h6 {
             font-size: 0.85rem;
-            opacity: 0.9;
+            color: var(--text-muted);
             margin-bottom: 0.5rem;
             display: flex;
             align-items: center;
@@ -166,18 +154,16 @@
         .stat-value {
             font-size: 1.8rem;
             font-weight: 700;
+            color: var(--text-dark);
         }
 
-        /* Revenue Chart Section */
         .revenue-chart-section {
             background: var(--white);
             border: 1px solid var(--border-color);
             border-radius: 8px;
             padding: 1.5rem;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
 
-        /* Revenue Cards */
         .revenue-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -186,26 +172,21 @@
         }
 
         .revenue-item {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            background: var(--white);
             padding: 1.5rem;
             border-radius: 8px;
-            color: white;
-            box-shadow: 0 4px 15px rgba(245, 87, 108, 0.3);
+            border: 1px solid var(--border-color);
+            transition: all 0.2s ease;
         }
 
-        .revenue-item:nth-child(2) {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);
-        }
-
-        .revenue-item:nth-child(3) {
-            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-            box-shadow: 0 4px 15px rgba(67, 233, 123, 0.3);
+        .revenue-item:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 2px 8px rgba(13, 110, 253, 0.1);
         }
 
         .revenue-label {
             font-size: 1rem;
-            opacity: 0.9;
+            color: var(--text-muted);
             margin-bottom: 0.5rem;
             display: flex;
             align-items: center;
@@ -216,17 +197,17 @@
             font-size: 1.8rem;
             font-weight: 700;
             margin-bottom: 0.5rem;
+            color: var(--text-dark);
         }
 
         .revenue-change {
             font-size: 0.9rem;
-            opacity: 0.95;
+            color: var(--success-color);
             display: flex;
             align-items: center;
             gap: 0.25rem;
         }
 
-        /* Charts Section */
         .charts-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -239,7 +220,6 @@
             border: 1px solid var(--border-color);
             border-radius: 8px;
             padding: 1.5rem;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
 
         canvas {
@@ -252,21 +232,19 @@
             align-items: center;
             gap: 0.5rem;
             padding: 10px 18px;
-            background: linear-gradient(135deg, #0dcaf0 0%, #31d2f2 100%);
+            background: var(--primary-color);
             color: white;
             text-decoration: none;
             border-radius: 6px;
             font-weight: 500;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(13, 202, 240, 0.3);
+            transition: all 0.2s ease;
             border: none;
             cursor: pointer;
             font-size: 14px;
         }
 
         .export-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(13, 202, 240, 0.5);
+            background: #0b5ed7;
             color: white;
         }
 
@@ -316,7 +294,6 @@
     <div th:replace="~{fragments/manager-sidebar :: manager-sidebar}"></div>
 
     <div class="main-content">
-        <!-- Page Header -->
         <div class="header">
             <a th:href="@{/}">
                 <i class="bi bi-arrow-left"></i> Trang chủ
@@ -326,7 +303,6 @@
             </h2>
         </div>
 
-        <!-- Total Units Sold Card -->
         <div class="stats-overview">
             <h3>
                 <i class="bi bi-graph-up-arrow"></i> Tổng quan bán hàng
@@ -337,9 +313,7 @@
             </div>
         </div>
 
-        <!-- Order Statistics & Revenue Chart Row -->
         <div class="dashboard-row">
-            <!-- Order Statistics -->
             <div class="order-stats-section">
                 <h5 class="section-title">
                     <i class="bi bi-clipboard-data"></i> Thống kê đơn hàng
@@ -362,13 +336,16 @@
                         <div class="stat-value" th:text="${deliverOrder}">0</div>
                     </div>
                     <div class="stat-item">
+                        <h6><i class="bi bi-truck"></i> Đang giao</h6>
+                        <div class="stat-value" th:text="${shippingOrder}">0</div>
+                    </div>
+                    <div class="stat-item">
                         <h6><i class="bi bi-hourglass-split"></i> Đang chuẩn bị</h6>
                         <div class="stat-value" th:text="${processingOrder}">0</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Revenue Overview Chart -->
             <div class="revenue-chart-section">
                 <h5 class="section-title">
                     <i class="bi bi-graph-up"></i> Biểu đồ doanh thu
@@ -377,9 +354,7 @@
             </div>
         </div>
 
-        <!-- Revenue Cards -->
         <div class="revenue-grid">
-            <!-- Daily Revenue -->
             <div class="revenue-item">
                 <div class="revenue-label">
                     <i class="bi bi-calendar-day"></i> Doanh thu hôm nay
@@ -391,7 +366,6 @@
                 </div>
             </div>
 
-            <!-- Weekly Revenue -->
             <div class="revenue-item">
                 <div class="revenue-label">
                     <i class="bi bi-calendar-week"></i> Doanh thu tuần này
@@ -403,7 +377,6 @@
                 </div>
             </div>
 
-            <!-- Monthly Revenue -->
             <div class="revenue-item">
                 <div class="revenue-label">
                     <i class="bi bi-calendar-month"></i> Doanh thu tháng này
@@ -416,9 +389,7 @@
             </div>
         </div>
 
-        <!-- Detailed Revenue Charts -->
         <div class="charts-grid">
-            <!-- 7 Days Chart -->
             <div class="chart-card">
                 <div class="chart-header">
                     <h5 class="section-title">
@@ -431,7 +402,6 @@
                 <canvas id="daysChart"></canvas>
             </div>
 
-            <!-- 12 Months Chart -->
             <div class="chart-card">
                 <div class="chart-header">
                     <h5 class="section-title">
@@ -450,14 +420,12 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script th:inline="javascript">
     /*<![CDATA[*/
-    // Revenue Overview Chart Data
     const revenueToday = /*[[${revenueToday}]]*/ 0;
     const revenueThisWeek = /*[[${revenueThisWeek}]]*/ 0;
     const revenueThisMonth = /*[[${revenueThisMonth}]]*/ 0;
 
     const clean = v => Number.isFinite(v) ? v : 0;
 
-    // Revenue Overview Chart
     const gctx = document.getElementById('growthChart').getContext('2d');
     new Chart(gctx, {
         type: 'bar',
@@ -466,18 +434,10 @@
             datasets: [{
                 label: 'Doanh thu (VND)',
                 data: [clean(revenueToday), clean(revenueThisWeek), clean(revenueThisMonth)],
-                backgroundColor: [
-                    'rgba(245, 87, 108, 0.8)',
-                    'rgba(79, 172, 254, 0.8)',
-                    'rgba(67, 233, 123, 0.8)'
-                ],
-                borderColor: [
-                    'rgba(245, 87, 108, 1)',
-                    'rgba(79, 172, 254, 1)',
-                    'rgba(67, 233, 123, 1)'
-                ],
+                backgroundColor: 'rgba(13, 110, 253, 0.7)',
+                borderColor: 'rgba(13, 110, 253, 1)',
                 borderWidth: 2,
-                borderRadius: 8
+                borderRadius: 6
             }]
         },
         options: {
@@ -508,7 +468,6 @@
         }
     });
 
-    // Detailed Charts Data
     const daysRaw = /*[[${daysReport}]]*/ [];
     const monthsRaw = /*[[${monthsReport}]]*/ [];
 
@@ -517,17 +476,14 @@
 
     const fmtVND = (n) => new Intl.NumberFormat('vi-VN', { maximumFractionDigits: 0 }).format(n) + ' đ';
 
-    // 7 Days Data
     const dayLabels = days.map(d => d.date);
     const dayRevenue = days.map(d => d.revenue);
     const dayGrowth = days.map(d => d.growthPercent);
 
-    // 12 Months Data
     const monthLabels = months.map(m => m.date);
     const monthRevenue = months.map(m => m.revenue);
     const monthGrowth = months.map(m => m.growthPercent);
 
-    // Common Chart Options
     const commonOpts = {
         responsive: true,
         maintainAspectRatio: true,
@@ -558,7 +514,6 @@
         }
     };
 
-    // 7 Days Chart
     const daysCtx = document.getElementById('daysChart');
     if (daysCtx) {
         new Chart(daysCtx, {
@@ -570,8 +525,8 @@
                         type: 'bar',
                         label: 'Doanh thu',
                         data: dayRevenue,
-                        backgroundColor: 'rgba(102, 126, 234, 0.8)',
-                        borderColor: 'rgba(102, 126, 234, 1)',
+                        backgroundColor: 'rgba(13, 110, 253, 0.7)',
+                        borderColor: 'rgba(13, 110, 253, 1)',
                         borderWidth: 2,
                         borderRadius: 6
                     },
@@ -580,12 +535,12 @@
                         label: 'Tăng trưởng (%)',
                         data: dayGrowth,
                         yAxisID: 'y1',
-                        borderColor: 'rgba(245, 87, 108, 1)',
-                        backgroundColor: 'rgba(245, 87, 108, 0.1)',
+                        borderColor: 'rgba(25, 135, 84, 1)',
+                        backgroundColor: 'rgba(25, 135, 84, 0.1)',
                         tension: 0.3,
                         borderWidth: 2,
                         pointRadius: 4,
-                        pointBackgroundColor: 'rgba(245, 87, 108, 1)'
+                        pointBackgroundColor: 'rgba(25, 135, 84, 1)'
                     }
                 ]
             },
@@ -593,7 +548,6 @@
         });
     }
 
-    // 12 Months Chart
     const monthsCtx = document.getElementById('monthsChart');
     if (monthsCtx) {
         new Chart(monthsCtx, {
@@ -605,8 +559,8 @@
                         type: 'bar',
                         label: 'Doanh thu',
                         data: monthRevenue,
-                        backgroundColor: 'rgba(67, 233, 123, 0.8)',
-                        borderColor: 'rgba(67, 233, 123, 1)',
+                        backgroundColor: 'rgba(13, 110, 253, 0.7)',
+                        borderColor: 'rgba(13, 110, 253, 1)',
                         borderWidth: 2,
                         borderRadius: 6
                     },
@@ -615,12 +569,12 @@
                         label: 'Tăng trưởng (%)',
                         data: monthGrowth,
                         yAxisID: 'y1',
-                        borderColor: 'rgba(79, 172, 254, 1)',
-                        backgroundColor: 'rgba(79, 172, 254, 0.1)',
+                        borderColor: 'rgba(25, 135, 84, 1)',
+                        backgroundColor: 'rgba(25, 135, 84, 0.1)',
                         tension: 0.3,
                         borderWidth: 2,
                         pointRadius: 4,
-                        pointBackgroundColor: 'rgba(79, 172, 254, 1)'
+                        pointBackgroundColor: 'rgba(25, 135, 84, 1)'
                     }
                 ]
             },
