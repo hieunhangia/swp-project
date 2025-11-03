@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tổng quan quản lý</title>
+    <title>Dashboard - Tổng quan quản lý</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
         :root {
             --white: #ffffff;
             --light-gray: #f8f9fa;
-            --button-bg: #e9ecef;
             --border-color: #dee2e6;
             --text-dark: #212529;
             --text-muted: #6c757d;
@@ -95,16 +94,20 @@
             opacity: 0.9;
         }
 
-        .card {
-            background: var(--white);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        /* Order Statistics Section */
+        .dashboard-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
             margin-bottom: 24px;
         }
 
-        .card-body {
+        .order-stats-section {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
             padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
 
         .section-title {
@@ -117,10 +120,69 @@
             gap: 0.5rem;
         }
 
+        .order-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .stat-item {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 1.25rem;
+            border-radius: 8px;
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .stat-item:nth-child(2) {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            box-shadow: 0 4px 15px rgba(245, 87, 108, 0.3);
+        }
+
+        .stat-item:nth-child(3) {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);
+        }
+
+        .stat-item:nth-child(4) {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            box-shadow: 0 4px 15px rgba(67, 233, 123, 0.3);
+        }
+
+        .stat-item:nth-child(5) {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            box-shadow: 0 4px 15px rgba(250, 112, 154, 0.3);
+        }
+
+        .stat-item h6 {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        /* Revenue Chart Section */
+        .revenue-chart-section {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Revenue Cards */
         .revenue-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 1rem;
+            margin-bottom: 24px;
         }
 
         .revenue-item {
@@ -145,6 +207,9 @@
             font-size: 1rem;
             opacity: 0.9;
             margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .revenue-amount {
@@ -161,7 +226,15 @@
             gap: 0.25rem;
         }
 
-        .chart-container {
+        /* Charts Section */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .chart-card {
             background: var(--white);
             border: 1px solid var(--border-color);
             border-radius: 8px;
@@ -174,34 +247,11 @@
             height: auto !important;
         }
 
-        .btn {
-            padding: 10px 18px;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.2s;
-            border: 1px solid var(--border-color);
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn-primary {
-            background: #0d6efd;
-            border-color: #0d6efd;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #0b5ed7;
-            border-color: #0a58ca;
-        }
-
-        .detail-link {
+        .export-btn {
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            padding: 12px 20px;
+            padding: 10px 18px;
             background: linear-gradient(135deg, #0dcaf0 0%, #31d2f2 100%);
             color: white;
             text-decoration: none;
@@ -209,12 +259,28 @@
             font-weight: 500;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(13, 202, 240, 0.3);
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
         }
 
-        .detail-link:hover {
+        .export-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(13, 202, 240, 0.5);
             color: white;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 1200px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 768px) {
@@ -223,16 +289,24 @@
                 padding: 16px;
             }
 
+            .dashboard-row {
+                grid-template-columns: 1fr;
+            }
+
+            .order-stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .revenue-grid {
+                grid-template-columns: 1fr;
+            }
+
             .stats-number {
                 font-size: 2rem;
             }
 
             .revenue-amount {
                 font-size: 1.5rem;
-            }
-
-            .revenue-grid {
-                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -248,7 +322,7 @@
                 <i class="bi bi-arrow-left"></i> Trang chủ
             </a>
             <h2>
-                <i class="bi bi-speedometer2"></i> Dash Board
+                <i class="bi bi-speedometer2"></i> Dashboard - Tổng quan quản lý
             </h2>
         </div>
 
@@ -263,65 +337,112 @@
             </div>
         </div>
 
-        <!-- Revenue Statistics Card -->
-        <div class="card">
-            <div class="card-body">
+        <!-- Order Statistics & Revenue Chart Row -->
+        <div class="dashboard-row">
+            <!-- Order Statistics -->
+            <div class="order-stats-section">
                 <h5 class="section-title">
-                    <i class="bi bi-cash-coin"></i> Doanh thu cửa hàng
+                    <i class="bi bi-clipboard-data"></i> Thống kê đơn hàng
                 </h5>
-                <div class="revenue-grid">
-                    <!-- Daily Revenue -->
-                    <div class="revenue-item">
-                        <div class="revenue-label">
-                            <i class="bi bi-calendar-day"></i> Doanh thu hôm nay
-                        </div>
-                        <div class="revenue-amount" th:text="${#numbers.formatDecimal(revenueToday, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">0 VNĐ</div>
-                        <div class="revenue-change">
-                            <i class="bi bi-graph-up-arrow"></i>
-                            <span th:text="'Tăng ' + ${dailyPercentageChange} + '% so với hôm qua'"></span>
-                        </div>
+                <div class="order-stats-grid">
+                    <div class="stat-item">
+                        <h6><i class="bi bi-bag-check"></i> Tổng đơn hàng</h6>
+                        <div class="stat-value" th:text="${totalOrder}">0</div>
                     </div>
+                    <div class="stat-item">
+                        <h6><i class="bi bi-x-circle"></i> Đã hủy</h6>
+                        <div class="stat-value" th:text="${totalCanceledOrder}">0</div>
+                    </div>
+                    <div class="stat-item">
+                        <h6><i class="bi bi-clock-history"></i> Chờ xác nhận</h6>
+                        <div class="stat-value" th:text="${pendingOrder}">0</div>
+                    </div>
+                    <div class="stat-item">
+                        <h6><i class="bi bi-check-circle"></i> Đã giao</h6>
+                        <div class="stat-value" th:text="${deliverOrder}">0</div>
+                    </div>
+                    <div class="stat-item">
+                        <h6><i class="bi bi-hourglass-split"></i> Đang chuẩn bị</h6>
+                        <div class="stat-value" th:text="${processingOrder}">0</div>
+                    </div>
+                </div>
+            </div>
 
-                    <!-- Weekly Revenue -->
-                    <div class="revenue-item">
-                        <div class="revenue-label">
-                            <i class="bi bi-calendar-week"></i> Doanh thu tuần này
-                        </div>
-                        <div class="revenue-amount" th:text="${#numbers.formatDecimal(revenueThisWeek, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">0 VNĐ</div>
-                        <div class="revenue-change">
-                            <i class="bi bi-graph-up-arrow"></i>
-                            <span th:text="'Tăng ' + ${weeklyPercentageChange} + '% so với tuần trước'"></span>
-                        </div>
-                    </div>
+            <!-- Revenue Overview Chart -->
+            <div class="revenue-chart-section">
+                <h5 class="section-title">
+                    <i class="bi bi-graph-up"></i> Biểu đồ doanh thu
+                </h5>
+                <canvas id="growthChart"></canvas>
+            </div>
+        </div>
 
-                    <!-- Monthly Revenue -->
-                    <div class="revenue-item">
-                        <div class="revenue-label">
-                            <i class="bi bi-calendar-month"></i> Doanh thu tháng này
-                        </div>
-                        <div class="revenue-amount" th:text="${#numbers.formatDecimal(revenueThisMonth, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">0 VNĐ</div>
-                        <div class="revenue-change">
-                            <i class="bi bi-graph-up-arrow"></i>
-                            <span th:text="'Tăng ' + ${monthlyPercentageChange} + '% so với tháng trước'"></span>
-                        </div>
-                    </div>
+        <!-- Revenue Cards -->
+        <div class="revenue-grid">
+            <!-- Daily Revenue -->
+            <div class="revenue-item">
+                <div class="revenue-label">
+                    <i class="bi bi-calendar-day"></i> Doanh thu hôm nay
+                </div>
+                <div class="revenue-amount" th:text="${#numbers.formatDecimal(revenueToday, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">0 VNĐ</div>
+                <div class="revenue-change">
+                    <i class="bi bi-graph-up-arrow"></i>
+                    <span th:text="'Tăng ' + ${dailyPercentageChange} + '% so với hôm qua'"></span>
+                </div>
+            </div>
+
+            <!-- Weekly Revenue -->
+            <div class="revenue-item">
+                <div class="revenue-label">
+                    <i class="bi bi-calendar-week"></i> Doanh thu tuần này
+                </div>
+                <div class="revenue-amount" th:text="${#numbers.formatDecimal(revenueThisWeek, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">0 VNĐ</div>
+                <div class="revenue-change">
+                    <i class="bi bi-graph-up-arrow"></i>
+                    <span th:text="'Tăng ' + ${weeklyPercentageChange} + '% so với tuần trước'"></span>
+                </div>
+            </div>
+
+            <!-- Monthly Revenue -->
+            <div class="revenue-item">
+                <div class="revenue-label">
+                    <i class="bi bi-calendar-month"></i> Doanh thu tháng này
+                </div>
+                <div class="revenue-amount" th:text="${#numbers.formatDecimal(revenueThisMonth, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">0 VNĐ</div>
+                <div class="revenue-change">
+                    <i class="bi bi-graph-up-arrow"></i>
+                    <span th:text="'Tăng ' + ${monthlyPercentageChange} + '% so với tháng trước'"></span>
                 </div>
             </div>
         </div>
 
-        <!-- Detail Link -->
-        <div style="text-align: center; margin-bottom: 2rem;">
-            <a class="detail-link" th:href="@{/manager/detail-report}">
-                <i class="bi bi-bar-chart-line"></i> Chi tiết thống kê
-            </a>
-        </div>
+        <!-- Detailed Revenue Charts -->
+        <div class="charts-grid">
+            <!-- 7 Days Chart -->
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h5 class="section-title">
+                        <i class="bi bi-calendar-week"></i> Doanh thu 7 ngày gần đây
+                    </h5>
+                    <a class="export-btn" th:href="@{/manager/days/export-excel}">
+                        <i class="bi bi-file-earmark-excel"></i> Xuất Excel
+                    </a>
+                </div>
+                <canvas id="daysChart"></canvas>
+            </div>
 
-        <!-- Growth Chart Card -->
-        <div class="chart-container">
-            <h5 class="section-title">
-                <i class="bi bi-graph-up"></i> Biểu đồ doanh thu
-            </h5>
-            <canvas id="growthChart"></canvas>
+            <!-- 12 Months Chart -->
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h5 class="section-title">
+                        <i class="bi bi-calendar-range"></i> Doanh thu 12 tháng gần đây
+                    </h5>
+                    <a class="export-btn" th:href="@{/manager/months/export-excel}">
+                        <i class="bi bi-file-earmark-excel"></i> Xuất Excel
+                    </a>
+                </div>
+                <canvas id="monthsChart"></canvas>
+            </div>
         </div>
     </div>
 </div>
@@ -329,18 +450,15 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script th:inline="javascript">
     /*<![CDATA[*/
-    const dailyChange   = /*[[${dailyPercentageChange}]]*/ 0.0;
-    const weeklyChange  = /*[[${weeklyPercentageChange}]]*/ 0.0;
-    const monthlyChange = /*[[${monthlyPercentageChange}]]*/ 0.0;
-
+    // Revenue Overview Chart Data
     const revenueToday = /*[[${revenueToday}]]*/ 0;
     const revenueThisWeek = /*[[${revenueThisWeek}]]*/ 0;
     const revenueThisMonth = /*[[${revenueThisMonth}]]*/ 0;
 
-    const gctx = document.getElementById('growthChart').getContext('2d');
-
     const clean = v => Number.isFinite(v) ? v : 0;
 
+    // Revenue Overview Chart
+    const gctx = document.getElementById('growthChart').getContext('2d');
     new Chart(gctx, {
         type: 'bar',
         data: {
@@ -366,29 +484,13 @@
             responsive: true,
             maintainAspectRatio: true,
             plugins: {
-                legend: {
-                    display: true,
-                    position: 'top',
-                    labels: {
-                        font: {
-                            size: 14,
-                            weight: 'bold'
-                        }
-                    }
-                },
+                legend: { display: false },
                 tooltip: {
                     backgroundColor: 'rgba(0, 0, 0, 0.8)',
                     padding: 12,
-                    titleFont: {
-                        size: 14,
-                        weight: 'bold'
-                    },
-                    bodyFont: {
-                        size: 13
-                    },
                     callbacks: {
                         label: function(context) {
-                            return context.dataset.label + ': ' + context.parsed.y.toFixed(2) + 'VND';
+                            return 'Doanh thu: ' + context.parsed.y.toLocaleString('vi-VN') + ' VND';
                         }
                     }
                 }
@@ -398,30 +500,133 @@
                     beginAtZero: true,
                     ticks: {
                         callback: function(value) {
-                            return value + 'VND';
-                        },
-                        font: {
-                            size: 12
+                            return value.toLocaleString('vi-VN') + ' VND';
                         }
-                    },
-                    grid: {
-                        color: 'rgba(0, 0, 0, 0.05)'
-                    }
-                },
-                x: {
-                    ticks: {
-                        font: {
-                            size: 12,
-                            weight: 'bold'
-                        }
-                    },
-                    grid: {
-                        display: false
                     }
                 }
             }
         }
     });
+
+    // Detailed Charts Data
+    const daysRaw = /*[[${daysReport}]]*/ [];
+    const monthsRaw = /*[[${monthsReport}]]*/ [];
+
+    const days = Array.isArray(daysRaw) ? daysRaw.slice().reverse() : [];
+    const months = Array.isArray(monthsRaw) ? monthsRaw.slice().reverse() : [];
+
+    const fmtVND = (n) => new Intl.NumberFormat('vi-VN', { maximumFractionDigits: 0 }).format(n) + ' đ';
+
+    // 7 Days Data
+    const dayLabels = days.map(d => d.date);
+    const dayRevenue = days.map(d => d.revenue);
+    const dayGrowth = days.map(d => d.growthPercent);
+
+    // 12 Months Data
+    const monthLabels = months.map(m => m.date);
+    const monthRevenue = months.map(m => m.revenue);
+    const monthGrowth = months.map(m => m.growthPercent);
+
+    // Common Chart Options
+    const commonOpts = {
+        responsive: true,
+        maintainAspectRatio: true,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+            legend: { position: 'top' },
+            tooltip: {
+                callbacks: {
+                    label: (ctx) => {
+                        const dsLabel = ctx.dataset.label || '';
+                        const value = ctx.raw;
+                        if (dsLabel.includes('%')) return `${dsLabel}: ${value ?? '—'}%`;
+                        return `${dsLabel}: ${fmtVND(value)}`;
+                    }
+                }
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: { callback: (v) => fmtVND(v) }
+            },
+            y1: {
+                position: 'right',
+                grid: { drawOnChartArea: false },
+                ticks: { callback: (v) => `${v}%` }
+            }
+        }
+    };
+
+    // 7 Days Chart
+    const daysCtx = document.getElementById('daysChart');
+    if (daysCtx) {
+        new Chart(daysCtx, {
+            type: 'bar',
+            data: {
+                labels: dayLabels,
+                datasets: [
+                    {
+                        type: 'bar',
+                        label: 'Doanh thu',
+                        data: dayRevenue,
+                        backgroundColor: 'rgba(102, 126, 234, 0.8)',
+                        borderColor: 'rgba(102, 126, 234, 1)',
+                        borderWidth: 2,
+                        borderRadius: 6
+                    },
+                    {
+                        type: 'line',
+                        label: 'Tăng trưởng (%)',
+                        data: dayGrowth,
+                        yAxisID: 'y1',
+                        borderColor: 'rgba(245, 87, 108, 1)',
+                        backgroundColor: 'rgba(245, 87, 108, 0.1)',
+                        tension: 0.3,
+                        borderWidth: 2,
+                        pointRadius: 4,
+                        pointBackgroundColor: 'rgba(245, 87, 108, 1)'
+                    }
+                ]
+            },
+            options: commonOpts
+        });
+    }
+
+    // 12 Months Chart
+    const monthsCtx = document.getElementById('monthsChart');
+    if (monthsCtx) {
+        new Chart(monthsCtx, {
+            type: 'bar',
+            data: {
+                labels: monthLabels,
+                datasets: [
+                    {
+                        type: 'bar',
+                        label: 'Doanh thu',
+                        data: monthRevenue,
+                        backgroundColor: 'rgba(67, 233, 123, 0.8)',
+                        borderColor: 'rgba(67, 233, 123, 1)',
+                        borderWidth: 2,
+                        borderRadius: 6
+                    },
+                    {
+                        type: 'line',
+                        label: 'Tăng trưởng (%)',
+                        data: monthGrowth,
+                        yAxisID: 'y1',
+                        borderColor: 'rgba(79, 172, 254, 1)',
+                        backgroundColor: 'rgba(79, 172, 254, 0.1)',
+                        tension: 0.3,
+                        borderWidth: 2,
+                        pointRadius: 4,
+                        pointBackgroundColor: 'rgba(79, 172, 254, 1)'
+                    }
+                ]
+            },
+            options: commonOpts
+        });
+    }
     /*]]>*/
 </script>
 </body>

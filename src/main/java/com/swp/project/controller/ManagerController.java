@@ -434,6 +434,10 @@ public class ManagerController {
         double dailyPercentageChange = orderService.getDailyPercentageChange();
         double weeklyPercentageChange = orderService.getWeeklyPercentageChange();
         double monthlyPercentageChange = orderService.getMonthlyPercentageChange();
+        List<RevenueDto> daysReport = orderService.getDaysRevenue();
+        List<RevenueDto> monthsReport = orderService.getMonthsRevenue();
+        model.addAttribute("daysReport", daysReport);
+        model.addAttribute("monthsReport", monthsReport);
         model.addAttribute("totalUnitSold", totalUnitSold == null ? 0 : totalUnitSold);
         model.addAttribute("revenueToday", revenueToday == null ? 0 : revenueToday);
         model.addAttribute("revenueThisWeek", revenueThisWeek == null ? 0 : revenueThisWeek);
@@ -441,6 +445,12 @@ public class ManagerController {
         model.addAttribute("dailyPercentageChange", dailyPercentageChange);
         model.addAttribute("weeklyPercentageChange", weeklyPercentageChange);
         model.addAttribute("monthlyPercentageChange", monthlyPercentageChange);
+        model.addAttribute("totalOrder",orderService.getTotalOrders());
+        model.addAttribute("deliverOrder",orderService.getTotalDeliveredOrders());
+        model.addAttribute("processingOrder",orderService.getTotalProcessingOrders());
+        model.addAttribute("pendingOrder",orderService.getTotalPendingOrders());
+        model.addAttribute("shippingOrder",orderService.getTotalShippingOrders());
+        model.addAttribute("totalCanceledOrder", orderService.getTotalCancelledOrders());
         return "pages/manager/index";
     }
 
