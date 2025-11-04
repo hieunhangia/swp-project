@@ -198,6 +198,9 @@
                 <i class="bi bi-search"></i> Tìm kiếm
             </button>
         </div>
+    <div>
+        <a th:href="@{/seller/product-report}">Bỏ lọc</a>
+    </div>
 </form>
         <div class="card">
             <div class="card-body" style="padding-bottom: 0;">
@@ -237,11 +240,11 @@
             <div class="card-footer" th:if="${!products.isEmpty()}">
                 <div class="pagination-controls">
                     <a th:if="${!products.first}"
-                       th:href="@{/seller/product-report(page=0, size=${products.size})}"
+                       th:href="@{/seller/product-report(page=0, size=${products.size}, searchName=${searchName})}"
                        class="btn btn-outline-primary">Đầu</a>
 
                     <a th:if="${products.hasPrevious()}"
-                       th:href="@{/seller/product-report(page=${products.number - 1}, size=${products.size})}"
+                       th:href="@{/seller/product-report(page=${products.number - 1}, size=${products.size}, searchName=${searchName})}"
                        class="btn btn-outline-primary">‹ Trước</a>
 
                     <span class="page-info">
@@ -250,11 +253,11 @@
                     </span>
 
                     <a th:if="${products.hasNext()}"
-                       th:href="@{/seller/product-report(page=${products.number + 1}, size=${products.size})}"
+                       th:href="@{/seller/product-report(page=${products.number + 1}, size=${products.size}, searchName=${searchName})}"
                        class="btn btn-outline-primary">Sau ›</a>
 
                     <a th:if="${!products.last}"
-                       th:href="@{/seller/product-report(page=${products.totalPages - 1}, size=${products.size})}"
+                       th:href="@{/seller/product-report(page=${products.totalPages - 1}, size=${products.size}, searchName=${searchName})}"
                        class="btn btn-outline-primary">Cuối</a>
                 </div>
             </div>
@@ -263,3 +266,12 @@
 </div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+

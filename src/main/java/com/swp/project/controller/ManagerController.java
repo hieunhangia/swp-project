@@ -426,7 +426,8 @@ public class ManagerController {
     }
 
     @GetMapping("/report")
-    public String getManagerReport(Model model) {
+    public String getManagerReport(@RequestParam(defaultValue = "day") String timeSelected,
+                                    Model model) {
         Long totalUnitSold = orderService.getUnitSold();
         Long revenueToday = orderService.getRevenueToday();
         Long revenueThisWeek = orderService.getRevenueThisWeek();
@@ -436,6 +437,29 @@ public class ManagerController {
         double monthlyPercentageChange = orderService.getMonthlyPercentageChange();
         List<RevenueDto> daysReport = orderService.getDaysRevenue();
         List<RevenueDto> monthsReport = orderService.getMonthsRevenue();
+        String label  = "Doanh thu hôm nay";
+        long amount   = revenueToday == null ? 0 : revenueToday;
+        double change = dailyPercentageChange;
+        switch(timeSelected) {
+            case "week":
+                label = "Doanh thu tuần này";
+                amount = revenueThisWeek == null ? 0 : revenueThisWeek;
+                change = weeklyPercentageChange;
+                break;
+            case "month":
+                label = "Doanh thu tháng này";
+                amount = revenueThisMonth == null ? 0 : revenueThisMonth;
+                change = monthlyPercentageChange;
+                break;
+            case "day":
+            default:
+
+                break;
+        }
+        model.addAttribute("timeSelected", timeSelected);
+        model.addAttribute("label", label);
+        model.addAttribute("amount", amount);
+        model.addAttribute("change", change);
         model.addAttribute("daysReport", daysReport);
         model.addAttribute("monthsReport", monthsReport);
         model.addAttribute("totalUnitSold", totalUnitSold == null ? 0 : totalUnitSold);

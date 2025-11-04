@@ -389,6 +389,30 @@
             </div>
         </div>
 
+        <div>
+            <form th:action="@{/manager/report}" method="get">
+            <select name ="timeSelected" th:onchange="this.form.submit()">
+                <option value="day"   th:selected="${timeSelected=='day'}">Hôm nay</option>
+                <option value="week"  th:selected="${timeSelected=='week'}">Tuần này</option>
+                <option value="month" th:selected="${timeSelected=='month'}">Tháng này</option>
+            </select>
+            </form>
+        </div>
+
+
+        <div class="revenue-item">
+            <div class="revenue-label">
+                <i class="bi" th:classappend="${timeSelected=='today'} ? ' bi-calendar-day' :
+                                   (${timeSelected=='week'} ? ' bi-calendar-week' : ' bi-calendar-month')"></i>
+                <span th:text="${selectedLabel}">Doanh thu</span>
+            </div>
+            <div class="revenue-amount"
+                 th:text="${#numbers.formatDecimal(amount, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">0 VNĐ</div>
+            <div class="revenue-change" th:classappend="${change>=0} ? '' : ' text-danger'">
+                <i class="bi" th:classappend="${change>=0} ? ' bi-graph-up-arrow' : ' bi-graph-down-arrow'"></i>
+                <span th:text="${(change>=0 ? 'Tăng ' : 'Giảm ') + T(java.lang.Math).abs(change) + '% so với kỳ trước'}">—</span>
+            </div>
+        </div>
         <div class="charts-grid">
             <div class="chart-card">
                 <div class="chart-header">

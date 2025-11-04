@@ -182,38 +182,29 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
         """, nativeQuery = true)
     Page<Object[]> getProductSalesAndRevenue(Pageable pageable);
 
-    @Query(value = """
-        SELECT 
-            p.id AS productId,
-            p.name AS productName,
-            p.main_image_url AS mainImageUrl,
-            COALESCE(SUM(
-                CASE 
-                    WHEN o.payment_method_id = 'COD' AND os.name = 'Đã Giao Hàng' 
-                        THEN oi.quantity
-                    WHEN o.payment_method_id = 'QR' AND os.name IN ('Đã Giao Hàng', 'Đang Giao Hàng', 'Đang Chuẩn Bị Hàng') 
-                        THEN oi.quantity
-                    ELSE 0
-                END
-            ), 0) AS totalSold,
-            COALESCE(SUM(
-                CASE 
-                    WHEN o.payment_method_id = 'COD' AND os.name = 'Đã Giao Hàng' 
-                        THEN oi.quantity * p.price
-                    WHEN o.payment_method_id = 'QR' AND os.name IN ('Đã Giao Hàng', 'Đang Giao Hàng', 'Đang Chuẩn Bị Hàng') 
-                        THEN oi.quantity * p.price
-                    ELSE 0
-                END
-            ), 0) AS revenue
-        FROM product p
-        LEFT JOIN order_item oi ON oi.product_id = p.id
-        LEFT JOIN orders o ON oi.order_id = o.id
-        LEFT JOIN order_status os ON o.order_status_id = os.id
-        WHERE LOWER(FUNCTION('unaccent', p.name)) LIKE LOWER(FUNCTION('unaccent', CONCAT('%', :keyWord, '%')))
-        GROUP BY p.id, p.name, p.main_image_url
-        ORDER BY revenue DESC
-        """, nativeQuery = true)
+    @Query(
+            value = """
+  SELECT 
+    p.id, p.name, p.main_image_url,
+    COALESCE(SUM(CASE
+      WHEN o.payment_method_id = 'COD' AND os.name = 'Đã Giao Hàng' THEN oi.quantity
+      WHEN o.payment_method_id = 'QR' AND os.name IN ('Đã Giao Hàng','Đang Giao Hàng','Đang Chuẩn Bị Hàng') THEN oi.quantity
+      ELSE 0 END),0) AS totalSold,
+    COALESCE(SUM(CASE
+      WHEN o.payment_method_id = 'COD' AND os.name = 'Đã Giao Hàng' THEN oi.quantity * p.price
+      WHEN o.payment_method_id = 'QR' AND os.name IN ('Đã Giao Hàng','Đang Giao Hàng','Đang Chuẩn Bị Hàng') THEN oi.quantity * p.price
+      ELSE 0 END),0) AS revenue
+  FROM product p
+  LEFT JOIN order_item oi ON oi.product_id = p.id
+  LEFT JOIN orders o ON oi.order_id = o.id
+  LEFT JOIN order_status os ON o.order_status_id = os.id
+  WHERE (:keyWord IS NULL OR unaccent(lower(p.name)) LIKE unaccent(lower(CONCAT('%', :keyWord, '%'))))
+  GROUP BY p.id, p.name, p.main_image_url
+  ORDER BY revenue DESC
+  """, nativeQuery = true
+    )
     Page<Object[]> searchProductSalesAndRevenue(@Param("keyWord") String keyWord, Pageable pageable);
+
 
     @Query(value = """
         SELECT 
