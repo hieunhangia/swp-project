@@ -318,15 +318,28 @@ public class OrderService {
         return total;
     }
 
+    public LocalDateTime startOfDay(LocalDate date){
+        return date.atStartOfDay();
+    }
+    public LocalDateTime nextDay(LocalDate date){
+        return date.plusDays(1).atStartOfDay();
+    }
+
     public long getRevenueToday() {
-        return orderRepository.getRevenueToday();
+        LocalDate today = LocalDate.now();
+        return orderRepository.getRevenueBetween(startOfDay(today),nextDay(today));
     }
     public long getRevenueThisMonth(){
-        return orderRepository.getRevenueThisMonth();
+        LocalDate start = LocalDate.now().withDayOfMonth(1);
+        LocalDate end = start.plusMonths(1);
+        return orderRepository.getRevenueBetween(startOfDay(start),nextDay(end));
 
     }
     public long getRevenueThisWeek() {
-        return orderRepository.getRevenueThisWeek();
+        LocalDate now = LocalDate.now();
+        LocalDate start = now.with(DayOfWeek.MONDAY);
+        LocalDate end = start.plusDays(7);
+        return orderRepository.getRevenueBetween(startOfDay(start),nextDay(end));
     }
 
     public List<Product> getNearlySoldOutProduct(){
@@ -335,22 +348,21 @@ public class OrderService {
     }
 
     public long getRevenueYesterday(){
-        LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
-        return orderRepository.getRevenueByDate(yesterday);
+        LocalDate yesterday = LocalDate.now().minusDays(1);
+        return orderRepository.getRevenueBetween(startOfDay(yesterday),nextDay(yesterday));
     }
 
     public long getRevenueLastWeek(){
-        LocalDateTime startOfThisWeek = LocalDateTime.now().with(DayOfWeek.MONDAY);
-        LocalDateTime lastWeek = startOfThisWeek.minusWeeks(1);
-        LocalDateTime endOfWeek = lastWeek.plusDays(6);
-        return orderRepository.getRevenueBetween(lastWeek, endOfWeek);
+        LocalDate now = LocalDate.now();
+        LocalDate startThisWeek = now.with(DayOfWeek.MONDAY);
+        LocalDate startLastWeek = startThisWeek.minusWeeks(1);
+        return orderRepository.getRevenueBetween(startOfDay(startLastWeek),nextDay(startThisWeek));
     }
 
     public long getRevenueLastMonth(){
-        LocalDateTime startOfThisMonth = LocalDateTime.now().withDayOfMonth(1);
-        LocalDateTime lastMonth = startOfThisMonth.minusMonths(1);
-        LocalDateTime endOfMonth = lastMonth.withDayOfMonth(lastMonth.toLocalDate().lengthOfMonth());
-        return orderRepository.getRevenueBetween(lastMonth, endOfMonth);
+        LocalDate starThisMonth = LocalDate.now().withDayOfMonth(1);
+        LocalDate startLastMonth = starThisMonth.minusMonths(1);
+        return orderRepository.getRevenueBetween(startOfDay(startLastMonth),nextDay(starThisMonth));
     }
     public double getDailyPercentageChange(){
         long today = getRevenueToday();
