@@ -1,4 +1,11 @@
-<div th:fragment="seller-sidebar">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Sidebar</title>
+</head>
+<body>
+<div th:fragment="admin-sidebar">
     <style>
         /* === BỐ CỤC TỔNG THỂ === */
         body {
@@ -133,27 +140,18 @@
             <img src="/images/icons/logo.png" alt="FruitShop Logo"
                  style="width:150px; height:150px; object-fit:contain;">
         </div>
-        <h2><i class="bi bi-gear"></i> Seller Panel</h2>
-        <a th:href="@{/seller}">
+        <h2><i class="bi bi-shield-check"></i> Admin Panel</h2>
+        <a th:href="@{/admin}">
             <i class="bi bi-speedometer2"></i> <span style="margin-left: 12px;">Bảng điều khiển</span>
         </a>
-        <a th:href="@{/seller/product-category}">
-            <i class="bi bi-folder"></i> <span style="margin-left: 12px;">Quản lý danh mục</span>
+        <a th:href="@{/admin/manage-manager}">
+            <i class="bi bi-people"></i> <span style="margin-left: 12px;">Quản lý Manager</span>
         </a>
-        <a th:href="@{/seller/product-unit}">
-            <i class="bi bi-box"></i> <span style="margin-left: 12px;">Quản lý đơn vị</span>
-        </a>
-        <a th:href="@{/seller/all-products}">
-            <i class="bi bi-bag"></i> <span style="margin-left: 12px;">Quản lý sản phẩm</span>
-        </a>
-        <a th:href="@{/seller/all-orders}">
-            <i class="bi bi-clipboard-check"></i> <span style="margin-left: 12px;">Tất cả đơn hàng</span>
-        </a>
-        <a th:href="@{/seller/my-requests}">
-            <i class="bi bi-bar-chart"></i> <span style="margin-left: 12px;">Xem yêu cầu</span>
-        </a>
-        <a th:href="@{/seller/statistic-report/overview}">
+        <a th:href="@{/admin/statistic-report}">
             <i class="bi bi-bar-chart"></i> <span style="margin-left: 12px;">Thống kê</span>
+        </a>
+        <a th:href="@{/admin/setting}">
+            <i class="bi bi-gear"></i> <span style="margin-left: 12px;">Cài đặt</span>
         </a>
 
         <form th:action="@{/logout}" method="post">
@@ -161,3 +159,5 @@
         </form>
     </div>
 </div>
+</body>
+</html>

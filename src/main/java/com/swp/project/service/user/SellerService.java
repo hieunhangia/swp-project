@@ -222,9 +222,10 @@ public class SellerService {
             ProductRevenueDto dto = new ProductRevenueDto();
             dto.setProductId(((Number) row[0]).longValue());
             dto.setProductName((String) row[1]);
-            dto.setMainImageUrl((String) row[2]);
-            dto.setTotalSold(((Number) row[3]).doubleValue());
-            dto.setRevenue(((Number) row[4]).longValue());
+            dto.setMainImageUrl((String) row[3]);
+            dto.setProductUnit((String) row[2]);
+            dto.setTotalSold(((Number) row[4]).doubleValue());
+            dto.setRevenue(((Number) row[5]).longValue());
             result.add(dto);
         }
         return result;
@@ -245,9 +246,10 @@ public class SellerService {
             ProductRevenueDto dto = new ProductRevenueDto();
             dto.setProductId(((Number) row[0]).longValue());
             dto.setProductName((String) row[1]);
-            dto.setMainImageUrl((String) row[2]);
-            dto.setTotalSold(((Number) row[3]).doubleValue());
-            dto.setRevenue(((Number) row[4]).longValue());
+            dto.setMainImageUrl((String) row[3]);
+            dto.setTotalSold(((Number) row[4]).doubleValue());
+            dto.setRevenue(((Number) row[5]).longValue());
+            dto.setProductUnit((String) row[2]);
 
 
             dtoList.add(dto);

@@ -177,6 +177,88 @@
             .product-thumb { width: 56px; height: 56px; }
             .product-name { max-width: 160px; }
         }
+        .filter-form {
+            margin-bottom: 1.25rem;
+        }
+
+        .filter-card {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+
+        .filter-header {
+            background: var(--light-gray);
+            padding: 0.75rem 1.25rem;
+            border-bottom: 1px solid var(--border-color);
+            border-radius: 8px 8px 0 0;
+        }
+
+        .filter-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+        }
+
+        .filter-body {
+            padding: 1.25rem;
+            display: flex;
+            align-items: flex-end;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .filter-label {
+            display: block;
+            font-weight: 500;
+            font-size: 0.875rem;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .filter-input {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.875rem;
+            transition: border-color 0.15s ease;
+        }
+
+        .filter-input:focus {
+            outline: none;
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.2rem rgba(13,110,253,0.25);
+        }
+
+        .filter-actions {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .filter-body {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-group {
+                min-width: 100%;
+            }
+
+            .filter-actions {
+                width: 100%;
+                justify-content: flex-start;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -187,18 +269,33 @@
         <div class="header">
             <h2>Thống kê từng sản phẩm</h2>
         </div>
-<form th:action="@{/seller/product-report}" method="get" style="margin-bottom: 1rem;">
-        <div>
-        <span>Lọc tìm sản phẩm</span>
-        <div>
-            <span>Tên sản phẩm: </span>
-            <input type="text" name="searchName" th:value="${searchName}" id="searchName" placeholder="Nhập tên sản phẩm..." />
-        </div>
-            <button type="submit" class="btn btn-primary">
-                <i class="bi bi-search"></i> Tìm kiếm
-            </button>
-        </div>
-</form>
+        <form th:action="@{/seller/product-report}" method="get" class="filter-form">
+            <div class="filter-card">
+                <div class="filter-header">
+                    <span class="filter-title">Lọc tìm sản phẩm</span>
+                </div>
+                <div class="filter-body">
+                    <div class="filter-group">
+                        <label for="searchName" class="filter-label">Tên sản phẩm:</label>
+                        <input type="text"
+                               name="searchName"
+                               th:value="${searchName}"
+                               id="searchName"
+                               class="filter-input"
+                               placeholder="Nhập tên sản phẩm..." />
+                    </div>
+                    <div class="filter-actions">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-search"></i> Tìm kiếm
+                        </button>
+                        <a th:href="@{/seller/product-report}" class="btn btn-outline-secondary">
+                            <i class="bi bi-x-circle"></i> Bỏ lọc
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </form>
+
         <div class="card">
             <div class="card-body" style="padding-bottom: 0;">
                 <div style="padding-bottom: 1rem;">
@@ -227,7 +324,7 @@
                             <img th:src="${report.mainImageUrl}" alt="Product Image" style="width:80px; height:auto;" />
                             <span th:text="${report.productName}"></span>
                         </td>
-                        <td style="text-align: right;" th:text="${report.totalSold}"></td>
+                        <td style="text-align: right;" th:text="${report.totalSold}+' '+${report.productUnit}"></td>
                         <td style="text-align: right;" th:text="${#numbers.formatInteger(report.revenue,0,'POINT')} + ' VND'"></td>
                     </tr>
                     </tbody>
@@ -237,11 +334,11 @@
             <div class="card-footer" th:if="${!products.isEmpty()}">
                 <div class="pagination-controls">
                     <a th:if="${!products.first}"
-                       th:href="@{/seller/product-report(page=0, size=${products.size})}"
+                       th:href="@{/seller/product-report(page=0, size=${products.size}, searchName=${searchName})}"
                        class="btn btn-outline-primary">Đầu</a>
 
                     <a th:if="${products.hasPrevious()}"
-                       th:href="@{/seller/product-report(page=${products.number - 1}, size=${products.size})}"
+                       th:href="@{/seller/product-report(page=${products.number - 1}, size=${products.size}, searchName=${searchName})}"
                        class="btn btn-outline-primary">‹ Trước</a>
 
                     <span class="page-info">
@@ -250,11 +347,11 @@
                     </span>
 
                     <a th:if="${products.hasNext()}"
-                       th:href="@{/seller/product-report(page=${products.number + 1}, size=${products.size})}"
+                       th:href="@{/seller/product-report(page=${products.number + 1}, size=${products.size}, searchName=${searchName})}"
                        class="btn btn-outline-primary">Sau ›</a>
 
                     <a th:if="${!products.last}"
-                       th:href="@{/seller/product-report(page=${products.totalPages - 1}, size=${products.size})}"
+                       th:href="@{/seller/product-report(page=${products.totalPages - 1}, size=${products.size}, searchName=${searchName})}"
                        class="btn btn-outline-primary">Cuối</a>
                 </div>
             </div>
@@ -263,3 +360,12 @@
 </div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
