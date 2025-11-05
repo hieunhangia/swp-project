@@ -37,6 +37,7 @@ import com.swp.project.entity.user.Shipper;
 import com.swp.project.service.AddressService;
 import com.swp.project.service.order.BillService;
 import com.swp.project.service.order.OrderService;
+import com.swp.project.service.order.PaymentMethodService;
 import com.swp.project.service.product.CategoryService;
 import com.swp.project.service.product.ImageService;
 import com.swp.project.service.product.ProductService;
@@ -69,6 +70,7 @@ public class ManagerController {
     private final OrderService orderService;
     private final SellerRequestStatusService sellerRequestStatusService;
     private final ImageService imageService;
+    private final PaymentMethodService paymentMethodService;
 
     @GetMapping("")
     public String index() {
@@ -895,7 +897,10 @@ public class ManagerController {
             return "pages/manager/bill-list";
         }
         // Order order = bill.getOrder();
-        Long totalAmount = orderService.calculateTotalAmount(bill.getOrder());
+        Long totalAmount = 0L;
+        if (paymentMethodService.isCodMethod(bill.getOrder().getPaymentMethod())) {
+            totalAmount = bill.getOrder().getTotalAmount();
+        }
         model.addAttribute("bill", bill);
         model.addAttribute("shippedAt", orderService.getShippedAt(bill.getOrder()));
         model.addAttribute("totalAmount", totalAmount);
