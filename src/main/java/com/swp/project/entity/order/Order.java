@@ -72,7 +72,7 @@ public class Order{
 
     public Long getTotalAmount(){
         return orderItem.stream()
-                        .mapToLong(od -> (long) (od.getProduct().getPrice() * od.getQuantity() / 1000) * 1000).sum();
+                        .mapToLong(od -> (long) (od.getPrice() * od.getQuantity() / 1000) * 1000).sum();
     }
 
     public String getAddressString(){
@@ -89,7 +89,7 @@ public class Order{
         return getCurrentShipping().getShippingStatus();
     }
 
-    @Formula("(SELECT SUM(oi.quantity * p.price) " +
+    @Formula("(SELECT SUM(oi.quantity * oi.price) " +
             " FROM order_item oi " +
             " JOIN product p ON p.id = oi.product_id " +
             " WHERE oi.order_id = id)")
