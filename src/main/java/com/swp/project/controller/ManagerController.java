@@ -24,7 +24,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.swp.project.dto.RevenueDto;
 import com.swp.project.dto.StaffDto;
+import com.swp.project.dto.ViewCategoryRequestDetailDto;
 import com.swp.project.dto.ViewProductRequestDetailDto;
+import com.swp.project.dto.ViewProductUnitRequestDetailDto;
 import com.swp.project.entity.address.CommuneWard;
 import com.swp.project.entity.address.ProvinceCity;
 import com.swp.project.entity.order.Bill;
@@ -540,13 +542,18 @@ public class ManagerController {
                 throw new IllegalArgumentException("Không thể đọc dữ liệu đơn vị sản phẩm");
             }
             
+            ProductUnit oldProductUnit = null;
+            
             if (sellerRequestTypeService.isUpdateType(sellerRequest)) {
-                ProductUnit oldProductUnit = sellerRequestService.getEntityFromContent(
+                oldProductUnit = sellerRequestService.getEntityFromContent(
                         sellerRequest.getOldContent(), ProductUnit.class);
-                model.addAttribute("oldProductUnit", oldProductUnit);
             }
             
+            // Use DTO for both create and update types
+            ViewProductUnitRequestDetailDto viewDto = new ViewProductUnitRequestDetailDto(oldProductUnit, newProductUnit);
+            model.addAttribute("viewDto", viewDto);
             model.addAttribute("newProductUnit", newProductUnit);
+            
             return "pages/manager/product-unit-request-details";
         } catch (Exception e) {
             throw new RuntimeException("Lỗi xử lý yêu cầu đơn vị sản phẩm: " + e.getMessage(), e);
@@ -562,13 +569,18 @@ public class ManagerController {
                 throw new IllegalArgumentException("Không thể đọc dữ liệu danh mục");
             }
             
+            Category oldCategory = null;
+            
             if (sellerRequestTypeService.isUpdateType(sellerRequest)) {
-                Category oldCategory = sellerRequestService.getEntityFromContent(
+                oldCategory = sellerRequestService.getEntityFromContent(
                         sellerRequest.getOldContent(), Category.class);
-                model.addAttribute("oldCategory", oldCategory);
             }
             
+            // Use DTO for both create and update types
+            ViewCategoryRequestDetailDto viewDto = new ViewCategoryRequestDetailDto(oldCategory, newCategory);
+            model.addAttribute("viewDto", viewDto);
             model.addAttribute("newCategory", newCategory);
+            
             return "pages/manager/category-request-details";
         } catch (Exception e) {
             throw new RuntimeException("Lỗi xử lý yêu cầu danh mục: " + e.getMessage(), e);
