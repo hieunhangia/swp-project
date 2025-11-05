@@ -22,262 +22,204 @@
             </h2>
         </div>
 
-        <!-- New Product Card -->
-        <div class="card">
-            <div class="card-body" style="padding: 0;">
-                <div style="padding: 1.5rem; padding-bottom: 0;">
-                    <h5 style="font-weight: 600; margin-bottom: 1.5rem;">
-                        <i class="bi bi-box-seam"></i> Sản phẩm mới
-                    </h5>
+        <div class="main-content">
+            <!-- Product Request Details Table -->
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="bi bi-info-circle"></i> Thông tin chi tiết sản phẩm</h3>
                 </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th th:style="${isCreate} ? 'width: 40%;' : 'width: 25%;'">Trường thông tin</th>
+                                <th th:style="${isCreate} ? 'width: 60%;' : 'width: 37.5%;'">Giá trị mới</th>
+                                <th th:if="${!isCreate}" style="width: 37.5%;">Giá trị cũ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Name -->
+                            <tr>
+                                <td><strong>Tên sản phẩm</strong></td>
+                                <td th:class="${viewDto.oldName != null} ? 'new-value' : 'no-change'">
+                                    <span th:text="${viewDto.newName}"></span>
+                                </td>
+                                <td th:if="${!isCreate}" th:class="${viewDto.oldName != null} ? 'old-value' : 'no-change'">
+                                    <span th:if="${viewDto.oldName != null}" th:text="${viewDto.oldName}"></span>
+                                    <span th:if="${viewDto.oldName == null}" class="text-muted">Không thay đổi</span>
+                                </td>
+                            </tr>
 
-            <h4 class="section-title">
-                <i class="bi bi-arrow-left-right"></i> 
-                <span th:if="${oldProduct != null}">So sánh thay đổi sản phẩm</span>
-                <span th:if="${oldProduct == null}">Sản phẩm mới (Chưa có dữ liệu cũ)</span>
-            </h4>
-            <div class="table-responsive">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Trường dữ liệu</th>
-                            <th>Giá trị</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Name -->
-                        <tr th:class="${oldProduct != null && oldProduct.name != newProduct.name} ? 'cell-changed' : 'cell-unchanged'">
-                            <td><strong>Tên sản phẩm</strong></td>
-                            <td>
-                                <div th:if="${oldProduct != null && oldProduct.name != newProduct.name}">
-                                    <span class="diff-label label-old">Cũ:</span>
-                                    <span class="value-old" th:text="${oldProduct.name}">Old Name</span>
-                                    <span class="change-arrow">↓</span>
-                                    <span class="diff-label label-new">Mới:</span>
-                                    <span class="value-new" th:text="${newProduct.name}">New Name</span>
-                                </div>
-                                <div th:if="${oldProduct == null || oldProduct.name == newProduct.name}">
-                                    <span class="value-unchanged" th:text="${newProduct.name}">Name</span>
-                                </div>
-                            </td>
-                        </tr>
+                            <!-- Description -->
+                            <tr>
+                                <td><strong>Mô tả</strong></td>
+                                <td th:class="${viewDto.oldDescription != null} ? 'new-value' : 'no-change'">
+                                    <span th:text="${viewDto.newDescription}"></span>
+                                </td>
+                                <td th:if="${!isCreate}" th:class="${viewDto.oldDescription != null} ? 'old-value' : 'no-change'">
+                                    <span th:if="${viewDto.oldDescription != null}" th:text="${viewDto.oldDescription}"></span>
+                                    <span th:if="${viewDto.oldDescription == null}" class="text-muted">Không thay đổi</span>
+                                </td>
+                            </tr>
 
-                        <!-- Description -->
-                        <tr th:class="${oldProduct != null && oldProduct.description != newProduct.description} ? 'cell-changed' : 'cell-unchanged'">
-                            <td><strong>Mô tả</strong></td>
-                            <td>
-                                <div th:if="${oldProduct != null && oldProduct.description != newProduct.description}">
-                                    <span class="diff-label label-old">Cũ:</span>
-                                    <span class="value-old" th:text="${oldProduct.description}">Old Description</span>
-                                    <span class="change-arrow">↓</span>
-                                    <span class="diff-label label-new">Mới:</span>
-                                    <span class="value-new" th:text="${newProduct.description}">New Description</span>
-                                </div>
-                                <div th:if="${oldProduct == null || oldProduct.description == newProduct.description}">
-                                    <span class="value-unchanged" th:text="${newProduct.description}">Description</span>
-                                </div>
-                            </td>
-                        </tr>
+                            <!-- Price -->
+                            <tr>
+                                <td><strong>Giá</strong></td>
+                                <td th:class="${viewDto.oldPrice != null} ? 'new-value' : 'no-change'">
+                                    <span th:text="${viewDto.newPrice + ' VNĐ'}"></span>
+                                </td>
+                                <td th:if="${!isCreate}" th:class="${viewDto.oldPrice != null} ? 'old-value' : 'no-change'">
+                                    <span th:if="${viewDto.oldPrice != null}" th:text="${viewDto.oldPrice + ' VNĐ'}"></span>
+                                    <span th:if="${viewDto.oldPrice == null}" class="text-muted">Không thay đổi</span>
+                                </td>
+                            </tr>
 
-                        <!-- Price -->
-                        <tr th:class="${oldProduct != null && oldProduct.price != newProduct.price} ? 'cell-changed' : 'cell-unchanged'">
-                            <td><strong>Giá</strong></td>
-                            <td>
-                                <div th:if="${oldProduct != null && oldProduct.price != newProduct.price}">
-                                    <span class="diff-label label-old">Cũ:</span>
-                                    <span class="value-old" th:text="${oldProduct.price}">Old Price</span>
-                                    <span class="change-arrow">↓</span>
-                                    <span class="diff-label label-new">Mới:</span>
-                                    <span class="value-new" th:text="${newProduct.price}">New Price</span>
-                                </div>
-                                <div th:if="${oldProduct == null || oldProduct.price == newProduct.price}">
-                                    <span class="value-unchanged" th:text="${newProduct.price}">Price</span>
-                                </div>
-                            </td>
-                        </tr>
+                            <!-- Product Unit -->
+                            <tr>
+                                <td><strong>Đơn vị tính</strong></td>
+                                <td th:class="${viewDto.oldProductUnit != null} ? 'new-value' : 'no-change'">
+                                    <span th:text="${viewDto.newProductUnit}"></span>
+                                </td>
+                                <td th:if="${!isCreate}" th:class="${viewDto.oldProductUnit != null} ? 'old-value' : 'no-change'">
+                                    <span th:if="${viewDto.oldProductUnit != null}" th:text="${viewDto.oldProductUnit}"></span>
+                                    <span th:if="${viewDto.oldProductUnit == null}" class="text-muted">Không thay đổi</span>
+                                </td>
+                            </tr>
 
-                        <!-- Unit -->
-                        <tr th:class="${oldProduct != null && oldProduct.unit.name != newProduct.unit.name} ? 'cell-changed' : 'cell-unchanged'">
-                            <td><strong>Đơn vị</strong></td>
-                            <td>
-                                <div th:if="${oldProduct != null && oldProduct.unit.name != newProduct.unit.name}">
-                                    <span class="diff-label label-old">Cũ:</span>
-                                    <span class="value-old" th:text="${oldProduct.unit.name}">Old Unit</span>
-                                    <span class="change-arrow">↓</span>
-                                    <span class="diff-label label-new">Mới:</span>
-                                    <span class="value-new" th:text="${newProduct.unit.name}">New Unit</span>
-                                </div>
-                                <div th:if="${oldProduct == null || oldProduct.unit.name == newProduct.unit.name}">
-                                    <span class="value-unchanged" th:text="${newProduct.unit.name}">Unit</span>
-                                </div>
-                            </td>
-                        </tr>
+                            <!-- Quantity -->
+                            <tr>
+                                <td><strong>Số lượng</strong></td>
+                                <td th:class="${viewDto.oldQuantity != null} ? 'new-value' : 'no-change'">
+                                    <span th:text="${viewDto.newQuantity}"></span>
+                                </td>
+                                <td th:if="${!isCreate}" th:class="${viewDto.oldQuantity != null} ? 'old-value' : 'no-change'">
+                                    <span th:if="${viewDto.oldQuantity != null}" th:text="${viewDto.oldQuantity}"></span>
+                                    <span th:if="${viewDto.oldQuantity == null}" class="text-muted">Không thay đổi</span>
+                                </td>
+                            </tr>
 
-                        <!-- Quantity -->
-                        <tr th:class="${oldProduct != null && oldProduct.quantity != newProduct.quantity} ? 'cell-changed' : 'cell-unchanged'">
-                            <td><strong>Số lượng</strong></td>
-                            <td>
-                                <div th:if="${oldProduct != null && oldProduct.quantity != newProduct.quantity}">
-                                    <span class="diff-label label-old">Cũ:</span>
-                                    <span class="value-old" th:text="${oldProduct.quantity}">Old Quantity</span>
-                                    <span class="change-arrow">↓</span>
-                                    <span class="diff-label label-new">Mới:</span>
-                                    <span class="value-new" th:text="${newProduct.quantity}">New Quantity</span>
-                                </div>
-                                <div th:if="${oldProduct == null || oldProduct.quantity == newProduct.quantity}">
-                                    <span class="value-unchanged" th:text="${newProduct.quantity}">Quantity</span>
-                                </div>
-                            </td>
-                        </tr>
+                            <!-- Categories -->
+                            <tr>
+                                <td><strong>Danh mục</strong></td>
+                                <td th:class="${viewDto.oldCategories != null} ? 'new-value' : 'no-change'">
+                                    <span th:if="${viewDto.newCategories != null && !viewDto.newCategories.isEmpty()}">
+                                        <span th:each="category, iterStat : ${viewDto.newCategories}">
+                                            <span th:text="${category}"></span><span th:if="${!iterStat.last}">, </span>
+                                        </span>
+                                    </span>
+                                    <span th:if="${viewDto.newCategories == null || viewDto.newCategories.isEmpty()}" class="text-muted">Không có</span>
+                                </td>
+                                <td th:if="${!isCreate}" th:class="${viewDto.oldCategories != null} ? 'old-value' : 'no-change'">
+                                    <span th:if="${viewDto.oldCategories != null && !viewDto.oldCategories.isEmpty()}">
+                                        <span th:each="category, iterStat : ${viewDto.oldCategories}">
+                                            <span th:text="${category}"></span><span th:if="${!iterStat.last}">, </span>
+                                        </span>
+                                    </span>
+                                    <span th:if="${viewDto.oldCategories == null}" class="text-muted">Không thay đổi</span>
+                                    <span th:if="${viewDto.oldCategories != null && viewDto.oldCategories.isEmpty()}" class="text-muted">Không có</span>
+                                </td>
+                            </tr>
 
-                        <!-- Status -->
-                        <tr th:class="${oldProduct != null && oldProduct.enabled != newProduct.enabled} ? 'cell-changed' : 'cell-unchanged'">
-                            <td><strong>Trạng thái</strong></td>
-                            <td>
-                                <div th:if="${oldProduct != null && oldProduct.enabled != newProduct.enabled}">
-                                    <span class="diff-label label-old">Cũ:</span>
-                                    <span class="value-old" th:text="${oldProduct.enabled ? 'Bật' : 'Tắt'}">Old Status</span>
-                                    <span class="change-arrow">↓</span>
-                                    <span class="diff-label label-new">Mới:</span>
-                                    <span class="value-new" th:text="${newProduct.enabled ? 'Bật' : 'Tắt'}">New Status</span>
-                                </div>
-                                <div th:if="${oldProduct == null || oldProduct.enabled == newProduct.enabled}">
-                                    <span class="value-unchanged" th:text="${newProduct.enabled ? 'Bật' : 'Tắt'}">Status</span>
-                                </div>
-                            </td>
-                        </tr>
+                            <!-- Enabled Status -->
+                            <tr>
+                                <td><strong>Trạng thái</strong></td>
+                                <td th:class="${viewDto.oldEnabled != null} ? 'new-value' : 'no-change'">
+                                    <span th:text="${viewDto.newEnabled == 'true' ? 'Kích hoạt' : 'Vô hiệu hóa'}"></span>
+                                </td>
+                                <td th:if="${!isCreate}" th:class="${viewDto.oldEnabled != null} ? 'old-value' : 'no-change'">
+                                    <span th:if="${viewDto.oldEnabled != null}" th:text="${viewDto.oldEnabled == 'true' ? 'Kích hoạt' : 'Vô hiệu hóa'}"></span>
+                                    <span th:if="${viewDto.oldEnabled == null}" class="text-muted">Không thay đổi</span>
+                                </td>
+                            </tr>
 
-                        <!-- Categories -->
-                        <tr>
-                            <td><strong>Danh mục</strong></td>
-                            <td>
-                                <div th:if="${oldProduct != null}">
-                                    <div style="margin-bottom: 8px;">
-                                        <span class="diff-label label-old">Cũ:</span>
-                                        <ul style="margin: 4px 0;">
-                                            <li th:each="category : ${oldProduct.categories}" 
-                                                th:text="${category.name}" 
-                                                style="color: #c33;">Danh mục cũ</li>
-                                        </ul>
-                                    </div>
-                                    <span class="change-arrow">↓</span>
-                                    <div style="margin-top: 8px;">
-                                        <span class="diff-label label-new">Mới:</span>
-                                        <ul style="margin: 4px 0;">
-                                            <li th:each="category : ${newProduct.categories}" 
-                                                th:text="${category.name}" 
-                                                style="color: #2a6; font-weight: 500;">Danh mục mới</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div th:if="${oldProduct == null}">
-                                    <ul>
-                                        <li th:each="category : ${newProduct.categories}" th:text="${category.name}">Danh mục</li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
+                            <!-- Main Image -->
+                            <tr>
+                                <td><strong>Hình ảnh chính</strong></td>
+                                <td th:class="${viewDto.oldMainImageUrl != null} ? 'new-value' : 'no-change'">
+                                    <img th:src="${viewDto.newMainImageUrl}" 
+                                         alt="New Main Image" 
+                                         style="max-width: 150px; max-height: 150px; object-fit: cover;">
+                                </td>
+                                <td th:if="${!isCreate}" th:class="${viewDto.oldMainImageUrl != null} ? 'old-value' : 'no-change'">
+                                    <img th:if="${viewDto.oldMainImageUrl != null}" 
+                                         th:src="${viewDto.oldMainImageUrl}" 
+                                         alt="Old Main Image" 
+                                         style="max-width: 150px; max-height: 150px; object-fit: cover;">
+                                    <span th:if="${viewDto.oldMainImageUrl == null}" class="text-muted">Không thay đổi</span>
+                                </td>
+                            </tr>
 
-                        <!-- Main Image -->
-                        <tr th:class="${oldProduct != null && oldProduct.main_image_url != newProduct.main_image_url} ? 'cell-changed' : 'cell-unchanged'">
-                            <td><strong>Ảnh chính</strong></td>
-                            <td class="image-cell">
-                                <div th:if="${oldProduct != null && oldProduct.main_image_url != newProduct.main_image_url}" class="image-comparison">
-                                    <div>
-                                        <div class="image-label label-old">Cũ:</div>
-                                        <img th:if="${oldProduct.main_image_url != null && oldProduct.main_image_url != ''}" 
-                                             th:src="${oldProduct.main_image_url}"
-                                             height="60" width="60" 
-                                             class="image-old"
-                                             style="object-fit: cover; border-radius: 4px;" />
-                                        <span th:if="${oldProduct.main_image_url == null || oldProduct.main_image_url == ''}" 
-                                              class="no-image-text">Empty</span>
-                                    </div>
-                                    <span class="change-arrow">↓</span>
-                                    <div>
-                                        <div class="image-label label-new">Mới:</div>
-                                        <img th:if="${newProduct.main_image_url != null && newProduct.main_image_url != ''}" 
-                                             th:src="${newProduct.main_image_url}"
-                                             height="60" width="60" 
-                                             class="image-new"
-                                             style="object-fit: cover; border-radius: 4px;" />
-                                        <span th:if="${newProduct.main_image_url == null || newProduct.main_image_url == ''}" 
-                                              class="no-image-text">Empty</span>
-                                    </div>
-                                </div>
-                                <div th:if="${oldProduct == null || oldProduct.main_image_url == newProduct.main_image_url}">
-                                    <img th:if="${newProduct.main_image_url != null && newProduct.main_image_url != ''}" 
-                                         th:src="${newProduct.main_image_url}"
-                                         height="60" width="60" 
-                                         style="object-fit: cover; border-radius: 4px;" />
-                                    <span th:if="${newProduct.main_image_url == null || newProduct.main_image_url == ''}" 
-                                          class="no-image-text">Empty</span>
-                                </div>
-                            </td>
-                        </tr>
+                            <!-- First Sub Image -->
+                            <tr>
+                                <td><strong>Hình ảnh phụ 1</strong></td>
+                                <td th:class="${viewDto.oldFirstSubImage != null} ? 'new-value' : 'no-change'">
+                                    <img th:src="${viewDto.newFirstSubImage}" 
+                                         alt="New First Sub Image" 
+                                         style="max-width: 150px; max-height: 150px; object-fit: cover;">
+                                </td>
+                                <td th:if="${!isCreate}" th:class="${viewDto.oldFirstSubImage != null} ? 'old-value' : 'no-change'">
+                                    <img th:if="${viewDto.oldFirstSubImage != null}" 
+                                         th:src="${viewDto.oldFirstSubImage}" 
+                                         alt="Old First Sub Image" 
+                                         style="max-width: 150px; max-height: 150px; object-fit: cover;">
+                                    <span th:if="${viewDto.oldFirstSubImage == null}" class="text-muted">Không thay đổi</span>
+                                </td>
+                            </tr>
 
-                        <!-- Sub Images -->
-                        <tr th:each="i : ${#numbers.sequence(0, 2)}">
-                            <td><strong>Ảnh phụ <span th:text="${i + 1}">1</span></strong></td>
-                            <td class="image-cell">
-                                <!-- Get old and new sub image URLs -->
-                                <div th:with="
-                                    oldUrl=${oldProduct != null && oldProduct.sub_images != null && oldProduct.sub_images.size() > i ? oldProduct.sub_images[i].sub_image_url : ''},
-                                    newUrl=${newProduct.sub_images != null && newProduct.sub_images.size() > i ? newProduct.sub_images[i].sub_image_url : ''}">
-                                    
-                                    <div th:if="${oldProduct != null && oldUrl != newUrl}" class="image-comparison">
-                                        <div>
-                                            <div class="image-label label-old">Cũ:</div>
-                                            <img th:if="${oldUrl != null && oldUrl != ''}" 
-                                                 th:src="${oldUrl}"
-                                                 height="60" width="60" 
-                                                 class="image-old"
-                                                 style="object-fit: cover; border-radius: 4px;" />
-                                            <span th:if="${oldUrl == null || oldUrl == ''}" 
-                                                  class="no-image-text">Empty</span>
-                                        </div>
-                                        <span class="change-arrow">↓</span>
-                                        <div>
-                                            <div class="image-label label-new">Mới:</div>
-                                            <img th:if="${newUrl != null && newUrl != ''}" 
-                                                 th:src="${newUrl}"
-                                                 height="60" width="60" 
-                                                 class="image-new"
-                                                 style="object-fit: cover; border-radius: 4px;" />
-                                            <span th:if="${newUrl == null || newUrl == ''}" 
-                                                  class="no-image-text">Empty</span>
-                                        </div>
-                                    </div>
-                                    
-                                    <div th:if="${oldProduct == null || oldUrl == newUrl}">
-                                        <img th:if="${newUrl != null && newUrl != ''}" 
-                                             th:src="${newUrl}"
-                                             height="60" width="60" 
-                                             style="object-fit: cover; border-radius: 4px;" />
-                                        <span th:if="${newUrl == null || newUrl == ''}" 
-                                              class="no-image-text">Empty</span>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                            <!-- Second Sub Image -->
+                            <tr>
+                                <td><strong>Hình ảnh phụ 2</strong></td>
+                                <td th:class="${viewDto.oldSecondSubImage != null} ? 'new-value' : 'no-change'">
+                                    <img th:src="${viewDto.newSecondSubImage}" 
+                                         alt="New Second Sub Image" 
+                                         style="max-width: 150px; max-height: 150px; object-fit: cover;">
+                                </td>
+                                <td th:if="${!isCreate}" th:class="${viewDto.oldSecondSubImage != null} ? 'old-value' : 'no-change'">
+                                    <img th:if="${viewDto.oldSecondSubImage != null}" 
+                                         th:src="${viewDto.oldSecondSubImage}" 
+                                         alt="Old Second Sub Image" 
+                                         style="max-width: 150px; max-height: 150px; object-fit: cover;">
+                                    <span th:if="${viewDto.oldSecondSubImage == null}" class="text-muted">Không thay đổi</span>
+                                </td>
+                            </tr>
+
+                            <!-- Third Sub Image -->
+                            <tr>
+                                <td><strong>Hình ảnh phụ 3</strong></td>
+                                <td th:class="${viewDto.oldThirdSubImage != null} ? 'new-value' : 'no-change'">
+                                    <img th:src="${viewDto.newThirdSubImage}" 
+                                         alt="New Third Sub Image" 
+                                         style="max-width: 150px; max-height: 150px; object-fit: cover;">
+                                </td>
+                                <td th:if="${!isCreate}" th:class="${viewDto.oldThirdSubImage != null} ? 'old-value' : 'no-change'">
+                                    <img th:if="${viewDto.oldThirdSubImage != null}" 
+                                         th:src="${viewDto.oldThirdSubImage}" 
+                                         alt="Old Third Sub Image" 
+                                         style="max-width: 150px; max-height: 150px; object-fit: cover;">
+                                    <span th:if="${viewDto.oldThirdSubImage == null}" class="text-muted">Không thay đổi</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
+        
+        
 
         <!-- Action Buttons -->
         <div class="card">
             <div class="card-body">
                 <div class="btn-group-action" style="border-top: none; margin-top: 0; padding-top: 0;">
                     <form th:action="@{/manager/approve-product-request}" method="post" style="flex: 1;">
-                        <input type="hidden" name="requestId" th:value="${requestId}" />
+                        <input type="hidden" name="requestId" th:value="${sellerRequest.id}" />
                         <button type="submit" th:if="${isPending}" class="btn btn-success" style="width: 100%;">
                             <i class="bi bi-check-circle"></i> Duyệt yêu cầu
                         </button>
                     </form>
 
                     <form th:action="@{/manager/reject-product-request}" method="post" style="flex: 1;">
-                        <input type="hidden" name="requestId" th:value="${requestId}" />
+                        <input type="hidden" name="requestId" th:value="${sellerRequest.id}" />
                         <button type="submit" th:if="${isPending}" class="btn btn-danger" style="width: 100%;">
                             <i class="bi bi-x-circle"></i> Từ chối yêu cầu
                         </button>

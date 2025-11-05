@@ -4502,7 +4502,7 @@ INSERT INTO seller_request_status (id, name)
 VALUES 
     (1, 'Đang Chờ Duyệt'),
     (2, 'Đã Duyệt'),
-	(3,'Đã Cập Nhật');
+	(3,'Đã Từ Chối');
 INSERT INTO seller_request_type (id, name)
 VALUES 
     (1, 'Thêm mới'),

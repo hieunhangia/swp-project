@@ -24,6 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.swp.project.dto.RevenueDto;
 import com.swp.project.dto.StaffDto;
+import com.swp.project.dto.ViewProductRequestDetailDto;
 import com.swp.project.entity.address.CommuneWard;
 import com.swp.project.entity.address.ProvinceCity;
 import com.swp.project.entity.order.Bill;
@@ -516,6 +517,7 @@ public class ManagerController {
 
             model.addAttribute("sellerRequest", sellerRequest);
             model.addAttribute("isPending", sellerRequestStatusService.isPendingStatus(sellerRequest));
+            model.addAttribute("isCreate", sellerRequestTypeService.isAddType(sellerRequest));
             return returnPage;
         } catch (NullPointerException e) {
             redirectAttributes.addFlashAttribute("error", "Dữ liệu yêu cầu không đầy đủ");
@@ -582,31 +584,25 @@ public class ManagerController {
                 throw new IllegalArgumentException("Không thể đọc dữ liệu sản phẩm");
             }
             
+            Product oldProduct = null;
+            
             if (sellerRequestTypeService.isUpdateType(sellerRequest)) {
                 if (sellerRequestStatusService.isPendingStatus(sellerRequest)) {
                     Product oldProductFromContent = sellerRequestService.getEntityFromContent(
                             sellerRequest.getOldContent(), Product.class);
                     if (oldProductFromContent != null) {
-                        Product oldProduct = productService.getProductById(oldProductFromContent.getId());
-                        model.addAttribute("oldProduct", oldProduct);
+                        oldProduct = productService.getProductById(oldProductFromContent.getId());
                     }
                 } else {
-                    Product oldProduct = sellerRequestService.getEntityFromContent(
+                    oldProduct = sellerRequestService.getEntityFromContent(
                             sellerRequest.getOldContent(), Product.class);
-                    model.addAttribute("oldProduct", oldProduct);
                 }
             }
             
+            // Use DTO for both create and update types
+            ViewProductRequestDetailDto viewDto = new ViewProductRequestDetailDto(oldProduct, newProduct);
+            model.addAttribute("viewDto", viewDto);
             model.addAttribute("newProduct", newProduct);
-            
-            // Add sub-images with null safety and size validation
-            if (newProduct.getSub_images() != null && newProduct.getSub_images().size() >= 3) {
-                model.addAttribute("firstNewImage", newProduct.getSub_images().get(0).getSub_image_url());
-                model.addAttribute("secondNewImage", newProduct.getSub_images().get(1).getSub_image_url());
-                model.addAttribute("thirdNewImage", newProduct.getSub_images().get(2).getSub_image_url());
-            } else {
-                throw new IllegalStateException("Sản phẩm phải có ít nhất 3 hình ảnh phụ");
-            }
             
             return "pages/manager/product-request-details";
         } catch (Exception e) {

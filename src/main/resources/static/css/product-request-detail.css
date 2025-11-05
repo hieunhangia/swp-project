@@ -246,6 +246,50 @@ ul li {
     color: var(--text-dark);
 }
 
+/* Table cell highlighting for changes */
+.old-value {
+    background-color: #ffe6e6 !important;
+    border-left: 4px solid #dc3545;
+    transition: background-color 0.2s ease;
+}
+
+.new-value {
+    background-color: #e6ffe6 !important;
+    border-left: 4px solid #198754;
+    transition: background-color 0.2s ease;
+}
+
+.no-change {
+    background-color: #f8f9fa;
+}
+
+.text-muted {
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.table-bordered {
+    border: 1px solid var(--border-color);
+}
+
+.table-bordered th,
+.table-bordered td {
+    border: 1px solid var(--border-color);
+}
+
+.card-header {
+    background-color: var(--light-gray);
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
 .change-arrow {
     display: block;
     text-align: center;
