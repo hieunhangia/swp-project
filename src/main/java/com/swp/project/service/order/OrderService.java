@@ -153,6 +153,7 @@ public class OrderService {
                                 .order(order)
                                 .product(cartItem.getProduct())
                                 .quantity(cartItem.getQuantity())
+                                .price(cartItem.getProduct().getPrice())
                                 .build()).collect(Collectors.toList());
         order.setOrderItem(orderItems);
         orderRepository.save(order);
@@ -189,6 +190,7 @@ public class OrderService {
                             .order(order)
                             .product(item.getProduct())
                             .quantity(item.getQuantity())
+                            .price(item.getProduct().getPrice())
                             .build());
                 });
         order.setOrderItem(orderItems);
@@ -271,9 +273,7 @@ public class OrderService {
     }
 
     public Long calculateTotalAmount(Order order) {
-        return order.getOrderItem().stream()
-                .mapToLong(item -> (long) (item.getProduct().getPrice() * item.getQuantity() / 1000) * 1000)
-                .sum();
+        return order.getTotalAmount();
     }
 
     public long getTotalOrders(){
