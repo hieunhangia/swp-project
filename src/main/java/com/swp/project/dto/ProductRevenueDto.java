@@ -10,7 +10,9 @@ import lombok.*;
 public class ProductRevenueDto {
     private Long productId;
     private String productName;
+    private String productUnit;
     private String mainImageUrl;
     private Double totalSold;
     private Long revenue;
+
 }

@@ -462,13 +462,6 @@ public class ManagerController {
         model.addAttribute("change", change);
         model.addAttribute("daysReport", daysReport);
         model.addAttribute("monthsReport", monthsReport);
-        model.addAttribute("totalUnitSold", totalUnitSold == null ? 0 : totalUnitSold);
-        model.addAttribute("revenueToday", revenueToday == null ? 0 : revenueToday);
-        model.addAttribute("revenueThisWeek", revenueThisWeek == null ? 0 : revenueThisWeek);
-        model.addAttribute("revenueThisMonth", revenueThisMonth == null ? 0 : revenueThisMonth);
-        model.addAttribute("dailyPercentageChange", dailyPercentageChange);
-        model.addAttribute("weeklyPercentageChange", weeklyPercentageChange);
-        model.addAttribute("monthlyPercentageChange", monthlyPercentageChange);
         model.addAttribute("totalOrder",orderService.getTotalOrders());
         model.addAttribute("deliverOrder",orderService.getTotalDeliveredOrders());
         model.addAttribute("processingOrder",orderService.getTotalProcessingOrders());

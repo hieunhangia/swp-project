@@ -154,6 +154,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
         SELECT 
             p.id AS productId,
             p.name AS productName,
+            pu.name AS productUnit,
             p.main_image_url AS mainImageUrl,
             COALESCE(SUM(
                 CASE 
@@ -177,15 +178,16 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
         LEFT JOIN order_item oi ON oi.product_id = p.id
         LEFT JOIN orders o ON oi.order_id = o.id
         LEFT JOIN order_status os ON o.order_status_id = os.id
-        GROUP BY p.id, p.name, p.main_image_url
-        ORDER BY revenue DESC
+                LEFT JOIN product_unit pu ON pu.id = p.unit_id
+          GROUP BY p.id, p.name,pu.name ,p.main_image_url
+                ORDER BY revenue DESC
         """, nativeQuery = true)
     Page<Object[]> getProductSalesAndRevenue(Pageable pageable);
 
     @Query(
             value = """
   SELECT 
-    p.id, p.name, p.main_image_url,
+    p.id, p.name,pu.name ,p.main_image_url,
     COALESCE(SUM(CASE
       WHEN o.payment_method_id = 'COD' AND os.name = 'Đã Giao Hàng' THEN oi.quantity
       WHEN o.payment_method_id = 'QR' AND os.name IN ('Đã Giao Hàng','Đang Giao Hàng','Đang Chuẩn Bị Hàng') THEN oi.quantity
@@ -198,8 +200,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
   LEFT JOIN order_item oi ON oi.product_id = p.id
   LEFT JOIN orders o ON oi.order_id = o.id
   LEFT JOIN order_status os ON o.order_status_id = os.id
+        LEFT JOIN product_unit pu ON pu.id = p.unit_id
   WHERE (:keyWord IS NULL OR unaccent(lower(p.name)) LIKE unaccent(lower(CONCAT('%', :keyWord, '%'))))
-  GROUP BY p.id, p.name, p.main_image_url
+  GROUP BY p.id, p.name,pu.name ,p.main_image_url
   ORDER BY revenue DESC
   """, nativeQuery = true
     )
@@ -210,6 +213,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
         SELECT 
             p.id AS productId,
             p.name AS productName,
+            pu.name AS productUnit,
             p.main_image_url AS mainImageUrl,
             COALESCE(SUM(
                 CASE 
@@ -233,7 +237,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
         LEFT JOIN order_item oi ON oi.product_id = p.id
         LEFT JOIN orders o ON oi.order_id = o.id
         LEFT JOIN order_status os ON o.order_status_id = os.id
-        GROUP BY p.id, p.name, p.main_image_url
+                LEFT JOIN product_unit pu ON pu.id = p.unit_id
+        GROUP BY p.id, p.name,pu.name ,p.main_image_url
         ORDER BY revenue DESC
         LIMIT 5
         """, nativeQuery = true)

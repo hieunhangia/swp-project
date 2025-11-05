@@ -275,6 +275,29 @@
                 height: 40px;
             }
         }
+        .view-detail-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: var(--primary);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .view-detail-link:hover {
+            background: #0b5ed7;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(13, 110, 253, 0.3);
+        }
+
+        .view-detail-link i {
+            font-size: 16px;
+        }
 
     </style>
 </head>
@@ -411,6 +434,14 @@
                                 </td>
                                 <td style="text-align: right; font-weight: 600;" th:text="${#numbers.formatInteger(item.revenue, 0, 'POINT')} + ' ₫'"></td>
                             </tr>
+                            <tr>
+                                <td colspan="2" style="padding-top: 1rem; border-top: 2px solid var(--border-color);">
+                                    <a th:href="@{/seller/product-report}" class="view-detail-link">
+                                        <i class="bi bi-bar-chart-line"></i> Xem thống kê chi tiết
+                                    </a>
+                                </td>
+                            </tr>
+
                             </tbody>
                         </table>
                     </div>
