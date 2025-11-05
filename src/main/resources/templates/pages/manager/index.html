@@ -303,15 +303,6 @@
             </h2>
         </div>
 
-        <div class="stats-overview">
-            <h3>
-                <i class="bi bi-graph-up-arrow"></i> Tổng quan bán hàng
-            </h3>
-            <div class="stats-number" th:text="${totalUnitSold}">0</div>
-            <div class="stats-label">
-                <i class="bi bi-box-seam"></i> Tổng số sản phẩm đã bán
-            </div>
-        </div>
 
         <div class="dashboard-row">
             <div class="order-stats-section">
@@ -350,44 +341,10 @@
                 <h5 class="section-title">
                     <i class="bi bi-graph-up"></i> Biểu đồ doanh thu
                 </h5>
-                <canvas id="growthChart"></canvas>
+                <canvas id="growthChart1"></canvas>
             </div>
         </div>
 
-        <div class="revenue-grid">
-            <div class="revenue-item">
-                <div class="revenue-label">
-                    <i class="bi bi-calendar-day"></i> Doanh thu hôm nay
-                </div>
-                <div class="revenue-amount" th:text="${#numbers.formatDecimal(revenueToday, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">0 VNĐ</div>
-                <div class="revenue-change">
-                    <i class="bi bi-graph-up-arrow"></i>
-                    <span th:text="'Tăng ' + ${dailyPercentageChange} + '% so với hôm qua'"></span>
-                </div>
-            </div>
-
-            <div class="revenue-item">
-                <div class="revenue-label">
-                    <i class="bi bi-calendar-week"></i> Doanh thu tuần này
-                </div>
-                <div class="revenue-amount" th:text="${#numbers.formatDecimal(revenueThisWeek, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">0 VNĐ</div>
-                <div class="revenue-change">
-                    <i class="bi bi-graph-up-arrow"></i>
-                    <span th:text="'Tăng ' + ${weeklyPercentageChange} + '% so với tuần trước'"></span>
-                </div>
-            </div>
-
-            <div class="revenue-item">
-                <div class="revenue-label">
-                    <i class="bi bi-calendar-month"></i> Doanh thu tháng này
-                </div>
-                <div class="revenue-amount" th:text="${#numbers.formatDecimal(revenueThisMonth, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">0 VNĐ</div>
-                <div class="revenue-change">
-                    <i class="bi bi-graph-up-arrow"></i>
-                    <span th:text="'Tăng ' + ${monthlyPercentageChange} + '% so với tháng trước'"></span>
-                </div>
-            </div>
-        </div>
 
         <div>
             <form th:action="@{/manager/report}" method="get">
@@ -444,20 +401,17 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script th:inline="javascript">
     /*<![CDATA[*/
-    const revenueToday = /*[[${revenueToday}]]*/ 0;
-    const revenueThisWeek = /*[[${revenueThisWeek}]]*/ 0;
-    const revenueThisMonth = /*[[${revenueThisMonth}]]*/ 0;
+    const selectedLabel  = /*[[${label}]]*/ 'Doanh thu';
+    const selectedAmount = /*[[${amount}]]*/ 0;
 
-    const clean = v => Number.isFinite(v) ? v : 0;
-
-    const gctx = document.getElementById('growthChart').getContext('2d');
-    new Chart(gctx, {
+    const gctx1 = document.getElementById('growthChart1').getContext('2d');
+    new Chart(gctx1, {
         type: 'bar',
         data: {
-            labels: ['Hôm nay', 'Tuần này', 'Tháng này'],
+            labels: [selectedLabel],
             datasets: [{
                 label: 'Doanh thu (VND)',
-                data: [clean(revenueToday), clean(revenueThisWeek), clean(revenueThisMonth)],
+                data: [selectedAmount],
                 backgroundColor: 'rgba(13, 110, 253, 0.7)',
                 borderColor: 'rgba(13, 110, 253, 1)',
                 borderWidth: 2,
@@ -470,27 +424,17 @@
             plugins: {
                 legend: { display: false },
                 tooltip: {
-                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                    padding: 12,
-                    callbacks: {
-                        label: function(context) {
-                            return 'Doanh thu: ' + context.parsed.y.toLocaleString('vi-VN') + ' VND';
-                        }
-                    }
+                    callbacks: { label: (ctx) => 'Doanh thu: ' + ctx.parsed.y.toLocaleString('vi-VN') + ' VND' }
                 }
             },
             scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        callback: function(value) {
-                            return value.toLocaleString('vi-VN') + ' VND';
-                        }
-                    }
+                y: { beginAtZero: true,
+                    ticks: { callback: (v) => v.toLocaleString('vi-VN') + ' VND' }
                 }
             }
         }
     });
+    /*]]>*/
 
     const daysRaw = /*[[${daysReport}]]*/ [];
     const monthsRaw = /*[[${monthsReport}]]*/ [];
@@ -607,5 +551,6 @@
     }
     /*]]>*/
 </script>
+
 </body>
 </html>

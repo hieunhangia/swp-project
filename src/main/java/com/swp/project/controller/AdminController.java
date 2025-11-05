@@ -34,7 +34,7 @@ public class AdminController {
 
     @GetMapping("")
     public String showAdminMainPage(Model model) {
-        return "pages/admin/index";
+        return "redirect:/admin/report";
     }
 
     @GetMapping("/create-manager")
@@ -122,6 +122,51 @@ public class AdminController {
         return "pages/admin/statistic-report";
     }
 
+    @GetMapping("/report")
+    public String getAdminReport(@RequestParam(defaultValue = "day") String timeSelected,
+                                   Model model) {
+        Long totalUnitSold = orderService.getUnitSold();
+        Long revenueToday = orderService.getRevenueToday();
+        Long revenueThisWeek = orderService.getRevenueThisWeek();
+        Long revenueThisMonth = orderService.getRevenueThisMonth();
+        double dailyPercentageChange = orderService.getDailyPercentageChange();
+        double weeklyPercentageChange = orderService.getWeeklyPercentageChange();
+        double monthlyPercentageChange = orderService.getMonthlyPercentageChange();
+        List<RevenueDto> daysReport = orderService.getDaysRevenue();
+        List<RevenueDto> monthsReport = orderService.getMonthsRevenue();
+        String label  = "Doanh thu hôm nay";
+        long amount   = revenueToday == null ? 0 : revenueToday;
+        double change = dailyPercentageChange;
+        switch(timeSelected) {
+            case "week":
+                label = "Doanh thu tuần này";
+                amount = revenueThisWeek == null ? 0 : revenueThisWeek;
+                change = weeklyPercentageChange;
+                break;
+            case "month":
+                label = "Doanh thu tháng này";
+                amount = revenueThisMonth == null ? 0 : revenueThisMonth;
+                change = monthlyPercentageChange;
+                break;
+            case "day":
+            default:
+
+                break;
+        }
+        model.addAttribute("timeSelected", timeSelected);
+        model.addAttribute("label", label);
+        model.addAttribute("amount", amount);
+        model.addAttribute("change", change);
+        model.addAttribute("daysReport", daysReport);
+        model.addAttribute("monthsReport", monthsReport);
+        model.addAttribute("totalOrder",orderService.getTotalOrders());
+        model.addAttribute("deliverOrder",orderService.getTotalDeliveredOrders());
+        model.addAttribute("processingOrder",orderService.getTotalProcessingOrders());
+        model.addAttribute("pendingOrder",orderService.getTotalPendingOrders());
+        model.addAttribute("shippingOrder",orderService.getTotalShippingOrders());
+        model.addAttribute("totalCanceledOrder", orderService.getTotalCancelledOrders());
+        return "pages/admin/index";
+    }
     @GetMapping("/provinces")
     @ResponseBody
     public List<ProvinceDto> getAllProvinceCities() {
