@@ -25,7 +25,6 @@
 
         .layout {
             display: flex;
-            min-height: 100vh;
         }
 
         .main-content {
@@ -33,6 +32,7 @@
             margin-left: 260px;
             padding: 30px;
             background: var(--white);
+
         }
 
         .header {
