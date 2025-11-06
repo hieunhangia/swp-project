@@ -44,22 +44,6 @@ public class SecurityConfig {
             "/api/products/**"  // api sản phẩm
     };
 
-    private static final String[] ADMIN_ALLOWED = {
-            "/admin/**"
-    };
-
-    private static final String[] MANAGER_ALLOWED = {
-            "/manager/**"
-    };
-
-    private static final String[] SELLER_ALLOWED = {
-            "/seller/**"
-    };
-
-    private static final String[] SHIPPER_ALLOWED = {
-            "/shipper/**"
-    };
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -76,10 +60,6 @@ public class SecurityConfig {
                 .addFilterBefore(captchaValidationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(i -> i
                         .requestMatchers(ALL_ALLOWED).permitAll()
-                        .requestMatchers(ADMIN_ALLOWED).hasAuthority("Admin")
-                        .requestMatchers(MANAGER_ALLOWED).hasAuthority("Manager")
-                        .requestMatchers(SELLER_ALLOWED).hasAuthority("Seller")
-                        .requestMatchers(SHIPPER_ALLOWED).hasAuthority("Shipper")
                         .anyRequest().authenticated()
                 ).csrf(csrf -> csrf
                         .ignoringRequestMatchers("/webhook")
