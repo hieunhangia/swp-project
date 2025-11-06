@@ -347,7 +347,7 @@
 
 
         <div>
-            <form th:action="@{/manager/report}" method="get">
+            <form th:action="@{/admin/report}" method="get">
                 <select name ="timeSelected" th:onchange="this.form.submit()">
                     <option value="day"   th:selected="${timeSelected=='day'}">Hôm nay</option>
                     <option value="week"  th:selected="${timeSelected=='week'}">Tuần này</option>
@@ -376,7 +376,7 @@
                     <h5 class="section-title">
                         <i class="bi bi-calendar-week"></i> Doanh thu 7 ngày gần đây
                     </h5>
-                    <a class="export-btn" th:href="@{/manager/days/export-excel}">
+                    <a class="export-btn" th:href="@{/admin/days/export-excel}">
                         <i class="bi bi-file-earmark-excel"></i> Xuất Excel
                     </a>
                 </div>
@@ -388,7 +388,7 @@
                     <h5 class="section-title">
                         <i class="bi bi-calendar-range"></i> Doanh thu 12 tháng gần đây
                     </h5>
-                    <a class="export-btn" th:href="@{/manager/months/export-excel}">
+                    <a class="export-btn" th:href="@{/admin/months/export-excel}">
                         <i class="bi bi-file-earmark-excel"></i> Xuất Excel
                     </a>
                 </div>
