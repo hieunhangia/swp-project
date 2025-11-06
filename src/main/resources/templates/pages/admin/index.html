@@ -327,7 +327,7 @@
                     <i class="bi bi-cash-stack"></i> Doanh thu
                 </h5>
                 <div class="time-selector">
-                    <form th:action="@{/admin/report}" method="get">
+                    <form th:action="@{/admin}" method="get">
                         <select name="timeSelected" th:onchange="this.form.submit()">
                             <option value="day" th:selected="${timeSelected=='day'}">Hôm nay</option>
                             <option value="week" th:selected="${timeSelected=='week'}">Tuần này</option>
