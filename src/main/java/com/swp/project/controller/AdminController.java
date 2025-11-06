@@ -34,7 +34,7 @@ public class AdminController {
 
     @GetMapping("")
     public String showAdminMainPage(Model model) {
-        return "redirect:/admin/report";
+        return "forward:/admin/report";
     }
 
     @GetMapping("/create-manager")
