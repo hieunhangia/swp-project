@@ -409,24 +409,7 @@ public class ManagerController {
         }
     }
 
-    @GetMapping("/statistic-report")
-    public String getManagerStastisticReport(Model model) {
-        Long totalUnitSold = orderService.getUnitSold();
-        Long revenueToday = orderService.getRevenueToday();
-        Long revenueThisWeek = orderService.getRevenueThisWeek();
-        Long revenueThisMonth = orderService.getRevenueThisMonth();
-        double dailyPercentageChange = orderService.getDailyPercentageChange();
-        double weeklyPercentageChange = orderService.getWeeklyPercentageChange();
-        double monthlyPercentageChange = orderService.getMonthlyPercentageChange();
-        model.addAttribute("totalUnitSold", totalUnitSold == null ? 0 : totalUnitSold);
-        model.addAttribute("revenueToday", revenueToday == null ? 0 : revenueToday);
-        model.addAttribute("revenueThisWeek", revenueThisWeek == null ? 0 : revenueThisWeek);
-        model.addAttribute("revenueThisMonth", revenueThisMonth == null ? 0 : revenueThisMonth);
-        model.addAttribute("dailyPercentageChange", dailyPercentageChange);
-        model.addAttribute("weeklyPercentageChange", weeklyPercentageChange);
-        model.addAttribute("monthlyPercentageChange", monthlyPercentageChange);
-        return "pages/manager/statistic-report";
-    }
+
 
     @GetMapping("/report")
     public String getManagerReport(@RequestParam(defaultValue = "day") String timeSelected,
@@ -474,15 +457,7 @@ public class ManagerController {
         return "pages/manager/index";
     }
 
-    @GetMapping("/detail-report")
-    public String getDetailReport(Model model) {
-        List<RevenueDto> daysReport = orderService.getDaysRevenue();
-        List<RevenueDto> monthsReport = orderService.getMonthsRevenue();
-        model.addAttribute("daysReport", daysReport);
-        model.addAttribute("monthsReport", monthsReport);
-        return "pages/manager/detail-report";
 
-    }
 
     @GetMapping("/all-products-request")
     public String getAllProductsRequest(
