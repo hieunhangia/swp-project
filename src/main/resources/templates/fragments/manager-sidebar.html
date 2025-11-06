@@ -129,7 +129,14 @@
     </style>
 
     <div class="sidebar">
+        <div class="sidebar-header" style="text-align: center; margin-bottom: 10px;">
+            <img src="/images/icons/logo.png" alt="FruitShop Logo"
+                 style="width:150px; height:150px; object-fit:contain;">
+        </div>
         <h2><i class="bi bi-gear"></i> Manager Panel</h2>
+        <a th:href="@{/admin}">
+            <i class="bi bi-speedometer2"></i> <span style="margin-left: 12px;">Bảng điều khiển</span>
+        </a>
         <a th:href="@{/manager/manage-seller}">
             <i class="bi bi-people"></i> <span style="margin-left: 12px;">Quản lý người bán</span>
         </a>
