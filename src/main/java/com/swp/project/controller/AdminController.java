@@ -252,4 +252,7 @@ public class AdminController {
         redirectAttributes.addFlashAttribute("success", "Cập nhật cài đặt thành công.");
         return "redirect:/admin/setting";
     }
+
+
+
 }
