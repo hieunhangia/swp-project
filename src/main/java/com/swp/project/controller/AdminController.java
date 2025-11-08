@@ -3,6 +3,7 @@ package com.swp.project.controller;
 import com.swp.project.dto.*;
 import com.swp.project.entity.user.Manager;
 import com.swp.project.service.AddressService;
+import com.swp.project.service.AiService;
 import com.swp.project.service.SettingService;
 import com.swp.project.service.order.OrderService;
 import com.swp.project.service.user.ManagerService;
@@ -11,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -31,6 +34,7 @@ public class AdminController {
     private final OrderService orderService;
     private final AddressService addressService;
     private final SettingService settingService;
+    private final AiService aiService;
 
     @GetMapping("")
     public String showAdminMainPage(@RequestParam(defaultValue = "day") String timeSelected,
@@ -227,5 +231,11 @@ public class AdminController {
     }
 
 
+    @PostMapping("/synchronize-vector-database")
+    public String synchronizeVectorDatabase(RedirectAttributes redirectAttributes) {
+        CompletableFuture.runAsync(aiService::synchronizeVectorStoreWithAllProductInDatabase);
+        redirectAttributes.addFlashAttribute("msg", "Yêu cầu đồng bộ cơ sở dữ liệu AI với thông tin sản phẩm trong hệ thống đang được thực thi, có thể mất vài phút để hoàn thành");
+        return "redirect:/admin";
+    }
 
 }
