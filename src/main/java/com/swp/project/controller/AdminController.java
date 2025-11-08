@@ -214,6 +214,8 @@ public class AdminController {
         model.addAttribute("shopPhone", settingService.getShopPhone());
         model.addAttribute("shopEmail", settingService.getShopEmail());
         model.addAttribute("shopSlogan", settingService.getShopSlogan());
+        model.addAttribute("shopFacebook", settingService.getShopFacebook());
+        model.addAttribute("shopInstagram", settingService.getShopInstagram());
         return "pages/admin/setting";
     }
 
