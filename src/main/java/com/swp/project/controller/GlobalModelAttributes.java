@@ -30,5 +30,13 @@ public class GlobalModelAttributes {
     public String shopSlogan() {
         return settingService.getShopSlogan();
     }
+    @ModelAttribute("shopFacebook")
+    public String shopFacebook() {
+        return settingService.getShopFacebook();
+    }
+    @ModelAttribute("shopInstagram")
+    public String shopInstagram() {
+        return settingService.getShopInstagram();
+    }
 
 }
