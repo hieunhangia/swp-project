@@ -242,6 +242,84 @@
             margin-bottom: 1rem;
         }
 
+        .alert-message {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .alert-message.success {
+            background: #d1e7dd;
+            border-color: #badbcc;
+            color: #0f5132;
+        }
+
+        .alert-message.error {
+            background: #f8d7da;
+            border-color: #f5c2c7;
+            color: #842029;
+        }
+
+        .alert-message.info {
+            background: #cff4fc;
+            border-color: #b6effb;
+            color: #055160;
+        }
+
+        .alert-message i {
+            font-size: 1.25rem;
+        }
+
+        .alert-message p {
+            margin: 0;
+            flex: 1;
+            font-size: 0.95rem;
+        }
+
+        .sync-section {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 24px;
+        }
+
+        .sync-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            box-shadow: 0 4px 6px rgba(102, 126, 234, 0.3);
+            background-color: #0d6efd;
+            color: white;
+        }
+
+        .sync-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .sync-btn:active {
+            transform: translateY(0);
+        }
+
+        .sync-btn i {
+            font-size: 1.1rem;
+        }
+
         @media (max-width: 1400px) {
             .order-stats-grid {
                 grid-template-columns: repeat(3, 1fr);
@@ -285,6 +363,12 @@
             <h2>
                 <i class="bi bi-speedometer2"></i> Dashboard - Tổng quan quản lý
             </h2>
+        </div>
+
+        <!-- Thông báo -->
+        <div th:if="${msg}" class="alert-message success">
+            <i class="bi bi-check-circle-fill"></i>
+            <p th:text="${msg}"></p>
         </div>
 
         <!-- Thống kê đơn hàng -->
@@ -383,6 +467,22 @@
                 </div>
                 <canvas id="monthsChart"></canvas>
             </div>
+        </div>
+
+        <!-- Đồng bộ cơ sở dữ liệu AI -->
+        <div class="sync-section">
+            <h5 class="section-title">
+                <i class="bi bi-robot"></i> Quản lý cơ sở dữ liệu AI
+            </h5>
+            <p style="color: var(--text-muted); margin-bottom: 1rem; font-size: 0.9rem;">
+                Đồng bộ thông tin sản phẩm trong hệ thống với cơ sở dữ liệu AI để đảm bảo thông tin sản phẩm AI đưa ra luôn chính xác.
+            </p>
+            <form method="post" th:action="@{/admin/synchronize-vector-database}" style="display: inline-block;">
+                <button type="submit" class="sync-btn">
+                    <i class="bi bi-arrow-repeat"></i>
+                    Đồng bộ cơ sở dữ liệu AI với thông tin sản phẩm trong hệ thống
+                </button>
+            </form>
         </div>
     </div>
 </div>
