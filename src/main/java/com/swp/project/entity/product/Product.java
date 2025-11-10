@@ -16,7 +16,7 @@ import org.hibernate.annotations.Formula;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-@EqualsAndHashCode(exclude = {"soldQuantity", "quantity"})
+@EqualsAndHashCode(exclude = {"soldQuantity"})
 @Entity
 public class Product implements Serializable{
 
@@ -27,7 +27,7 @@ public class Product implements Serializable{
         this.price = dto.getPrice();
         this.unit = dto.getUnit();
         this.main_image_url = dto.getMainImage();
-        this.enabled = dto.getEnabled();
+        this.enabled = dto.isEnabled();
         this.quantity = dto.getQuantity();
         this.categories = dto.getFinalCategories();
         this.heldQuantity = dto.getHeldQuantity();

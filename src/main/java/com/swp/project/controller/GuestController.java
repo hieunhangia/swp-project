@@ -4,7 +4,6 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.swp.project.dto.AiMessageDto;
 import com.swp.project.dto.CategoryDto;
 import com.swp.project.dto.RegisterDto;
@@ -30,7 +28,6 @@ import com.swp.project.service.AiService;
 import com.swp.project.service.product.CategoryService;
 import com.swp.project.service.product.ProductService;
 import com.swp.project.service.user.CustomerService;
-
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -126,11 +123,9 @@ public class GuestController {
         try {
             model.addAttribute("url", "/");
             model.addAttribute("Title", "Trang danh sách sản phẩm");
-
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
         return "pages/guest/homepage";
     }
 
@@ -208,7 +203,7 @@ public class GuestController {
     @GetMapping("/api/categories")
     @ResponseBody
     public List<CategoryDto> getCategory() {
-        return categoryService.getAllCategories().stream().map(category -> {
+        return categoryService.getAllActiveCategories().stream().map(category -> {
             CategoryDto dto = new CategoryDto();
             dto.setId(category.getId());
             dto.setName(category.getName());
