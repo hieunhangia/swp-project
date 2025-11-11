@@ -47,14 +47,12 @@ public class GuestController {
 
     @GetMapping("/login")
     public String showLoginForm(Model model) {
-        model.addAttribute("siteKey", recaptchaSite);
         return "/pages/guest/login";
     }
 
     @GetMapping("/register")
     public String showRegisterForm(Model model) {
         model.addAttribute("registerDto", new RegisterDto());
-        model.addAttribute("siteKey", recaptchaSite);
         return "/pages/guest/register";
     }
 
@@ -62,7 +60,6 @@ public class GuestController {
     public String processRegister(@Valid @ModelAttribute RegisterDto registerDto, BindingResult bindingResult,
             RedirectAttributes redirectAttributes, Model model) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("siteKey", recaptchaSite);
             return "/pages/guest/register";
         }
         try {
