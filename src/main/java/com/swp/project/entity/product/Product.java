@@ -74,7 +74,7 @@ public class Product implements Serializable{
     private double heldQuantity = 0;
 
     // Formula tính sold quantity trong DB - đang giao hàng,đã giao hàng và đang chuẩn bị hàng
-    @Formula("(SELECT COALESCE(SUM(oi.quantity), 0) " +
+    @Formula("(SELECT COALESCE(COUNT(DISTINCT o.id), 0) " +
             "FROM order_item oi " +
             "INNER JOIN orders o ON o.id = oi.order_id " +
             "INNER JOIN order_status os ON o.order_status_id = os.id " +
