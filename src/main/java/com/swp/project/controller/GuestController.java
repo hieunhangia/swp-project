@@ -47,20 +47,20 @@ public class GuestController {
 
     @GetMapping("/login")
     public String showLoginForm(Model model) {
-        return "/pages/guest/login";
+        return "pages/guest/login";
     }
 
     @GetMapping("/register")
     public String showRegisterForm(Model model) {
         model.addAttribute("registerDto", new RegisterDto());
-        return "/pages/guest/register";
+        return "pages/guest/register";
     }
 
     @PostMapping("/register")
     public String processRegister(@Valid @ModelAttribute RegisterDto registerDto, BindingResult bindingResult,
             RedirectAttributes redirectAttributes, Model model) {
         if (bindingResult.hasErrors()) {
-            return "/pages/guest/register";
+            return "pages/guest/register";
         }
         try {
             customerService.register(registerDto);
@@ -79,7 +79,7 @@ public class GuestController {
             return "redirect:/register";
         }
         model.addAttribute("email", email);
-        return "/pages/guest/verify-otp";
+        return "pages/guest/verify-otp";
     }
 
     @PostMapping("/verify-otp")
@@ -99,7 +99,7 @@ public class GuestController {
     @GetMapping("/forgot-password")
     public String showForgotPasswordForm(Model model) {
         model.addAttribute("siteKey", recaptchaSite);
-        return "/pages/guest/forgot-password";
+        return "pages/guest/forgot-password";
     }
 
     @PostMapping("/forgot-password")
