@@ -174,7 +174,7 @@ public class OrderService {
 
         Order order = orderRepository.save(Order.builder()
                 .paymentMethod(paymentMethodService.getQrMethod())
-                .paymentExpiredAt(LocalDateTime.now().plusMinutes(3)) // QR expires in 3 minutes
+                .paymentExpiredAt(LocalDateTime.now().plusMinutes(2)) // QR expires in 2 minutes
                 .orderStatus(orderStatusService.getPendingPaymentStatus())
                 .fullName(deliveryInfoDto.getFullName())
                 .phoneNumber(deliveryInfoDto.getPhone())
