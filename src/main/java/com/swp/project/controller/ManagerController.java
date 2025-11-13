@@ -854,13 +854,13 @@ public class ManagerController {
         (Integer) session.getAttribute("k"),
         (String) session.getAttribute("sortCriteriaInPage"));
 
-        model.addAttribute("k", session.getAttribute("k"));
-        model.addAttribute("bills", bills.getContent());
-        model.addAttribute("subpageIndex", session.getAttribute("subpageIndex"));
-        model.addAttribute("numEachPage", numEachPage);
-        model.addAttribute("sortCriteria", session.getAttribute("sortCriteria"));
-        model.addAttribute("sortCriteriaInPage", session.getAttribute("sortCriteriaInPage"));
-        model.addAttribute("queryName", session.getAttribute("queryName"));
+    model.addAttribute("k", session.getAttribute("k"));
+    model.addAttribute("bills", bills.getContent());
+    model.addAttribute("subpageIndex", session.getAttribute("subpageIndex"));
+    model.addAttribute("numEachPage", numEachPage);
+    model.addAttribute("sortCriteria", session.getAttribute("sortCriteria"));
+    model.addAttribute("sortCriteriaInPage", session.getAttribute("sortCriteriaInPage"));
+    model.addAttribute("queryName", session.getAttribute("queryName"));
     model.addAttribute("totalPages", bills.getTotalPages());
     model.addAttribute("billService", billService);
     // Add new search fields to model for form repopulation
