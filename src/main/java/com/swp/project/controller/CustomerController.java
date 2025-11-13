@@ -142,11 +142,15 @@ public class CustomerController {
                                    Principal principal) {
         List<ShoppingCartItem> cartItems = customerService.getCart(principal.getName());
         for(ShoppingCartItem item: cartItems) {
-        if (item.getProduct().getQuantity() <= 0) {
-            customerService.removeItem(principal.getName(), item.getProduct().getId());
+            if (item.getProduct().getQuantity() <= 0) {
+                customerService.removeItem(principal.getName(), item.getProduct().getId());
+            }
+            if (item.getQuantity() > item.getProduct().getQuantity()) {
+                item.setQuantity(item.getProduct().getQuantity());
+                customerService.updateCartQuantity(principal.getName(),
+                        item.getProduct().getId(), item.getQuantity());
+            }
         }
-    }
-
         List<Long> selectedIds = (List<Long>) session.getAttribute("selectedIds");
         if (selectedIds == null) {
             selectedIds = new ArrayList<>();

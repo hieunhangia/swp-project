@@ -46,7 +46,7 @@ public class GuestController {
     private String recaptchaSite;
 
     @GetMapping("/login")
-    public String showLoginForm(Model model) {
+    public String showLoginForm() {
         return "pages/guest/login";
     }
 
@@ -58,7 +58,7 @@ public class GuestController {
 
     @PostMapping("/register")
     public String processRegister(@Valid @ModelAttribute RegisterDto registerDto, BindingResult bindingResult,
-            RedirectAttributes redirectAttributes, Model model) {
+            RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             return "pages/guest/register";
         }
@@ -227,6 +227,11 @@ public class GuestController {
         model.addAttribute("subImages", subImages);
 
         double quantityInCart = customerService.getProductQuantityInCart(principal, id);
+
+        if(quantityInCart > product.getQuantity()) {
+            quantityInCart = product.getQuantity();
+            customerService.updateCartQuantity(principal.getName(), product.getId(), product.getQuantity());
+        }
 
         if (isAllowDecimal) {
             model.addAttribute("maxQuantity", product.getQuantity() - quantityInCart);
