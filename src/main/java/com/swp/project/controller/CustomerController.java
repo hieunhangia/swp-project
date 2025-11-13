@@ -150,6 +150,9 @@ public class CustomerController {
                 customerService.updateCartQuantity(principal.getName(),
                         item.getProduct().getId(), item.getQuantity());
             }
+            if(!item.getProduct().isEnabled()){
+                customerService.removeItem(principal.getName(), item.getProduct().getId());
+            }
         }
         List<Long> selectedIds = (List<Long>) session.getAttribute("selectedIds");
         if (selectedIds == null) {
