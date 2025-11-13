@@ -4,7 +4,6 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.swp.project.dto.AiMessageDto;
 import com.swp.project.dto.CategoryDto;
 import com.swp.project.dto.RegisterDto;
@@ -30,7 +28,6 @@ import com.swp.project.service.AiService;
 import com.swp.project.service.product.CategoryService;
 import com.swp.project.service.product.ProductService;
 import com.swp.project.service.user.CustomerService;
-
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -49,24 +46,21 @@ public class GuestController {
     private String recaptchaSite;
 
     @GetMapping("/login")
-    public String showLoginForm(Model model) {
-        model.addAttribute("siteKey", recaptchaSite);
-        return "/pages/guest/login";
+    public String showLoginForm() {
+        return "pages/guest/login";
     }
 
     @GetMapping("/register")
     public String showRegisterForm(Model model) {
         model.addAttribute("registerDto", new RegisterDto());
-        model.addAttribute("siteKey", recaptchaSite);
-        return "/pages/guest/register";
+        return "pages/guest/register";
     }
 
     @PostMapping("/register")
     public String processRegister(@Valid @ModelAttribute RegisterDto registerDto, BindingResult bindingResult,
-            RedirectAttributes redirectAttributes, Model model) {
+            RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("siteKey", recaptchaSite);
-            return "/pages/guest/register";
+            return "pages/guest/register";
         }
         try {
             customerService.register(registerDto);
@@ -85,7 +79,7 @@ public class GuestController {
             return "redirect:/register";
         }
         model.addAttribute("email", email);
-        return "/pages/guest/verify-otp";
+        return "pages/guest/verify-otp";
     }
 
     @PostMapping("/verify-otp")
@@ -105,7 +99,7 @@ public class GuestController {
     @GetMapping("/forgot-password")
     public String showForgotPasswordForm(Model model) {
         model.addAttribute("siteKey", recaptchaSite);
-        return "/pages/guest/forgot-password";
+        return "pages/guest/forgot-password";
     }
 
     @PostMapping("/forgot-password")
@@ -126,11 +120,9 @@ public class GuestController {
         try {
             model.addAttribute("url", "/");
             model.addAttribute("Title", "Trang danh sách sản phẩm");
-
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
         return "pages/guest/homepage";
     }
 
@@ -208,7 +200,7 @@ public class GuestController {
     @GetMapping("/api/categories")
     @ResponseBody
     public List<CategoryDto> getCategory() {
-        return categoryService.getAllCategories().stream().map(category -> {
+        return categoryService.getAllActiveCategories().stream().map(category -> {
             CategoryDto dto = new CategoryDto();
             dto.setId(category.getId());
             dto.setName(category.getName());
@@ -234,7 +226,16 @@ public class GuestController {
         model.addAttribute("product", product);
         model.addAttribute("subImages", subImages);
 
+        if (!product.isEnabled()){
+            customerService.removeItem(principal.getName(), product.getId());
+        }
+
         double quantityInCart = customerService.getProductQuantityInCart(principal, id);
+
+        if(quantityInCart > product.getQuantity()) {
+            quantityInCart = product.getQuantity();
+            customerService.updateCartQuantity(principal.getName(), product.getId(), product.getQuantity());
+        }
 
         if (isAllowDecimal) {
             model.addAttribute("maxQuantity", product.getQuantity() - quantityInCart);

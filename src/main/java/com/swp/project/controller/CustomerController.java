@@ -142,11 +142,18 @@ public class CustomerController {
                                    Principal principal) {
         List<ShoppingCartItem> cartItems = customerService.getCart(principal.getName());
         for(ShoppingCartItem item: cartItems) {
-        if (item.getProduct().getQuantity() <= 0) {
-            customerService.removeItem(principal.getName(), item.getProduct().getId());
+            if (item.getProduct().getQuantity() <= 0) {
+                customerService.removeItem(principal.getName(), item.getProduct().getId());
+            }
+            if (item.getQuantity() > item.getProduct().getQuantity()) {
+                item.setQuantity(item.getProduct().getQuantity());
+                customerService.updateCartQuantity(principal.getName(),
+                        item.getProduct().getId(), item.getQuantity());
+            }
+            if(!item.getProduct().isEnabled()){
+                customerService.removeItem(principal.getName(), item.getProduct().getId());
+            }
         }
-    }
-
         List<Long> selectedIds = (List<Long>) session.getAttribute("selectedIds");
         if (selectedIds == null) {
             selectedIds = new ArrayList<>();
@@ -229,7 +236,6 @@ public class CustomerController {
                                  RedirectAttributes redirectAttributes,
                                  Principal principal) {
 
-        // Kiểm tra đầu vào
         if (quantityStr == null || quantityStr.isBlank()) {
             redirectAttributes.addFlashAttribute("error", "Vui lòng nhập số lượng hợp lệ.");
             return "redirect:/customer/shopping-cart";

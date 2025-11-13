@@ -26,12 +26,11 @@ public class UpdateCategoryDto {
     @Length(max = 50, message = "Tên danh mục không được vượt quá 50 ký tự")
     private String name;
 
-    @NotNull(message = "Trạng thái hoạt động của danh mục không được để trống")
-    private Boolean isActive;
+    private boolean active;
 
     public UpdateCategoryDto(Category category) {
         this.id = category.getId();
         this.name = category.getName();
-        this.isActive = category.isActive();
+        this.active = category.isActive();
     }
 }

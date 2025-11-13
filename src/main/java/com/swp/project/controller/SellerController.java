@@ -46,6 +46,7 @@ public class SellerController {
     private final SellerRequestService sellerRequestService;
     private final ProductUnitService productUnitService;
     private final SellerService sellerService;
+    private final SellerRequestService sellerRequesService;
 
     @GetMapping("")
     public String index(Model model) {
@@ -202,9 +203,8 @@ public class SellerController {
             @PathVariable Long id,
             Model model) {
         Product product = productService.getProductById(id);
-        model.addAttribute("units", unitService.getAllUnits());
-        model.addAttribute("categories", categoryService.getAllCategories());
-        model.addAttribute("products", productService.getAllProducts());
+        model.addAttribute("units", unitService.getAllActiveProductUnits());
+        model.addAttribute("categories", categoryService.getAllActiveCategories());
         model.addAttribute("updateProductDto", new UpdateProductDto(product));
         return "pages/seller/product/update-product";
     }
@@ -236,9 +236,9 @@ public class SellerController {
     @GetMapping("/seller-create-product")
     public String showCreateProductForm(Model model) {
         CreateProductDto newProduct = new CreateProductDto();
-        newProduct.setCategories(categoryService.getAllCategories());
+        newProduct.setCategories(categoryService.getAllActiveCategories());
         model.addAttribute("productDto", newProduct);
-        model.addAttribute("units", unitService.getAllUnits());
+        model.addAttribute("units", unitService.getAllActiveProductUnits());
         return "pages/seller/product/create-product";
     }
 
@@ -298,8 +298,7 @@ public class SellerController {
             return "redirect:/seller/create-product-unit";
         }
         try {
-            ProductUnit productUnit = new ProductUnit(productUnitDto);
-            sellerRequestService.saveAddRequest(productUnit, principal.getName());
+            productUnitService.createNewProductUnit(productUnitDto,principal);
             redirectAttributes.addFlashAttribute("success", "Yêu cầu tạo đơn vị sản phẩm đã được gửi đến quản lý");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
@@ -335,12 +334,7 @@ public class SellerController {
             return "redirect:/seller/edit-product-unit?id=" + updateProductUnitDto.getId();
         }
         try {
-            ProductUnit oldProductUnit = productUnitService.getProductUnitById(updateProductUnitDto.getId());
-            if (oldProductUnit == null) {
-                throw new Exception("Không tìm thấy đơn vị sản phẩm");
-            }
-            ProductUnit newProductUnit = new ProductUnit(updateProductUnitDto);
-            sellerRequestService.saveUpdateRequest(oldProductUnit, newProductUnit, principal.getName());
+            productUnitService.updateProductUnit(updateProductUnitDto,principal);
             redirectAttributes.addFlashAttribute("success", "Yêu cầu cập nhật đơn vị sản phẩm đã được gửi đến quản lý");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
@@ -367,6 +361,12 @@ public class SellerController {
         }
         try {
             Category category = new Category(categoryDto);
+            if(categoryService.nameAlreadyExistsForCreate(category.getName())){
+                throw new Exception("Danh mục đã tồn tại");
+            }
+            if(categoryService.nameAlreadyExistsInSellerRequest(category.getName())){
+                throw new Exception("Danh mục đã tồn tại trong yêu cầu của người bán");
+            }
             sellerRequestService.saveAddRequest(category, principal.getName());
             redirectAttributes.addFlashAttribute("success", "Yêu cầu tạo danh mục đã được gửi đến quản lý");
         } catch (Exception e) {
@@ -378,11 +378,14 @@ public class SellerController {
     @GetMapping("/edit-product-category")
     public String showEditCategoryForm(@RequestParam Long id, Model model, RedirectAttributes redirectAttributes) {
         try {
+
+            
             Category category = categoryService.getCategoryById(id);
             if (category == null) {
                 redirectAttributes.addFlashAttribute("error", "Không tìm thấy danh mục");
                 return "redirect:/seller/product-category";
             }
+
             
             UpdateCategoryDto updateCategoryDto = new UpdateCategoryDto(category);
                     
@@ -405,12 +408,7 @@ public class SellerController {
             return "redirect:/seller/edit-product-category?id=" + updateCategoryDto.getId();
         }
         try {
-            Category oldCategory = categoryService.getCategoryById(updateCategoryDto.getId());
-            if (oldCategory == null) {
-                throw new Exception("Không tìm thấy danh mục");
-            }
-            Category newCategory = new Category(updateCategoryDto);
-            sellerRequestService.saveUpdateRequest(oldCategory, newCategory, principal.getName());
+            categoryService.updateCategory(updateCategoryDto,principal);
             redirectAttributes.addFlashAttribute("success", "Yêu cầu cập nhật danh mục đã được gửi đến quản lý");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
