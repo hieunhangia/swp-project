@@ -226,6 +226,10 @@ public class GuestController {
         model.addAttribute("product", product);
         model.addAttribute("subImages", subImages);
 
+        if (!product.isEnabled()){
+            customerService.removeItem(principal.getName(), product.getId());
+        }
+
         double quantityInCart = customerService.getProductQuantityInCart(principal, id);
 
         if(quantityInCart > product.getQuantity()) {
