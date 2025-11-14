@@ -143,15 +143,11 @@ public class CustomerController {
         List<ShoppingCartItem> cartItems = customerService.getCart(principal.getName());
         List<ShoppingCartItem> itemToRemove = new ArrayList<>();
         for(ShoppingCartItem item: cartItems) {
-            if (item.getProduct().getQuantity() <= 0) {
-                customerService.removeItem(principal.getName(), item.getProduct().getId());
-            }
             if (item.getQuantity() > item.getProduct().getQuantity()) {
                 item.setQuantity(item.getProduct().getQuantity());
-                customerService.updateCartQuantity(principal.getName(),
-                        item.getProduct().getId(), item.getQuantity());
+                customerService.updateCartQuantity(principal.getName(), item.getProduct().getId(), item.getQuantity());
             }
-            if(!item.getProduct().isEnabled()){
+            if(!item.getProduct().isEnabled() || item.getProduct().getQuantity() <= 0){
                 customerService.removeItem(principal.getName(), item.getProduct().getId());
                 itemToRemove.add(item);
             }
