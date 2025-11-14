@@ -141,6 +141,7 @@ public class CustomerController {
     public String viewShoppingCart(Model model, HttpSession session,
                                    Principal principal) {
         List<ShoppingCartItem> cartItems = customerService.getCart(principal.getName());
+        List<ShoppingCartItem> itemToRemove = new ArrayList<>();
         for(ShoppingCartItem item: cartItems) {
             if (item.getProduct().getQuantity() <= 0) {
                 customerService.removeItem(principal.getName(), item.getProduct().getId());
@@ -152,7 +153,11 @@ public class CustomerController {
             }
             if(!item.getProduct().isEnabled()){
                 customerService.removeItem(principal.getName(), item.getProduct().getId());
+                itemToRemove.add(item);
             }
+        }
+        for(ShoppingCartItem item: itemToRemove){
+            cartItems.remove(item);
         }
         List<Long> selectedIds = (List<Long>) session.getAttribute("selectedIds");
         if (selectedIds == null) {
