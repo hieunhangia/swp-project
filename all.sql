@@ -1,5 +1,4 @@
 TRUNCATE TABLE
-    admin,
     bill,
     category,
     commune_ward,
