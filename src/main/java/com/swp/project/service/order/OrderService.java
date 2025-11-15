@@ -747,7 +747,7 @@ public class OrderService {
         List<RevenueDto> revenues = new ArrayList<>();
         for (Object[] row : raw) {
             String date = (String) row[0];
-            Long revenue = ((Number) row[1]).longValue();
+            Long revenue = (Long) row[1];
             revenues.add(new RevenueDto(date, revenue,null));
         }
         for (int i = 0; i < revenues.size() - 1; i++) {
@@ -798,7 +798,7 @@ public class OrderService {
         List<RevenueDto> revenues = new ArrayList<>();
         for (Object[] row : raw) {
             String date = (String) row[0];
-            Long revenue = ((Number) row[1]).longValue();
+            Long revenue = (Long) row[1];
             revenues.add(new RevenueDto(date, revenue,null));
         }
 

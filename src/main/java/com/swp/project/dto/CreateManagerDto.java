@@ -40,7 +40,7 @@ public class CreateManagerDto {
     private LocalDate birthDate;
 
     @NotBlank(message = "CMND/CCCD không được để trống")
-    @Size(max = 50, message = "CMND/CCCD không được vượt quá 50 ký tự")
+    @Pattern(regexp = "^[0-9]{9}$|^[0-9]{12}$", message = "CMND/CCCD phải gồm 9 hoặc 12 chữ số")
     private String cId;
 
     @NotBlank(message = "Địa chỉ cụ thể không được để trống")
