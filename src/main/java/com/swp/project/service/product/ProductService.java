@@ -262,11 +262,11 @@ public class ProductService {
                 .anyMatch(p -> p.getName().equals(name) && p.getId() != productId);
     }
 
-    public boolean checkUniqueProductFromSellerRequestForUpdate( String name) throws JsonProcessingException{
+    public boolean checkUniqueProductFromSellerRequestForUpdate(Long productId,String name) throws JsonProcessingException{
         boolean existed = false;
         for (SellerRequest sellerRequest : sellerRequestService.getSellerRequestByEntityName(Product.class)) {
             Product p = sellerRequestService.getEntityFromContent(sellerRequest.getContent(), Product.class);
-            if(sellerRequestStatusService.isPendingStatus(sellerRequest) && p.getName().equals(name)){
+            if(sellerRequestStatusService.isPendingStatus(sellerRequest) && p.getName().equals(name) && p.getId() != productId){
                 existed = true;
                 break;
             }
@@ -354,7 +354,7 @@ public class ProductService {
             categories.add(categoryService.getCategoryById(catId));
         }
         updateProductDto.setFinalCategories(categories);
-        if (checkUniqueProductNameForUpdate(updateProductDto.getId(), updateProductDto.getName()) || checkUniqueProductFromSellerRequestForUpdate(updateProductDto.getName())) {
+        if (checkUniqueProductNameForUpdate(updateProductDto.getId(), updateProductDto.getName()) || checkUniqueProductFromSellerRequestForUpdate(updateProductDto.getId(), updateProductDto.getName())) {
             throw new Exception("Tên sản phẩm đã tồn tại");
         }
         if (imageFile == null || imageFile.isEmpty()) {
