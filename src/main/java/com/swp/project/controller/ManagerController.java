@@ -699,7 +699,7 @@ public class ManagerController {
     }
 
     @PostMapping("/reject-product-unit-request")
-    public String rejectProductUnitRequest(
+    public String rejectProducteRequest(
             @RequestParam Long requestId,
             RedirectAttributes redirectAttributes) {
         try {
