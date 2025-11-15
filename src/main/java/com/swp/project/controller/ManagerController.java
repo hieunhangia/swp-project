@@ -452,12 +452,6 @@ public class ManagerController {
         }
     }
 
-
-
-
-
-
-
     @GetMapping("/all-products-request")
     public String getAllProductsRequest(
             Model model) {
