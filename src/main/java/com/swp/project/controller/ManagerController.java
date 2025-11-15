@@ -396,13 +396,6 @@ public class ManagerController {
                                 if (staffDto.getId() != 0) {
                                     sellerService.setSellerStatus(staffDto.getId(), staffDto.isEnabled());
                                 }
-                                // sellerService.findByNameAndCid(
-                                //         session.getAttribute("queryName").toString(),
-                                //         session.getAttribute("queryCid").toString());
-                                // sellerService.sortBy(session.getAttribute("sortCriteria").toString(),
-                                //         (int) session.getAttribute("k"));
-
-                                // session.setAttribute("list", sellerService.getResults());
                             } catch (Exception e) {
                                 redirectAttributes.addFlashAttribute("error", e.getMessage());
                                 return editRedirectUrl;
