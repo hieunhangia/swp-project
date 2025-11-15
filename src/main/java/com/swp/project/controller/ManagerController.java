@@ -299,45 +299,48 @@ public class ManagerController {
             @RequestParam(value = "className", required = false) String className,
             @RequestParam(value = "email", required = false) String email,
             Model model,
-            HttpSession session) {
+            HttpSession session,
+            RedirectAttributes redirectAttributes) {
 
         List<ProvinceCity> provinces = addressService.getAllProvinceCity();
         List<CommuneWard> wards = new ArrayList<>();
         StaffDto staffDto = (StaffDto) session.getAttribute("staffDto");
 
-        if (className != null && !className.isEmpty()) {
-            switch (className) {
-                case "Seller":
-                    session.setAttribute("newClassName", className);
-                    if (email != null && !email.isEmpty()) {
-                        Seller seller = sellerService.getByEmail(email);
+        if (className == null || !className.matches("Seller|Shipper")) {
+            redirectAttributes.addFlashAttribute("err", "Vai trò không hợp lệ");
+            return "redirect:/manager/manage-seller";
+        }
+        switch (className) {
+            case "Seller":
+                session.setAttribute("newClassName", className);
+                if (email != null && !email.isEmpty()) {
+                    Seller seller = sellerService.getByEmail(email);
 
-                        if (seller == null) {
-                            staffDto = new StaffDto();
-                            break;
-                        }
-
-                        staffDto = new StaffDto().parse(seller);
-                    } else {
+                    if (seller == null) {
                         staffDto = new StaffDto();
+                        break;
                     }
-                    break;
-                case "Shipper":
-                    session.setAttribute("newClassName", className);
-                    if (email != null && !email.isEmpty()) {
-                        Shipper shipper = shipperService.getByEmail(email);
 
-                        if (shipper == null) {
-                            staffDto = new StaffDto();
-                            break;
-                        }
+                    staffDto = new StaffDto().parse(seller);
+                } else {
+                    staffDto = new StaffDto();
+                }
+                break;
+            case "Shipper":
+                session.setAttribute("newClassName", className);
+                if (email != null && !email.isEmpty()) {
+                    Shipper shipper = shipperService.getByEmail(email);
 
-                        staffDto = new StaffDto().parse(shipper);
-                    } else {
+                    if (shipper == null) {
                         staffDto = new StaffDto();
+                        break;
                     }
-                    break;
-            }
+
+                    staffDto = new StaffDto().parse(shipper);
+                } else {
+                    staffDto = new StaffDto();
+                }
+                break;
         }
         if (staffDto.getProvinceCity() != null) {
             wards = addressService.getAllCommuneWardByProvinceCityCode(staffDto.getProvinceCity());
